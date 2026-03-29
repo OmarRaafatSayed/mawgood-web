@@ -11,6 +11,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { useCartContext } from "@/components/providers"
+import { useTranslations } from "next-intl"
 
 const getItemCount = (cart: HttpTypes.StoreCart | null) => {
   return cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
@@ -19,12 +20,13 @@ const getItemCount = (cart: HttpTypes.StoreCart | null) => {
 export const CartDropdown = () => {
   const { cart } = useCartContext()
   const [open, setOpen] = useState(false)
+  const t = useTranslations('cart')
+  const tCommon = useTranslations('common')
 
   const previousItemCount = usePrevious(getItemCount(cart))
   const cartItemsCount = (cart && getItemCount(cart)) || 0
   const pathname = usePathname()
 
-  // Filter out items with invalid data (missing prices/variants)
   const validItems = filterValidCartItems(cart?.items)
 
   const total = convertToLocale({
@@ -80,14 +82,14 @@ export const CartDropdown = () => {
       >
         <CartIcon size={20} />
         {Boolean(cartItemsCount) && (
-          <Badge className="absolute -top-2 -right-2 w-4 h-4 p-0">
+          <Badge className="absolute -top-2 -end-2 w-4 h-4 p-0">
             {cartItemsCount}
           </Badge>
         )}
       </LocalizedClientLink>
       <Dropdown show={open}>
         <div className="lg:w-[460px] shadow-lg">
-          <h3 className="uppercase heading-md border-b p-4">Shopping cart</h3>
+          <h3 className="uppercase heading-md border-b p-4">{tCommon('cart')}</h3>
           <div className="p-4">
             {Boolean(cartItemsCount) ? (
               <div>
@@ -102,32 +104,32 @@ export const CartDropdown = () => {
                 </div>
                 <div className="pt-4">
                   <div className="text-secondary flex justify-between items-center">
-                    Items <p className="label-md text-primary">{items}</p>
+                    <span>{t('cartItems')}</span> <p className="label-md text-primary">{items}</p>
                   </div>
                   <div className="text-secondary flex justify-between items-center">
-                    Delivery <p className="label-md text-primary">{delivery}</p>
+                    <span>{tCommon('shipping')}</span> <p className="label-md text-primary">{delivery}</p>
                   </div>
                   <div className="text-secondary flex justify-between items-center">
-                    Tax <p className="label-md text-primary">{tax}</p>
+                    <span>{tCommon('tax')}</span> <p className="label-md text-primary">{tax}</p>
                   </div>
                   <div className="text-secondary flex justify-between items-center">
-                    Total <p className="label-xl text-primary">{total}</p>
+                    <span>{tCommon('total')}</span> <p className="label-xl text-primary">{total}</p>
                   </div>
                   <LocalizedClientLink href="/cart">
-                    <Button className="w-full mt-4 py-3">Go to cart</Button>
+                    <Button className="w-full mt-4 py-3">{t('continueShopping')}</Button>
                   </LocalizedClientLink>
                 </div>
               </div>
             ) : (
               <div className="px-8">
                 <h4 className="heading-md uppercase text-center">
-                  Your shopping cart is empty
+                  {t('emptyCart')}
                 </h4>
                 <p className="text-lg text-center py-4">
-                  Are you looging for inspiration?
+                  {tCommon('continueShopping')}
                 </p>
                 <LocalizedClientLink href="/categories">
-                  <Button className="w-full py-3">Explore Home Page</Button>
+                  <Button className="w-full py-3">{tCommon('continueShopping')}</Button>
                 </LocalizedClientLink>
               </div>
             )}

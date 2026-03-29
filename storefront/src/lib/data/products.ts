@@ -90,24 +90,24 @@ export const listProducts = async ({
       cache: useCached ? 'force-cache' : 'no-cache'
     })
     .then(({ products: productsRaw, count }) => {
-      const products = productsRaw.filter(product => product.seller?.store_status !== 'SUSPENDED');
+      const products = productsRaw.filter(product => !product.seller || product.seller?.store_status !== 'SUSPENDED');
 
       const nextPage = count > offset + limit ? pageParam + 1 : null;
 
-      const response = products.filter(prod => {
-        // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-        const reviews = prod.seller?.reviews.filter(item => !!item) ?? [];
-        return (
+      const response = products.map(prod => {
+        if (prod.seller) {
           // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
-          prod?.seller && {
+          const reviews = prod.seller?.reviews?.filter(item => !!item) ?? [];
+          return {
             ...prod,
             seller: {
               // @ts-ignore Property 'seller' exists but TypeScript doesn't recognize it
               ...prod.seller,
               reviews
             }
-          }
-        );
+          };
+        }
+        return prod;
       });
 
       return {
@@ -177,6 +177,8 @@ export const listProductsWithSort = async ({
   const filteredProducts = seller_id
     ? products.filter(product => product.seller?.id === seller_id)
     : products;
+
+  // Include all products regardless of seller
 
   const pricedProducts = filteredProducts.filter(prod =>
     prod.variants?.some(variant => variant.calculated_price !== null)

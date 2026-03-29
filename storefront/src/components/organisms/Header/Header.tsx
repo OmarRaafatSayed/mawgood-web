@@ -5,7 +5,7 @@ import { CartDropdown, MobileNavbar, Navbar } from "@/components/cells"
 import { HeartIcon } from "@/icons"
 import { UserDropdown } from "@/components/cells/UserDropdown/UserDropdown"
 import { Wishlist } from "@/types/wishlist"
-import { Badge } from "@/components/atoms"
+import { Badge, LanguageSwitcher } from "@/components/atoms"
 import CountrySelector from "@/components/molecules/CountrySelector/CountrySelector"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { MessageButton } from "@/components/molecules/MessageButton/MessageButton"
@@ -50,7 +50,7 @@ export const Header = async ({ locale } : {
         <div className="flex lg:justify-center lg:w-1/3 items-center pl-4 lg:pl-0">
           <LocalizedClientLink href="/" className="text-2xl font-bold" data-testid="header-logo-link">
             <Image
-              src="/Logo.svg"
+              src="/logo.svg"
               width={126}
               height={40}
               alt="Logo"
@@ -59,6 +59,7 @@ export const Header = async ({ locale } : {
           </LocalizedClientLink>
         </div>
         <div className="flex items-center justify-end gap-2 lg:gap-4 w-full lg:w-1/3 py-2" data-testid="header-actions">
+          <LanguageSwitcher />
           <CountrySelector regions={regions} />
           {isLoggedIn && <MessageButton />}
           <UserDropdown isLoggedIn={isLoggedIn} />

@@ -729,6 +729,17 @@
           "header": "Failed to delete product"
         }
       }
+    },
+    "seller": {
+      "title": "Seller",
+      "seller": "Seller",
+      "noSeller": "No seller assigned",
+      "assignSeller": "Assign Seller",
+      "assigned": "Assigned",
+      "removeSeller": "Remove Seller",
+      "removeSellerConfirm": "Are you sure you want to remove the seller from this product?",
+      "noSellers": "No Sellers Available",
+      "noSellersDescription": "There are no sellers available to assign to this product."
     }
   },
   "collections": {

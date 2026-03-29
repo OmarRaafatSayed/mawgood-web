@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Funnel_Display } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getLocale } from 'next-intl/server';
 
 import './globals.css';
+import './rtl.css';
 
 import { Toaster } from '@medusajs/ui';
 import Head from 'next/head';
@@ -20,12 +23,12 @@ const funnelDisplay = Funnel_Display({
 export const metadata: Metadata = {
   title: {
     template: `%s | ${
-      process.env.NEXT_PUBLIC_SITE_NAME || 'Mercur B2C Demo - Marketplace Storefront'
+      process.env.NEXT_PUBLIC_SITE_NAME || 'Mawgood - موجود'
     }`,
-    default: process.env.NEXT_PUBLIC_SITE_NAME || 'Mercur B2C Demo - Marketplace Storefront'
+    default: process.env.NEXT_PUBLIC_SITE_NAME || 'Mawgood - موجود'
   },
   description:
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Mercur B2C Demo - Marketplace Storefront',
+    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'موقع الكتروني يضم كل المنتجات المحليه المصريه والعربيه - Egyptian and Arab local products marketplace',
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   alternates: {
     languages: {
@@ -40,14 +43,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cart = await retrieveCart();
+  const locale = await getLocale();
+  const messages = await getMessages();
 
   const ALGOLIA_APP = process.env.NEXT_PUBLIC_ALGOLIA_ID;
-  // default lang updated by HtmlLangSetter
-  const htmlLang = 'en';
+  const htmlLang = locale || 'ar';
 
   return (
     <html
       lang={htmlLang}
+      dir={htmlLang === 'ar' ? 'rtl' : 'ltr'}
       className=""
     >
       <Head>
@@ -139,9 +144,21 @@ export default async function RootLayout({
         />
       </Head>
       <body className={`${funnelDisplay.className} relative bg-primary text-secondary antialiased`}>
-        <HtmlLangSetter />
-        <Providers cart={cart}>{children}</Providers>
-        <Toaster position="top-right" />
+        <NextIntlClientProvider messages={messages}>
+          <HtmlLangSetter />
+          <Providers cart={cart}>{children}</Providers>
+          <Toaster 
+            position="top-right" 
+            className="!max-w-[90vw] sm:!max-w-md"
+            toastOptions={{
+              className: '!max-w-full break-words',
+              style: {
+                maxWidth: '100%',
+                wordBreak: 'break-word'
+              }
+            }}
+          />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

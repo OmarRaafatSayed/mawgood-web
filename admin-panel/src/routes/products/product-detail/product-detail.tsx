@@ -11,6 +11,7 @@ import { ProductMediaSection } from "./components/product-media-section";
 import { ProductOptionSection } from "./components/product-option-section";
 import { ProductOrganizationSection } from "./components/product-organization-section";
 import { ProductSalesChannelSection } from "./components/product-sales-channel-section";
+import { ProductSellerSection } from "./components/product-seller-section";
 import { ProductShippingProfileSection } from "./components/product-shipping-profile-section";
 import { ProductVariantSection } from "./components/product-variant-section";
 import { PRODUCT_DETAIL_FIELDS } from "./constants";
@@ -73,6 +74,7 @@ export const ProductDetail = () => {
         </TwoColumnPage.Main>
         <TwoColumnPage.Sidebar data-testid="product-detail-sidebar">
           <ProductSalesChannelSection product={product} />
+          <ProductSellerSection product={product} />
           <ProductShippingProfileSection product={product} />
           <ProductOrganizationSection product={product} />
           <ProductAttributeSection product={product} />

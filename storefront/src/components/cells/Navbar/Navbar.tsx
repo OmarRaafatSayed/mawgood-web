@@ -15,12 +15,12 @@ export const Navbar = ({
           categories={categories}
           parentCategories={parentCategories}
         />
-        <div className="ml-auto max-w-[296px] w-full pl-4" data-testid="navbar-search-desktop">
+        <div className="ms-auto max-w-[296px] w-full ps-4" data-testid="navbar-search-desktop">
           <NavbarSearch />
         </div>
       </div>
-      <div className="lg:hidden max-w-[296px] w-full" data-testid="navbar-search-mobile">
-        <NavbarSearch className="max-w-[296px]" />
+      <div className="lg:hidden w-full" data-testid="navbar-search-mobile">
+        <NavbarSearch className="w-full" />
       </div>
     </div>
   )

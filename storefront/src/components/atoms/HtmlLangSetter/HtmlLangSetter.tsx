@@ -1,25 +1,20 @@
 'use client';
 
 import { useEffect } from 'react';
-
 import { usePathname } from 'next/navigation';
-
-import { toHreflang } from '@/lib/helpers/hreflang';
+import { useLocale } from 'next-intl';
 
 export function HtmlLangSetter() {
   const pathname = usePathname();
+  const locale = useLocale();
 
   useEffect(() => {
-    // get locale from the path
-    const localeMatch = pathname?.match(/^\/([a-z]{2})(?:\/|$)/i);
-    const locale = localeMatch?.[1] || 'en';
-    const htmlLang = toHreflang(locale);
-
-    // set lang on the html element
     if (typeof document !== 'undefined') {
-      document.documentElement.lang = htmlLang;
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+      document.body.dir = locale === 'ar' ? 'rtl' : 'ltr';
     }
-  }, [pathname]);
+  }, [pathname, locale]);
 
   return null;
 }

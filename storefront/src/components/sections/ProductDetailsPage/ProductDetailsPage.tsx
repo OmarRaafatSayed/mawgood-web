@@ -2,6 +2,7 @@ import { ProductDetails, ProductGallery } from "@/components/organisms"
 import { listProducts } from "@/lib/data/products"
 import { HomeProductSection } from "../HomeProductSection/HomeProductSection"
 import NotFound from "@/app/not-found"
+import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
 
 export const ProductDetailsPage = async ({
   handle,
@@ -10,17 +11,20 @@ export const ProductDetailsPage = async ({
   handle: string
   locale: string
 }) => {
+  const countryCode = getCountryFromLocale(locale);
+  
   const prod = await listProducts({
-    countryCode: locale,
+    countryCode,
     queryParams: { handle: [handle], limit: 1 },
     forceCache: true,
   }).then(({ response }) => response.products[0])
 
   if (!prod) return null
 
-  if (prod.seller?.store_status === "SUSPENDED") {
-    return NotFound()
-  }
+  // Allow products without seller or with suspended seller to show
+  // if (prod.seller?.store_status === "SUSPENDED") {
+  //   return NotFound()
+  // }
 
   return (
     <>
@@ -33,12 +37,13 @@ export const ProductDetailsPage = async ({
         </div>
       </div>
       <div className="my-8">
-        <HomeProductSection
-          heading="More from this seller"
-          products={prod.seller?.products}
-          // seller_handle={prod.seller?.handle}
-          locale={locale}
-        />
+        {prod.seller?.products && prod.seller.products.length > 0 && (
+          <HomeProductSection
+            heading="More from this seller"
+            products={prod.seller.products}
+            locale={locale}
+          />
+        )}
       </div>
     </>
   )

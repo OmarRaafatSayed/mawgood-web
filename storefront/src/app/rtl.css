@@ -1,0 +1,125 @@
+/* RTL Support Utilities */
+
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+}
+
+/* Flip margins and paddings */
+[dir="rtl"] .ml-auto {
+  margin-left: unset !important;
+  margin-right: auto !important;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: unset !important;
+  margin-left: auto !important;
+}
+
+[dir="rtl"] .pl-4 {
+  padding-left: 0 !important;
+  padding-right: 1rem !important;
+}
+
+[dir="rtl"] .pl-5 {
+  padding-left: 0 !important;
+  padding-right: 1.25rem !important;
+}
+
+/* Flip text alignment */
+[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left !important;
+}
+
+/* Flip positioning */
+[dir="rtl"] .left-0 {
+  left: unset !important;
+  right: 0 !important;
+}
+
+[dir="rtl"] .right-0 {
+  right: unset !important;
+  left: 0 !important;
+}
+
+[dir="rtl"] .-right-2 {
+  right: unset !important;
+  left: -0.5rem !important;
+}
+
+[dir="rtl"] .-left-2 {
+  left: unset !important;
+  right: -0.5rem !important;
+}
+
+[dir="rtl"] .-right-4 {
+  right: unset !important;
+  left: -1rem !important;
+}
+
+[dir="rtl"] .-left-4 {
+  left: unset !important;
+  right: -1rem !important;
+}
+
+/* Flip transforms */
+[dir="rtl"] .rotate-180 {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .rotate-\[180deg\] {
+  transform: scaleX(-1);
+}
+
+/* Dropdown positioning for RTL */
+[dir="rtl"] .dropdown-end {
+  left: 0;
+  right: unset;
+}
+
+[dir="rtl"] .dropdown-top {
+  bottom: 100%;
+  top: unset;
+}
+
+/* Carousel RTL fixes */
+[dir="rtl"] .embla__container {
+  direction: rtl;
+}
+
+/* Scroll indicators */
+[dir="rtl"] .origin-left {
+  transform-origin: right center;
+}
+
+/* Badge positioning */
+[dir="rtl"] .-top-2 {
+  top: -0.5rem;
+}
+
+[dir="rtl"] .-top-2\.5 {
+  top: -0.625rem;
+}
+
+/* Navigation items spacing */
+[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* Grid columns */
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* Search input icon positioning */
+[dir="rtl"] .peer-\[placeholder-shown\~\.search-icon\] {
+  right: auto;
+  left: 0.75rem;
+}

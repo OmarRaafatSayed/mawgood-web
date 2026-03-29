@@ -45,6 +45,16 @@ export const CustomCarousel = ({
     [emblaApi]
   )
 
+  const scrollPrev = useCallback(() => {
+    if (!emblaApi) return
+    emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (!emblaApi) return
+    emblaApi.scrollNext()
+  }, [emblaApi])
+
   const arrowColor = {
     light: tailwindConfig.theme.extend.colors.primary,
     dark: tailwindConfig.theme.extend.colors.tertiary,
@@ -68,11 +78,11 @@ export const CustomCarousel = ({
               step={selectedIndex + 1}
             />
           </div>
-          <div>
-            <button onClick={() => changeSlideHandler(selectedIndex - 1)}>
+          <div className="flex gap-2">
+            <button onClick={scrollPrev} aria-label="Previous slide">
               <ArrowLeftIcon color={arrowColor[variant]} />
             </button>
-            <button onClick={() => changeSlideHandler(selectedIndex + 1)}>
+            <button onClick={scrollNext} aria-label="Next slide">
               <ArrowRightIcon color={arrowColor[variant]} />
             </button>
           </div>

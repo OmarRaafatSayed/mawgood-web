@@ -10,6 +10,12 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'primary-gradient': 'linear-gradient(135deg, #D97F3E 0%, #8F5429 50%, #382110 100%)',
+        'primary-gradient-hover': 'linear-gradient(135deg, #C36B30 0%, #7D4A24 50%, #2A1A0C 100%)',
+        'primary-gradient-vertical': 'linear-gradient(180deg, #D97F3E 0%, #8F5429 50%, #382110 100%)',
+        'primary-gradient-radial': 'radial-gradient(circle, #D97F3E 0%, #8F5429 50%, #382110 100%)',
+      },
       backgroundColor: {
         primary: "rgba(var(--bg-primary))",
         secondary: "rgba(var(--bg-secondary))",

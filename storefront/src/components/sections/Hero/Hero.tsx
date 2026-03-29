@@ -51,6 +51,7 @@ export const Hero = ({ image, heading, paragraph, buttons }: HeroProps) => {
 
                 <ArrowRightIcon
                   color={tailwindConfig.theme.extend.backgroundColor.primary}
+                  className="rtl:rotate-180"
                   aria-hidden
                 />
               </Link>

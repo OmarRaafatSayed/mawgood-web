@@ -15,17 +15,18 @@
     --neutral-1000: 9, 9, 9;
 
     /* Brand colors are used across all interactive elements such as buttons, links, inputs, etc. This color can define the overall feel and can elicit emotion. */
-    --brand-25: 247, 247, 247;
-    --brand-50: 238, 238, 238;
-    --brand-100: 226, 226, 226;
-    --brand-200: 198, 198, 198;
-    --brand-300: 163, 163, 163;
-    --brand-400: 115, 115, 115;
-    --brand-500: 82, 82, 82;
-    --brand-600: 64, 64, 64;
-    --brand-700: 27, 27, 27;
-    --brand-800: 22, 22, 22;
-    --brand-900: 9, 9, 9;
+    /* Primary Gradient Colors: #D97F3E → #8F5429 → #382110 */
+    --brand-25: 254, 250, 247;
+    --brand-50: 252, 242, 235;
+    --brand-100: 249, 227, 213;
+    --brand-200: 243, 197, 171;
+    --brand-300: 237, 167, 129;
+    --brand-400: 217, 127, 62; /* #D97F3E - Primary Light */
+    --brand-500: 195, 107, 48;
+    --brand-600: 143, 84, 41; /* #8F5429 - Primary Mid */
+    --brand-700: 95, 61, 32;
+    --brand-800: 56, 33, 16; /* #382110 - Primary Dark */
+    --brand-900: 40, 24, 12;
     
     /* Red colors are used across error states and in "destructive" actions. */
     --red-25: 254, 243, 242;
@@ -81,7 +82,15 @@
 }
 
 :root {
-    --bg-primary: var(--neutral-0);
+    /* Primary Gradient - Main Brand Colors */
+    --primary: var(--brand-400); /* #D97F3E */
+    --primary-hover: var(--brand-500);
+    --primary-active: var(--brand-600); /* #8F5429 */
+    --primary-light: var(--brand-300);
+    --primary-dark: var(--brand-800); /* #382110 */
+
+    /* Background Colors */
+    --bg-primary: var(--neutral-0); /* White #FFFFFF */
     --bg-secondary: var(--neutral-25);
     --bg-tertiary: var(--neutral-1000);
 
@@ -92,15 +101,16 @@
     --bg-component-secondary-hover: var(--neutral-50);
     --bg-component-secondary-pressed: var(--neutral-100);
 
-    --bg-action-primary: var(--brand-900);
-    --bg-action-primary-hover: var(--brand-800);
-    --bg-action-primary-pressed: var(--brand-700);
-    --bg-action-secondary: rgba(var(--neutral-1000), 0.05);
-    --bg-action-secondary-hover: rgba(var(--neutral-1000), 0.1);
-    --bg-action-secondary-pressed: rgba(var(--neutral-1000), 0.2);
-    --bg-action-tertiary: rgba(var(--neutral-1000), 0.05);
-    --bg-action-tertiary-hover: rgba(var(--neutral-1000), 0.1);
-    --bg-action-tertiary-pressed: rgba(var(--neutral-1000), 0.2);
+    /* Action Backgrounds - Using Primary Gradient */
+    --bg-action-primary: var(--brand-400); /* #D97F3E */
+    --bg-action-primary-hover: var(--brand-500);
+    --bg-action-primary-pressed: var(--brand-600); /* #8F5429 */
+    --bg-action-secondary: rgba(var(--brand-400), 0.1);
+    --bg-action-secondary-hover: rgba(var(--brand-400), 0.15);
+    --bg-action-secondary-pressed: rgba(var(--brand-400), 0.25);
+    --bg-action-tertiary: rgba(var(--brand-400), 0.05);
+    --bg-action-tertiary-hover: rgba(var(--brand-400), 0.1);
+    --bg-action-tertiary-pressed: rgba(var(--brand-400), 0.15);
 
     --bg-negative-primary: var(--red-600);
     --bg-negative-primary-hover: var(--red-700);
@@ -125,15 +135,22 @@
 
     --bg-disabled: var(--neutral-200);
 
-    --content-primary: var(--neutral-1000);
-    --content-secondary: var(--neutral-500);
-    --content-tertiary: var(--neutral-0);
+    /* Typography Colors */
+    --text-primary: var(--neutral-1000); /* Black #000000 on white */
+    --text-secondary: var(--neutral-500); /* Gray text */
+    --text-on-primary: var(--neutral-0); /* White #FFFFFF on orange */
+    --text-on-light: var(--neutral-1000); /* Black on light backgrounds */
 
-    --content-action-primary: var(--brand-900);
-    --content-action-primary-hover: var(--brand-800);
-    --content-action-primary-pressed: var(--brand-700);
-    --content-action-on-primary: var(--brand-25);
-    --content-action-on-secondary: var(--neutral-1000);
+    --content-primary: var(--neutral-1000); /* Black #000000 */
+    --content-secondary: var(--neutral-500);
+    --content-tertiary: var(--neutral-0); /* White #FFFFFF */
+
+    /* Action Text Colors */
+    --content-action-primary: var(--brand-400); /* #D97F3E */
+    --content-action-primary-hover: var(--brand-500);
+    --content-action-primary-pressed: var(--brand-600); /* #8F5429 */
+    --content-action-on-primary: var(--neutral-0); /* White on orange gradient */
+    --content-action-on-secondary: var(--neutral-1000); /* Black on light */
     --content-action-on-tertiary: var(--neutral-0);
 
     --content-positive-primary: var(--green-800);
@@ -152,7 +169,7 @@
 
     --border-primary: var(--neutral-50);
     --border-secondary: var(--neutral-800);
-    --border-action: var(--brand-900);
+    --border-action: var(--brand-400); /* #D97F3E */
     --border-negative-primary: var(--red-700);
     --border-negative-secondary: var(--red-200);
     --border-positive-primary: var(--green-800);

@@ -6,12 +6,16 @@ export const paymentInfoMap: Record<
   string,
   { title: string; icon: React.JSX.Element }
 > = {
+  "cash-on-delivery": {
+    title: "الدفع عند الاستلام",
+    icon: <Cash />,
+  },
   "pp_card_stripe-connect": {
-    title: "Credit card",
+    title: "بطاقة ائتمان",
     icon: <CreditCard />,
   },
   pp_stripe_stripe: {
-    title: "Credit card",
+    title: "بطاقة ائتمان",
     icon: <CreditCard />,
   },
   "pp_stripe-ideal_stripe": {
@@ -27,7 +31,7 @@ export const paymentInfoMap: Record<
     icon: <CreditCard />,
   },
   pp_system_default: {
-    title: "Manual Payment",
+    title: "دفع يدوي",
     icon: <Cash />,
   },
   // Add more payment providers here

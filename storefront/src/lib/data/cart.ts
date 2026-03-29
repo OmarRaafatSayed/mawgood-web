@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 
 import medusaError from '@/lib/helpers/medusa-error';
 import { parseVariantIdsFromError } from '@/lib/helpers/parse-variant-error';
+import { getCountryFromLocale } from '@/lib/helpers/locale-mapping';
 
 import { fetchQuery, sdk } from '../config';
 import {
@@ -47,7 +48,13 @@ export async function retrieveCart(cartId?: string) {
       cache: 'no-cache'
     })
     .then(({ cart }) => cart)
-    .catch(() => null);
+    .catch(async (error) => {
+      // If cart not found (404), remove the invalid cart ID from cookies
+      if (error?.response?.status === 404 || error?.message?.includes('not found')) {
+        await removeCartId();
+      }
+      return null;
+    });
 }
 
 export async function getOrSetCart(countryCode: string) {
@@ -116,7 +123,10 @@ export async function addToCart({
     throw new Error('Missing variant ID when adding to cart');
   }
 
-  const cart = await getOrSetCart(countryCode);
+  // Convert locale to country code if needed
+  const actualCountryCode = getCountryFromLocale(countryCode);
+  
+  const cart = await getOrSetCart(actualCountryCode);
 
   if (!cart) {
     throw new Error('Error retrieving or creating cart');
@@ -200,7 +210,25 @@ export async function deleteLineItem(lineId: string) {
   const cartId = await getCartId();
 
   if (!cartId) {
-    throw new Error('Missing cart ID when deleting line item');
+    // Try to retrieve cart first
+    const cart = await retrieveCart();
+    if (!cart) {
+      console.error('No cart found when deleting line item');
+      return; // Silent fail instead of throwing
+    }
+    // Use the retrieved cart ID
+    const headers = {
+      ...(await getAuthHeaders())
+    };
+
+    await sdk.store.cart
+      .deleteLineItem(cart.id, lineId, {}, headers)
+      .then(async () => {
+        const cartCacheTag = await getCacheTag('carts');
+        await revalidateTag(cartCacheTag);
+      })
+      .catch(medusaError);
+    return;
   }
 
   const headers = {
@@ -436,7 +464,10 @@ export async function placeOrder(cartId?: string) {
  */
 export async function updateRegion(countryCode: string, currentPath: string) {
   const cartId = await getCartId();
-  const region = await getRegion(countryCode);
+  
+  // Convert locale to country code if needed
+  const actualCountryCode = getCountryFromLocale(countryCode);
+  const region = await getRegion(actualCountryCode);
 
   if (!region) {
     throw new Error(`Region not found for country code: ${countryCode}`);
@@ -470,7 +501,10 @@ export async function updateRegionWithValidation(
   currentPath: string
 ): Promise<{ removedItems: string[]; newPath: string }> {
   const cartId = await getCartId();
-  const region = await getRegion(countryCode);
+  
+  // Convert locale to country code if needed
+  const actualCountryCode = getCountryFromLocale(countryCode);
+  const region = await getRegion(actualCountryCode);
 
   if (!region) {
     throw new Error(`Region not found for country code: ${countryCode}`);

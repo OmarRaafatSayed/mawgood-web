@@ -30,6 +30,7 @@ import { SellerRatingFilter } from './SellerRatingFilter/SellerRatingFilter';
 import { SellerReviewTab } from './SellerReviewTab/SellerReviewTab';
 import { SizeFilter } from './SizeFilter/SizeFilter';
 import { WishlistItem } from './WishlistItem/WishlistItem';
+import { BottomNavbar } from './BottomNavbar/BottomNavbar';
 
 export {
   Navbar,
@@ -63,5 +64,6 @@ export {
   OrderProductListItem,
   OrderTimeline,
   WishlistItem,
-  ProductAdditionalAttributes
+  ProductAdditionalAttributes,
+  BottomNavbar
 };

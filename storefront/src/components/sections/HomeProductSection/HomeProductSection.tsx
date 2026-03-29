@@ -1,5 +1,6 @@
 import { HomeProductsCarousel } from "@/components/organisms"
 import { Product } from "@/types/product"
+import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
 
 export const HomeProductSection = async ({
   heading,
@@ -12,13 +13,15 @@ export const HomeProductSection = async ({
   products?: Product[]
   home?: boolean
 }) => {
+  const countryCode = getCountryFromLocale(locale);
+  
   return (
     <section className="py-8 w-full">
       <h2 className="mb-6 heading-lg font-bold tracking-tight uppercase">
         {heading}
       </h2>
       <HomeProductsCarousel
-        locale={locale}
+        locale={countryCode}
         sellerProducts={products.slice(0, 4)}
         home={home}
       />

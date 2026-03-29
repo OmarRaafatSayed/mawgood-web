@@ -21,12 +21,12 @@ export function Breadcrumbs({ items, className, "data-testid": dataTestId }: Bre
           const isActive = pathname === path
           return (
             <li key={path} className="inline-flex items-center" data-testid={`breadcrumb-item-${index}`}>
-              {index > 0 && <ForwardIcon size={16} />}
+              {index > 0 && <ForwardIcon size={16} className="rtl:rotate-180" />}
               <LocalizedClientLink
                 href={path}
                 className={cn(
                   "inline-flex items-center label-md text-primary",
-                  index > 0 && "ml-2",
+                  index > 0 && "ms-2",
                   isActive && "text-secondary"
                 )}
                 data-testid={dataTestId ? `${dataTestId}-link-${index}` : `breadcrumbs-link-${index}`}

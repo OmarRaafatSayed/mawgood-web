@@ -7,6 +7,7 @@ import {
 } from "@/components/organisms"
 import { PRODUCT_LIMIT } from "@/const"
 import { listProductsWithSort } from "@/lib/data/products"
+import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
 
 export const ProductListing = async ({
   category_id,
@@ -21,11 +22,14 @@ export const ProductListing = async ({
   showSidebar?: boolean
   locale?: string
 }) => {
+  // Convert locale (language) to country code
+  const countryCode = getCountryFromLocale(locale);
+  
   const { response } = await listProductsWithSort({
     seller_id,
     category_id,
     collection_id,
-    countryCode: locale,
+    countryCode,
     sortBy: "created_at",
     queryParams: {
       limit: PRODUCT_LIMIT,

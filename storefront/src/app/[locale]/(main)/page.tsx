@@ -2,6 +2,7 @@ import {
   BannerSection,
   BlogSection,
   Hero,
+  HeroSlider,
   HomeCategories,
   HomeProductSection,
   ShopByStyleSection,
@@ -10,6 +11,7 @@ import {
 import type { Metadata } from "next"
 import { headers } from "next/headers"
 import Script from "next/script"
+import { getTranslations } from 'next-intl/server'
 import { listRegions } from "@/lib/data/regions"
 import { toHreflang } from "@/lib/helpers/hreflang"
 
@@ -112,6 +114,8 @@ export default async function Home({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const t = await getTranslations('hero')
+  const tHome = await getTranslations('home')
 
   const headersList = await headers()
   const host = headersList.get("host")
@@ -160,25 +164,39 @@ export default async function Home({
         }}
       />
 
-      <Hero
-        image="/images/hero/Image.jpg"
-        heading="Snag your style in a flash"
-        paragraph="Buy, sell, and discover pre-loved gems from the trendiest brands."
-        buttons={[
-          { label: "Buy now", path: "/categories" },
+      <HeroSlider
+        slides={[
           {
-            label: "Sell now",
-            path:
-              process.env.NEXT_PUBLIC_VENDOR_URL ||
-              "https://vendor.mercurjs.com",
+            id: '1',
+            image: '/images/hero/Image.jpg',
+            title: 'احصل على أسلوبك في لمح البصر',
+            subtitle: 'جديد',
+            ctaText: 'تسوق الآن',
+            ctaLink: '/categories'
           },
+          {
+            id: '2',
+            image: '/images/hero/Image.jpg',
+            title: 'أحدث العروض والتخفيضات',
+            subtitle: 'عروض خاصة',
+            ctaText: 'اعرف المزيد',
+            ctaLink: '/collections/offers'
+          },
+          {
+            id: '3',
+            image: '/images/hero/Image.jpg',
+            title: 'تشكيلة حصرية من المنتجات',
+            subtitle: 'حصري',
+            ctaText: 'استكشف الآن',
+            ctaLink: '/products'
+          }
         ]}
       />
       <div className="px-4 lg:px-8 w-full">
-        <HomeProductSection heading="trending listings" locale={locale} home />
+        <HomeProductSection heading={tHome('trendingListings')} locale={locale} home />
       </div>
       <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading="SHOP BY CATEGORY" />
+        <HomeCategories heading={tHome('shopByCategory')} />
       </div>
       <BannerSection />
       <ShopByStyleSection />

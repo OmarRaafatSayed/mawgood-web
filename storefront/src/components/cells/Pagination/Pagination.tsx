@@ -79,7 +79,7 @@ export const Pagination = ({
         aria-label="Previous page"
         data-testid="pagination-previous"
       >
-        <CollapseIcon size={20} className="rotate-90" />
+        <CollapseIcon size={20} className="rtl:rotate-[270deg] rotate-90" />
       </PaginationButton>
 
       {renderPaginationButtons()}
@@ -91,7 +91,7 @@ export const Pagination = ({
         aria-label="Next page"
         data-testid="pagination-next"
       >
-        <CollapseIcon size={20} className="-rotate-90" />
+        <CollapseIcon size={20} className="rtl:rotate-[90deg] -rotate-90" />
       </PaginationButton>
     </div>
   )

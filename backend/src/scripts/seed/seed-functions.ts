@@ -32,7 +32,7 @@ import {
 
 import { productsToInsert } from './seed-products'
 
-const countries = ['be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
+const countries = ['eg', 'sa', 'ae', 'kw', 'qa', 'bh', 'om', 'jo', 'be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
 
 export async function createAdminUser(container: MedusaContainer) {
   const authService = container.resolve(Modules.AUTH)
@@ -123,23 +123,42 @@ export async function createStore(
   })
 }
 export async function createRegions(container: MedusaContainer) {
+  // Create Arab Region with Egyptian Pound
   const {
-    result: [region]
+    result: [arabRegion]
   } = await createRegionsWorkflow(container).run({
     input: {
       regions: [
         {
-          name: 'Europe',
-          currency_code: 'eur',
-          countries,
+          name: 'Arab Countries',
+          currency_code: 'egp',
+          countries: ['eg', 'sa', 'ae', 'kw', 'qa', 'bh', 'om', 'jo'],
           payment_providers: ['pp_system_default']
         }
       ]
     }
   })
 
+  // Create Europe Region
+  const {
+    result: [europeRegion]
+  } = await createRegionsWorkflow(container).run({
+    input: {
+      regions: [
+        {
+          name: 'Europe',
+          currency_code: 'eur',
+          countries: ['be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl'],
+          payment_providers: ['pp_system_default']
+        }
+      ]
+    }
+  })
+
+  const allCountries = ['eg', 'sa', 'ae', 'kw', 'qa', 'bh', 'om', 'jo', 'be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
+
   const { result: taxRegions } = await createTaxRegionsWorkflow(container).run({
-    input: countries.map((country_code) => ({
+    input: allCountries.map((country_code) => ({
       country_code
     }))
   })
@@ -151,7 +170,7 @@ export async function createRegions(container: MedusaContainer) {
     }))
   })
 
-  return region
+  return arabRegion
 }
 
 export async function createPublishableKey(
@@ -362,14 +381,16 @@ export async function createServiceZoneForFulfillmentSet(
   sellerId: string,
   fulfillmentSetId: string
 ) {
+  const allCountries = ['eg', 'sa', 'ae', 'kw', 'qa', 'bh', 'om', 'jo', 'be', 'de', 'dk', 'se', 'fr', 'es', 'it', 'pl', 'cz', 'nl']
+  
   await createServiceZonesWorkflow.run({
     container,
     input: {
       data: [
         {
           fulfillment_set_id: fulfillmentSetId,
-          name: `Europe`,
-          geo_zones: countries.map((c) => ({
+          name: `All Regions`,
+          geo_zones: allCountries.map((c) => ({
             type: 'country',
             country_code: c
           }))
@@ -430,7 +451,7 @@ export async function createSellerShippingOption(
         type: {
           label: `${sellerName} shipping`,
           code: sellerName,
-          description: 'Europe shipping'
+          description: 'All regions shipping'
         },
         rules: [
           { value: 'true', attribute: 'enabled_in_store', operator: 'eq' },
@@ -438,6 +459,7 @@ export async function createSellerShippingOption(
         ],
         prices: [
           { currency_code: 'eur', amount: 10 },
+          { currency_code: 'egp', amount: 200 },
           { amount: 10, region_id: regionId }
         ],
         price_type: 'flat',

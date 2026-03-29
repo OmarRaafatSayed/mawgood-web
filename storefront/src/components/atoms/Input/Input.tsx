@@ -30,9 +30,10 @@ export function Input({
 }: InputProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [inputType, setInputType] = useState(props.type)
-  let paddingY = ""
-  if (icon) paddingY += "pl-[46px] "
-  if (clearable) paddingY += "pr-[38px]"
+  let paddingStart = ""
+  let paddingEnd = ""
+  if (icon) paddingStart += "ps-[46px] "
+  if (clearable) paddingEnd += "pe-[38px]"
 
   useEffect(() => {
     if (props.type === "password" && showPassword) {
@@ -59,7 +60,7 @@ export function Input({
         {icon && onIconClick && (
           <button
             onClick={onIconClick}
-            className="flex items-center justify-center rounded-sm transition-all duration-300 ease-out button-transparent h-[32px] w-[32px] absolute top-[8px] left-[8px]"
+            className="flex items-center justify-center rounded-sm transition-all duration-300 ease-out button-transparent h-[32px] w-[32px] absolute top-[8px] start-[8px]"
             aria-label={iconAriaLabel}
             data-testid={dataTestId ? `${dataTestId}-icon-button` : 'input-icon-button'}
           >
@@ -68,7 +69,7 @@ export function Input({
         )}
 
         {icon && !onIconClick && (
-          <span className="absolute top-0 left-[16px] h-full flex items-center" data-testid={dataTestId ? `${dataTestId}-icon` : 'input-icon'}>
+          <span className="absolute top-0 start-[16px] h-full flex items-center" data-testid={dataTestId ? `${dataTestId}-icon` : 'input-icon'}>
             {icon}
           </span>
         )}
@@ -78,7 +79,8 @@ export function Input({
             "w-full px-[16px] py-[12px] border rounded-sm bg-component-secondary focus:border-primary focus:outline-none focus:ring-0",
             error && "border-negative focus:border-negative",
             props.disabled && "bg-disabled cursor-not-allowed",
-            paddingY,
+            paddingStart,
+            paddingEnd,
             className
           )}
           value={props.value}
@@ -89,7 +91,7 @@ export function Input({
         />
         {clearable && props.value && (
           <span
-            className="absolute h-full flex items-center top-0 right-[16px] cursor-pointer"
+            className="absolute h-full flex items-center top-0 end-[16px] cursor-pointer"
             onClick={clearHandler}
             data-testid={dataTestId ? `${dataTestId}-clear-button` : 'input-clear-button'}
           >
@@ -100,7 +102,7 @@ export function Input({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute right-0 top-4"
+            className="text-ui-fg-subtle px-4 focus:outline-none transition-all duration-150 outline-none focus:text-ui-fg-base absolute end-0 top-4"
             data-testid={dataTestId ? `${dataTestId}-password-button` : 'input-password-button'}
           >
             {showPassword ? <EyeMini /> : <EyeSlashMini />}

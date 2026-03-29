@@ -12,6 +12,7 @@ import {
 } from "@/lib/helpers/category-utils"
 import { useCategoryDropdown } from "./hooks/useCategoryDropdown"
 import { CategoryDropdownMenu } from "./components/CategoryDropdownMenu"
+import { useTranslations } from "next-intl"
 
 interface CategoryNavbarProps {
   categories: HttpTypes.StoreProductCategory[]
@@ -25,6 +26,7 @@ export const CategoryNavbar = ({
   onClose,
 }: CategoryNavbarProps) => {
   const { category } = useParams<{ category?: string }>()
+  const t = useTranslations('common')
 
   const {
     hoveredCategoryId,
@@ -100,7 +102,7 @@ export const CategoryNavbar = ({
           )}
           data-testid="category-link-all-products"
         >
-          All Products
+          {t('viewAll')}
         </LocalizedClientLink>
 
         {filteredCategories.map(({ id, handle, name, category_children }) => {
@@ -127,7 +129,7 @@ export const CategoryNavbar = ({
               >
                 {name}
                 {hasChildren && (
-                  <CollapseIcon size={18} className="-rotate-90 md:hidden" />
+                  <CollapseIcon size={18} className="rtl:rotate-90 -rotate-90 md:hidden" />
                 )}
               </LocalizedClientLink>
             </div>

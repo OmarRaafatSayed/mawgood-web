@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { redirect } from "next/navigation"
 import clsx from "clsx"
+import { useTranslations } from "next-intl"
 
 interface Props {
   className?: string
@@ -13,6 +14,7 @@ interface Props {
 
 export const NavbarSearch = ({ className }: Props) => {
   const searchParams = useSearchParams()
+  const t = useTranslations('common')
 
   const [search, setSearch] = useState(searchParams.get("query") || "")
 
@@ -34,8 +36,8 @@ export const NavbarSearch = ({ className }: Props) => {
       <Input
         icon={<SearchIcon />}
         onIconClick={handleSearch}
-        iconAriaLabel="Search"
-        placeholder="Search product"
+        iconAriaLabel={t('search')}
+        placeholder={t('search')}
         value={search}
         changeValue={setSearch}
         type="search"

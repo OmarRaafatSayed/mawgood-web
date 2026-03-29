@@ -121,6 +121,23 @@ button:disabled svg path {
     #00438f 360deg
   );
 }
+
+/* Primary Gradient - Brand Colors */
+.primary-gradient {
+  background: linear-gradient(135deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+}
+
+.primary-gradient-hover {
+  background: linear-gradient(135deg, #C36B30 0%, #7D4A24 50%, #2A1A0C 100%);
+}
+
+.primary-gradient-vertical {
+  background: linear-gradient(180deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+}
+
+.primary-gradient-radial {
+  background: radial-gradient(circle, #D97F3E 0%, #8F5429 50%, #382110 100%);
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

@@ -12,6 +12,9 @@ export const HomeProductsCarousel = async ({
   sellerProducts: Product[]
   home: boolean
 }) => {
+  // Filter out null/undefined products
+  const validSellerProducts = sellerProducts?.filter(Boolean) || []
+  
   const {
     response: { products },
   } = await listProducts({
@@ -21,18 +24,18 @@ export const HomeProductsCarousel = async ({
       order: "created_at",
       handle: home
         ? undefined
-        : sellerProducts.map((product) => product.handle),
+        : validSellerProducts.map((product) => product.handle),
     },
     forceCache: !home,
   })
 
-  if (!products.length && !sellerProducts.length) return null
+  if (!products.length && !validSellerProducts.length) return null
 
   return (
     <div className="flex justify-center w-full">
       <Carousel
         align="start"
-        items={(sellerProducts.length ? sellerProducts : products).map(
+        items={(validSellerProducts.length ? validSellerProducts : products).map(
           (product) => (
             <ProductCard
               key={product.id}

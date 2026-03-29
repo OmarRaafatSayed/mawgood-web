@@ -29,13 +29,6 @@ module.exports = defineConfig({
       options: {}
     },
     {
-      resolve: '@mercurjs/algolia',
-      options: {
-        apiKey: process.env.ALGOLIA_API_KEY,
-        appId: process.env.ALGOLIA_APP_ID
-      }
-    },
-    {
       resolve: '@mercurjs/reviews',
       options: {}
     },
@@ -53,6 +46,11 @@ module.exports = defineConfig({
       resolve: '@medusajs/medusa/payment',
       options: {
         providers: [
+          {
+            resolve: './src/modules/cash-on-delivery',
+            id: 'cash-on-delivery',
+            options: {}
+          },
           {
             resolve:
               '@mercurjs/payment-stripe-connect/providers/stripe-connect',

@@ -20,7 +20,7 @@ export const ProductSidebar = () => {
     >
       <div
         className={cn(
-          'pointer-events-none left-0 top-0 h-full w-full bg-primary blur-sm transition-opacity duration-100 md:relative',
+          'left-0 top-0 h-full w-full bg-primary transition-opacity duration-100 md:relative',
           filterModal ? 'opacity-1 z-20' : '-z-10 opacity-0 md:z-10 md:opacity-100'
         )}
       >
@@ -74,9 +74,6 @@ export const ProductSidebar = () => {
             View 222 listings
           </Button>
         </div>
-      </div>
-      <div className="heading-md absolute top-4 z-10 w-full rounded-lg bg-primary p-8 text-center shadow-md">
-        Set your Algolia ID and configure filters to enable product filtering
       </div>
     </aside>
   );

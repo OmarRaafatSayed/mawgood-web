@@ -1,5 +1,6 @@
 import { HttpTypes } from '@medusajs/types';
 import { NextRequest, NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 
 import { PROTECTED_ROUTES } from './lib/constants';
 import { isTokenExpired } from './lib/helpers/token';
@@ -7,6 +8,12 @@ import { isTokenExpired } from './lib/helpers/token';
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL;
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY;
 const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || 'us';
+
+const intlMiddleware = createMiddleware({
+  locales: ['ar', 'en'],
+  defaultLocale: 'ar',
+  localePrefix: 'always'
+});
 
 const makeAuthRedirect = (
   req: NextRequest,
@@ -110,66 +117,63 @@ async function getCountryCode(
 }
 
 export async function middleware(request: NextRequest) {
-  // Short-circuit static assets
   if (request.nextUrl.pathname.includes('.')) {
     return NextResponse.next();
   }
 
   const { pathname } = request.nextUrl;
+  
+  // Root path redirect to Arabic
+  if (pathname === '/') {
+    const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value || 'ar';
+    return NextResponse.redirect(new URL(`/${cookieLocale}`, request.url));
+  }
+
   const cacheIdCookie = request.cookies.get('_medusa_cache_id');
   const cacheId = cacheIdCookie?.value || crypto.randomUUID();
 
   const urlSegment = pathname.split('/')[1];
-  const looksLikeLocale = /^[a-z]{2}$/i.test(urlSegment || '');
+  const isLocale = urlSegment === 'ar' || urlSegment === 'en';
 
-  const pathnameWithoutLocale = looksLikeLocale ? pathname.replace(/^\/[^/]+/, '') : pathname;
-
-  const isProtectedRoute = PROTECTED_ROUTES.some(route => pathnameWithoutLocale.startsWith(route));
-
-  if (isProtectedRoute) {
-    const jwtCookie = request.cookies.get('_medusa_jwt');
-    const token = jwtCookie?.value;
-
-    const locale = looksLikeLocale ? urlSegment : DEFAULT_REGION;
-
-    // Not logged in before
-    if (!jwtCookie) {
-      return makeAuthRedirect(request, locale, 'sessionRequired');
+  // Handle locale paths
+  if (isLocale) {
+    const intlResponse = intlMiddleware(request);
+    
+    if (!cacheIdCookie && intlResponse) {
+      intlResponse.cookies.set('_medusa_cache_id', cacheId, {
+        maxAge: 60 * 60 * 24
+      });
     }
+    
+    const pathnameWithoutLocale = pathname.replace(/^\/[^/]+/, '');
+    const isProtectedRoute = PROTECTED_ROUTES.some(route => pathnameWithoutLocale.startsWith(route));
 
-    // Token exists but expired
-    if (token && isTokenExpired(token)) {
-      return makeAuthRedirect(request, locale, 'sessionExpired');
+    if (isProtectedRoute) {
+      const jwtCookie = request.cookies.get('_medusa_jwt');
+      const token = jwtCookie?.value;
+
+      if (!jwtCookie) {
+        return makeAuthRedirect(request, urlSegment, 'sessionRequired');
+      }
+
+      if (token && isTokenExpired(token)) {
+        return makeAuthRedirect(request, urlSegment, 'sessionExpired');
+      }
     }
+    
+    // Clean up invalid cart cookie if exists
+    const cartCookie = request.cookies.get('_medusa_cart_id');
+    if (cartCookie && intlResponse) {
+      // Cart validation will happen in retrieveCart function
+      // No need to validate here, just pass through
+    }
+    
+    return intlResponse;
   }
 
-  // Fast path: URL already has a locale segment and cache cookie exists
-  if (looksLikeLocale && cacheIdCookie) {
-    return NextResponse.next();
-  }
-
-  let response = NextResponse.next();
-
-  // Ensure cache id cookie exists (set without redirect)
-  if (!cacheIdCookie) {
-    response.cookies.set('_medusa_cache_id', cacheId, {
-      maxAge: 60 * 60 * 24
-    });
-  }
-
-  const regionMap = await getRegionMap(cacheId);
-  const countryCode = regionMap && (await getCountryCode(request, regionMap));
-  const urlHasCountryCode = countryCode && pathname.split('/')[1].includes(countryCode);
-
-  // If no country code in URL but we can resolve one, redirect to locale-prefixed path
-  if (!urlHasCountryCode && countryCode) {
-    const redirectPath = pathname === '/' ? '' : pathname;
-    const queryString = request.nextUrl.search ? request.nextUrl.search : '';
-    const redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`;
-    return NextResponse.redirect(redirectUrl, 307);
-  }
-
-  return response;
+  // Non-locale paths - redirect to locale version
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value || 'ar';
+  return NextResponse.redirect(new URL(`/${cookieLocale}${pathname}`, request.url));
 }
 
 export const config = {
