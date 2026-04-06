@@ -1,0 +1,39 @@
+import { Button } from "@/components/atoms"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
+import Image from "next/image"
+import { getTranslations } from "next-intl/server"
+
+export const BannerSection = async () => {
+  const t = await getTranslations('banner')
+
+  return (
+    <section className="bg-tertiary container text-tertiary">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
+        <div className="py-6 px-6 flex flex-col h-full justify-between border border-secondary rounded-sm">
+          <div className="mb-8 lg:mb-48">
+            <span className="text-sm inline-block px-4 py-1 border border-secondary rounded-sm">
+              {t('tag')}
+            </span>
+            <h2 className="display-sm">{t('heading')}</h2>
+            <p className="text-lg text-tertiary max-w-lg">{t('description')}</p>
+          </div>
+          <LocalizedClientLink href="/collections/boho">
+            <Button size="large" className="w-fit bg-secondary/10">{t('cta')}</Button>
+          </LocalizedClientLink>
+        </div>
+        <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full flex justify-end rounded-sm">
+          <Image
+            loading="lazy"
+            fetchPriority="high"
+            src="/images/banner-section/Image.jpg"
+            alt={t('imageAlt')}
+            width={700}
+            height={600}
+            className="object-cover object-top rounded-sm"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
