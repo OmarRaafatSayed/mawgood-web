@@ -2,12 +2,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
 import { Footer, Header } from '@/components/organisms';
-import { BottomNavbar } from '@/components/cells';
 import { TalkJsProvider } from '@/components/providers';
 import { retrieveCustomer } from '@/lib/data/customer';
-import { retrieveCart } from '@/lib/data/cart';
-import { getUserWishlists } from '@/lib/data/wishlist';
-import { Wishlist } from '@/types/wishlist';
 
 export default async function RootLayout({
   children,
@@ -20,27 +16,8 @@ export default async function RootLayout({
   const { locale } = await params;
   const messages = await getMessages();
 
-  const user = await retrieveCustomer();
-  const isLoggedIn = Boolean(user)
-  
-  let cart = null
-  let cartItemsCount = 0
-  try {
-    cart = await retrieveCart()
-    cartItemsCount = cart?.items?.length || 0
-  } catch (e) {
-    // cart might not exist
-  }
-  
-  let wishlistCount = 0
-  if (user) {
-    try {
-      const wishlist: Wishlist = await getUserWishlists({countryCode: locale})
-      wishlistCount = wishlist?.products?.length || 0
-    } catch (e) {
-      // wishlist might not exist
-    }
-  }
+  const user = await retrieveCustomer().catch(() => null);
+  const isLoggedIn = Boolean(user);
 
   if (!APP_ID || !user || !user.id || !user.email)
     return (
@@ -49,11 +26,6 @@ export default async function RootLayout({
         <main>
           {children}
         </main>
-        <BottomNavbar 
-          isLoggedIn={isLoggedIn} 
-          cartItemsCount={cartItemsCount}
-          wishlistCount={wishlistCount}
-        />
         <Footer />
       </NextIntlClientProvider>
     );
@@ -72,11 +44,6 @@ export default async function RootLayout({
         <main>
           {children}
         </main>
-        <BottomNavbar 
-          isLoggedIn={isLoggedIn} 
-          cartItemsCount={cartItemsCount}
-          wishlistCount={wishlistCount}
-        />
         <Footer />
       </TalkJsProvider>
     </NextIntlClientProvider>

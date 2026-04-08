@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
-import { HomeIcon, FilterIcon, CartIcon, ProfileIcon, HeartIcon } from '@/icons'
 import { useTranslations } from 'next-intl'
+import { HomeIcon, SearchIcon, CartIcon, ProfileIcon, HeartIcon, StoreIcon } from '@/icons'
 
 interface BottomNavbarProps {
   isLoggedIn?: boolean
@@ -13,17 +13,19 @@ interface BottomNavbarProps {
   wishlistCount?: number
 }
 
-export function BottomNavbar({ 
-  isLoggedIn = false, 
+export function BottomNavbar({
+  isLoggedIn = false,
   cartItemsCount = 0,
-  wishlistCount = 0 
+  wishlistCount = 0
 }: BottomNavbarProps) {
   const pathname = usePathname()
   const params = useParams()
   const [activePath, setActivePath] = useState('/')
   const t = useTranslations('common')
-  
+  const vendorT = useTranslations('vendor')
+
   const locale = params?.locale || pathname?.split('/')[1] || 'ar'
+  const vendorPanelUrl = process.env.NEXT_PUBLIC_VENDOR_URL || 'http://localhost:7000'
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -42,21 +44,25 @@ export function BottomNavbar({
 
   const navItems = [
     {
-      index: 0,
       icon: HomeIcon,
       label: t('home'),
       href: '/',
       active: getActiveState('/')
     },
     {
-      index: 1,
-      icon: FilterIcon,
-      label: t('categories'),
-      href: '/categories',
-      active: getActiveState('/categories')
+      icon: SearchIcon,
+      label: t('search'),
+      href: '/products',
+      active: getActiveState('/products')
     },
     {
-      index: 2,
+      icon: StoreIcon,
+      label: vendorT('vendorPanel'),
+      href: vendorPanelUrl,
+      active: activePath.includes('/vendor') || activePath.includes('/seller'),
+      isVendor: true
+    },
+    {
       icon: CartIcon,
       label: t('cart'),
       href: '/cart',
@@ -64,12 +70,11 @@ export function BottomNavbar({
       badge: cartItemsCount
     },
     {
-      index: 3,
       icon: isLoggedIn ? HeartIcon : ProfileIcon,
       label: isLoggedIn ? t('wishlist') : t('profile'),
       href: isLoggedIn ? '/user/wishlist' : '/login',
-      active: isLoggedIn 
-        ? getActiveState('/user/wishlist') 
+      active: isLoggedIn
+        ? getActiveState('/user/wishlist')
         : getActiveState('/login') || getActiveState('/register'),
       badge: isLoggedIn ? wishlistCount : undefined
     }
@@ -77,56 +82,77 @@ export function BottomNavbar({
 
   return (
     <>
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] border-t border-gray-200" 
-        style={{ 
-          height: '70px',
+      <div 
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] w-full"
+        style={{
+          height: '72px',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-          borderTopLeftRadius: '18px',
-          borderTopRightRadius: '18px',
-          boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.08)'
+          boxShadow: '0 -2px 12px rgba(0, 0, 0, 0.08)'
         }}
       >
-        <nav 
-          className="flex items-center justify-between h-full w-full px-2"
-        >
+        <div className="flex items-end justify-between h-full w-full pb-2">
           {navItems.map((item, idx) => {
             const Icon = item.icon
+
+            if (item.isVendor) {
+              return (
+                <a
+                  key={`vendor-${idx}`}
+                  href={item.href}
+                  className="flex flex-col items-center justify-center flex-1 h-full cursor-pointer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    <div
+                      className="relative flex items-center justify-center w-12 h-12 -mt-5
+                                 bg-[#FF8A00] rounded-full shadow-lg
+                                 hover:bg-[#FF8A00]/90 active:scale-95 
+                                 transition-all duration-200
+                                 border-2 border-white"
+                      style={{
+                        boxShadow: '0 4px 12px rgba(255, 138, 0, 0.35)'
+                      }}
+                    >
+                      <Icon size={24} className="text-white" />
+                    </div>
+                  </div>
+                </a>
+              )
+            }
+
             return (
               <LocalizedClientLink
                 key={`${item.href}-${idx}`}
                 href={item.href}
-                className="flex flex-col items-center justify-center flex-1 max-w-[80px]"
+                className="flex flex-col items-center justify-center flex-1 h-full cursor-pointer"
               >
-                <div 
-                  className={`flex flex-col items-center justify-center transition-all duration-200 ${
-                    item.active ? 'text-[#FF8A00]' : 'text-gray-500'
-                  }`}
-                >
-                  <div className="relative flex items-center justify-center w-12 h-12">
-                    <Icon size={24} />
+                <div className="flex flex-col items-center justify-center">
+                  <div className="relative flex items-center justify-center w-10 h-10">
+                    <Icon
+                      size={22}
+                      className={item.active ? 'text-[#FF8A00]' : 'text-gray-400'}
+                    />
                     {item.badge && item.badge > 0 && (
-                      <span 
-                        className="absolute flex items-center justify-center font-bold"
+                      <span
+                        className="absolute -top-1 -right-1 flex items-center justify-center font-bold"
                         style={{
-                          top: '2px',
-                          right: '6px',
-                          minWidth: '18px',
-                          height: '18px',
+                          minWidth: '16px',
+                          height: '16px',
                           backgroundColor: '#FF8A00',
                           color: 'white',
-                          fontSize: '10px',
-                          borderRadius: '9px',
-                          padding: '0 5px'
+                          fontSize: '9px',
+                          borderRadius: '8px',
+                          padding: '0 4px'
                         }}
                       >
                         {item.badge > 9 ? '9+' : item.badge}
                       </span>
                     )}
                   </div>
-                  <span 
-                    className="text-[10px] font-medium mt-0.5"
-                    style={{ 
-                      color: item.active ? '#FF8A00' : '#6B7280',
+                  <span
+                    className="text-[9px] font-medium mt-0.5"
+                    style={{
+                      color: item.active ? '#FF8A00' : '#9CA3AF',
                       fontWeight: item.active ? '600' : '500'
                     }}
                   >
@@ -136,9 +162,9 @@ export function BottomNavbar({
               </LocalizedClientLink>
             )
           })}
-        </nav>
+        </div>
       </div>
-      <div className="lg:hidden" style={{ height: '70px', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+      <div className="lg:hidden w-full" style={{ height: '72px', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
     </>
   )
 }

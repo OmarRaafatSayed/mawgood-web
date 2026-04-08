@@ -5,6 +5,7 @@ import { CartDropdown } from './CartDropdown/CartDropdown';
 import { CartItemsFooter } from './CartItemsFooter/CartItemsFooter';
 import { CartItemsHeader } from './CartItemsHeader/CartItemsHeader';
 import { CartItemsProducts } from './CartItemsProducts/CartItemsProducts';
+import { CategoryCard } from './CategoryCard/CategoryCard';
 import { ColorFilter } from './ColorFilter/ColorFilter';
 import { ConditionFilter } from './ConditionFilter/ConditionFilter';
 import { HeadingCategories } from './HeadingCategories/HeadingCategories';
@@ -65,5 +66,6 @@ export {
   OrderTimeline,
   WishlistItem,
   ProductAdditionalAttributes,
-  BottomNavbar
+  BottomNavbar,
+  CategoryCard
 };

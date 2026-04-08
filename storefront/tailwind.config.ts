@@ -142,6 +142,11 @@ export default {
         secondary: "rgba(var(--content-action-on-secondary))",
         disabled: "rgba(var(--content-disabled))",
       },
+      fontFamily: {
+        sans: ['var(--font-inter)', 'var(--font-tajawal)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        arabic: ['var(--font-tajawal)', 'system-ui', 'sans-serif'],
+        english: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [

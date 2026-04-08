@@ -131,6 +131,16 @@
     "yourAccount": "حسابك",
     "goToProfile": "الذهاب إلى الملف الشخصي"
   },
+  "navbar": {
+    "all": "الكل",
+    "hello": "مرحباً",
+    "helloSignin": "مرحباً، سجّل الدخول",
+    "accountLists": "الحساب والقوائم",
+    "yourAccount": "حسابك",
+    "wishlist": "المفضلة",
+    "returns": "المرتجعات",
+    "orders": "الطلبات"
+  },
   "footer": {
     "customerServices": "خدمات العملاء",
     "about": "عن الموقع",
@@ -165,6 +175,8 @@
     "offers": "عروض",
     "newArrivals": "جديد",
     "bestSellers": "الأكثر مبيعاً",
+    "browseCategories": "تصفح الأقسام",
+    "popularBrands": "أشهر العلامات التجارية",
     "categories": {
       "sneakers": "أحذية رياضية",
       "sandals": "صنادل",
@@ -172,6 +184,43 @@
       "sport": "رياضة",
       "accessories": "إكسسوارات"
     }
+  },
+  "categories": {
+    "allCategories": "جميع الأقسام",
+    "electronics": "إلكترونيات",
+    "fashion": "أزياء",
+    "home": "منزل ومطبخ",
+    "beauty": "جمال وعناية",
+    "sports": "رياضة ولياقة",
+    "toys": "ألعاب",
+    "books": "كتب",
+    "automotive": "سيارات",
+    "grocery": "بقالة",
+    "petSupplies": "مستلزمات حيوانات",
+    "office": "مكتب",
+    "baby": "أطفال",
+    "health": "صحة",
+    "jewelry": "مجوهرات",
+    "garden": "حديقة"
+  },
+  "featuredCategories": {
+    "newArrivals": "وصل حديثاً",
+    "bestSellers": "الأكثر مبيعاً",
+    "trending": "الرائج الآن",
+    "specialOffers": "عروض خاصة",
+    "premiumBrands": "علامات فاخرة",
+    "seasonalPicks": "مختارات الموسم"
+  },
+  "vendor": {
+    "becomeVendor": "بع مع موجود",
+    "vendorPanel": "لوحة البائعين",
+    "loginToVendor": "دخول البائعين",
+    "startSelling": "ابدأ البيع",
+    "joinAsSeller": "انضم كبائع"
+  },
+  "brands": {
+    "exploreBrands": "استكشف العلامات",
+    "viewAllBrands": "عرض كل العلامات"
   },
   "auth": {
     "email": "البريد الإلكتروني",

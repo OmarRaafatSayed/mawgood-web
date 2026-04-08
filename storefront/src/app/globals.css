@@ -5,6 +5,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font families - Noon style */
+:root {
+  --font-arabic: var(--font-tajawal);
+  --font-english: var(--font-inter);
+}
+
+/* Apply Tajawal for Arabic, Inter for English */
+[dir="rtl"] body,
+[dir="rtl"] html {
+  font-family: var(--font-tajawal), system-ui, sans-serif;
+}
+
+[dir="ltr"] body,
+[dir="ltr"] html {
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 /* Typography */
 .text-xl {
   @apply font-light tracking-normal;

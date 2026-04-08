@@ -8,6 +8,48 @@
   direction: ltr;
 }
 
+/* Flip Tailwind logical properties for RTL */
+[dir="rtl"] .rounded-s-md {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-start-end-radius: 0.375rem;
+  border-end-end-radius: 0.375rem;
+}
+
+[dir="rtl"] .rounded-e-md {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-start-start-radius: 0.375rem;
+  border-end-start-radius: 0.375rem;
+}
+
+[dir="rtl"] .ps-4 {
+  padding-inline-start: 0;
+  padding-inline-end: 1rem;
+}
+
+[dir="rtl"] .pe-10 {
+  padding-inline-end: 0;
+  padding-inline-start: 2.5rem;
+}
+
+[dir="rtl"] .pe-4 {
+  padding-inline-end: 0;
+  padding-inline-start: 1rem;
+}
+
+/* DO NOT override ms-auto / me-auto - Tailwind logical properties handle RTL correctly */
+
+/* Mobile header RTL: ensure full width and proper element distribution */
+[dir="rtl"] .mobile-header {
+  width: 100%;
+  justify-content: space-between;
+}
+
+[dir="rtl"] .text-start {
+  text-align: right;
+}
+
 /* Flip margins and paddings */
 [dir="rtl"] .ml-auto {
   margin-left: unset !important;
@@ -44,6 +86,10 @@
   right: 0 !important;
 }
 
+[dir="rtl"] .start-0 {
+  inset-inline-start: 0;
+}
+
 [dir="rtl"] .right-0 {
   right: unset !important;
   left: 0 !important;
@@ -52,6 +98,14 @@
 [dir="rtl"] .-right-2 {
   right: unset !important;
   left: -0.5rem !important;
+}
+
+[dir="rtl"] .-end-1 {
+  inset-inline-end: -0.25rem;
+}
+
+[dir="rtl"] .-end-2 {
+  inset-inline-end: -0.5rem;
 }
 
 [dir="rtl"] .-left-2 {
@@ -76,6 +130,15 @@
 
 [dir="rtl"] .rotate-\[180deg\] {
   transform: scaleX(-1);
+}
+
+/* CollapseIcon default rotation for RTL: chevron points down by default, needs to point right in RTL when collapsed */
+[dir="rtl"] .-rotate-90 {
+  transform: rotate(90deg);
+}
+
+[dir="rtl"] .rotate-90 {
+  transform: rotate(-90deg);
 }
 
 /* Dropdown positioning for RTL */
@@ -113,10 +176,7 @@
   --tw-space-x-reverse: 1;
 }
 
-/* Grid columns */
-[dir="rtl"] .flex-row {
-  flex-direction: row-reverse;
-}
+/* Grid columns - DO NOT reverse flex-row, CSS direction handles it */
 
 /* Search input icon positioning */
 [dir="rtl"] .peer-\[placeholder-shown\~\.search-icon\] {

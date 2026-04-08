@@ -1,11 +1,10 @@
 import {
-  BannerSection,
-  BlogSection,
-  Hero,
   HeroSlider,
   HomeCategories,
   HomeProductSection,
-  ShopByStyleSection,
+  BrandsCarousel,
+  BannerSection,
+  FeaturedCategoriesSection,
 } from "@/components/sections"
 
 import type { Metadata } from "next"
@@ -50,9 +49,9 @@ export async function generateMetadata({
     languages = { [toHreflang(locale)]: `${baseUrl}/${locale}` }
   }
 
-  const title = "Home"
+  const title = "موجود - تسوق حسب الفئة"
   const description =
-    "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront."
+    "اكتشف تشكيلة واسعة من المنتجات حسب الفئة. تسوق إلكترونيات، أزياء، منزل ومطبخ، جمال، رياضة والمزيد في موجود."
   const ogImage = "/B2C_Storefront_Open_Graph.png"
   const canonical = `${baseUrl}/${locale}`
 
@@ -80,13 +79,13 @@ export async function generateMetadata({
     openGraph: {
       title: `${title} | ${
         process.env.NEXT_PUBLIC_SITE_NAME ||
-        "Mercur B2C Demo - Marketplace Storefront"
+        "موجود - Marketplace Storefront"
       }`,
       description,
       url: canonical,
       siteName:
         process.env.NEXT_PUBLIC_SITE_NAME ||
-        "Mercur B2C Demo - Marketplace Storefront",
+        "موجود - Marketplace Storefront",
       type: "website",
       images: [
         {
@@ -95,7 +94,7 @@ export async function generateMetadata({
           height: 630,
           alt:
             process.env.NEXT_PUBLIC_SITE_NAME ||
-            "Mercur B2C Demo - Marketplace Storefront",
+            "موجود - Marketplace Storefront",
         },
       ],
     },
@@ -114,8 +113,7 @@ export default async function Home({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const t = await getTranslations('hero')
-  const tHome = await getTranslations('home')
+  const t = await getTranslations('featuredCategories')
 
   const headersList = await headers()
   const host = headersList.get("host")
@@ -124,10 +122,92 @@ export default async function Home({
 
   const siteName =
     process.env.NEXT_PUBLIC_SITE_NAME ||
-    "Mercur B2C Demo - Marketplace Storefront"
+    "موجود - Marketplace Storefront"
+
+  // Featured categories data - will be dynamic from API in production
+  const featuredSections = [
+    {
+      id: 'new-arrivals',
+      title: t('newArrivals'),
+      link: '/categories/new-arrivals',
+      categories: [
+        { id: 'na1', name: 'إلكترونيات جديدة', handle: 'new-electronics', icon: '📱' },
+        { id: 'na2', name: 'أزياء حديثة', handle: 'new-fashion', icon: '👗' },
+        { id: 'na3', name: 'منزل عصري', handle: 'new-home', icon: '🏠' },
+        { id: 'na4', name: 'جمال مبتكر', handle: 'new-beauty', icon: '💄' },
+        { id: 'na5', name: 'رياضة ولياقة', handle: 'new-sports', icon: '🏃' },
+        { id: 'na6', name: 'ألعاب جديدة', handle: 'new-toys', icon: '🎮' },
+      ]
+    },
+    {
+      id: 'best-sellers',
+      title: t('bestSellers'),
+      link: '/categories/best-sellers',
+      categories: [
+        { id: 'bs1', name: 'أكثر مبيعاً', handle: 'best-electronics', icon: '📱' },
+        { id: 'bs2', name: 'أزياء رائجة', handle: 'best-fashion', icon: '👕' },
+        { id: 'bs3', name: 'منزل شعبي', handle: 'best-home', icon: '🏡' },
+        { id: 'bs4', name: 'جمال محبوب', handle: 'best-beauty', icon: '💋' },
+        { id: 'bs5', name: 'رياضة شائعة', handle: 'best-sports', icon: '⚽' },
+        { id: 'bs6', name: 'ألعاب مطلوبة', handle: 'best-toys', icon: '🧸' },
+      ]
+    },
+    {
+      id: 'trending',
+      title: t('trending'),
+      link: '/categories/trending',
+      categories: [
+        { id: 'tr1', name: 'رائج الآن', handle: 'trend-electronics', icon: '🔥' },
+        { id: 'tr2', name: 'موضة ساخنة', handle: 'trend-fashion', icon: '👠' },
+        { id: 'tr3', name: 'منزل عصري', handle: 'trend-home', icon: '🛋️' },
+        { id: 'tr4', name: 'جمال تريند', handle: 'trend-beauty', icon: '💅' },
+        { id: 'tr5', name: 'رياضة رائجة', handle: 'trend-sports', icon: '🏀' },
+        { id: 'tr6', name: 'ألعاب تريند', handle: 'trend-toys', icon: '🎯' },
+      ]
+    },
+    {
+      id: 'special-offers',
+      title: t('specialOffers'),
+      link: '/categories/special-offers',
+      categories: [
+        { id: 'so1', name: 'عروض إلكترونيات', handle: 'offer-electronics', icon: '🏷️' },
+        { id: 'so2', name: 'خصومات أزياء', handle: 'offer-fashion', icon: '👔' },
+        { id: 'so3', name: 'تخفيضات منزل', handle: 'offer-home', icon: '🏘️' },
+        { id: 'so4', name: 'عروض جمال', handle: 'offer-beauty', icon: '🎁' },
+        { id: 'so5', name: 'خصومات رياضة', handle: 'offer-sports', icon: '🎽' },
+        { id: 'so6', name: 'تخفيضات ألعاب', handle: 'offer-toys', icon: '🎪' },
+      ]
+    },
+    {
+      id: 'premium-brands',
+      title: t('premiumBrands'),
+      link: '/categories/premium',
+      categories: [
+        { id: 'pb1', name: 'إلكترونيات فاخرة', handle: 'premium-electronics', icon: '💎' },
+        { id: 'pb2', name: 'أزياء فاخرة', handle: 'premium-fashion', icon: '👑' },
+        { id: 'pb3', name: 'منزل راقي', handle: 'premium-home', icon: '🏰' },
+        { id: 'pb4', name: 'جمال بريميوم', handle: 'premium-beauty', icon: '✨' },
+        { id: 'pb5', name: 'رياضة احترافية', handle: 'premium-sports', icon: '🏆' },
+        { id: 'pb6', name: 'ألعاب مميزة', handle: 'premium-toys', icon: '⭐' },
+      ]
+    },
+    {
+      id: 'seasonal',
+      title: t('seasonalPicks'),
+      link: '/categories/seasonal',
+      categories: [
+        { id: 'sp1', name: 'مختارات موسمية', handle: 'seasonal-electronics', icon: '🍂' },
+        { id: 'sp2', name: 'أزياء الموسم', handle: 'seasonal-fashion', icon: '🧥' },
+        { id: 'sp3', name: 'منزل موسمي', handle: 'seasonal-home', icon: '🎄' },
+        { id: 'sp4', name: 'جمال موسمي', handle: 'seasonal-beauty', icon: '🌸' },
+        { id: 'sp5', name: 'رياضة موسمية', handle: 'seasonal-sports', icon: '⛷️' },
+        { id: 'sp6', name: 'ألعاب موسمية', handle: 'seasonal-toys', icon: '🎃' },
+      ]
+    },
+  ]
 
   return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-primary">
+    <main className="flex flex-col gap-0 row-start-2 items-center sm:items-start text-primary">
       <link
         rel="preload"
         as="image"
@@ -164,43 +244,54 @@ export default async function Home({
         }}
       />
 
+      {/* Hero Slider - Images Only */}
       <HeroSlider
         slides={[
           {
             id: '1',
             image: '/images/hero/Image.jpg',
-            title: 'احصل على أسلوبك في لمح البصر',
-            subtitle: 'جديد',
-            ctaText: 'تسوق الآن',
-            ctaLink: '/categories'
           },
           {
             id: '2',
             image: '/images/hero/Image.jpg',
-            title: 'أحدث العروض والتخفيضات',
-            subtitle: 'عروض خاصة',
-            ctaText: 'اعرف المزيد',
-            ctaLink: '/collections/offers'
           },
           {
             id: '3',
             image: '/images/hero/Image.jpg',
-            title: 'تشكيلة حصرية من المنتجات',
-            subtitle: 'حصري',
-            ctaText: 'استكشف الآن',
-            ctaLink: '/products'
           }
         ]}
       />
-      <div className="px-4 lg:px-8 w-full">
-        <HomeProductSection heading={tHome('trendingListings')} locale={locale} home />
+      
+      {/* Featured Category Sections - Dynamic */}
+      {featuredSections.map((section) => (
+        <div key={section.id} className="w-full">
+          <FeaturedCategoriesSection
+            sectionTitle={section.title}
+            viewAllLink={section.link}
+            categories={section.categories}
+          />
+        </div>
+      ))}
+
+      {/* All Categories Section */}
+      <div className="w-full">
+        <HomeCategories />
       </div>
+
+      {/* Trending Products */}
       <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading={tHome('shopByCategory')} />
+        <HomeProductSection heading="الأكثر رواجاً" locale={locale} home />
       </div>
-      <BannerSection />
-      <ShopByStyleSection />
-      <BlogSection />
+
+      {/* Brands Carousel - Auto Sliding */}
+      <div className="w-full">
+        <BrandsCarousel autoPlay={true} autoPlayInterval={3000} />
+      </div>
+
+      {/* Banner Section */}
+      <div className="w-full">
+        <BannerSection />
+      </div>
     </main>
   )
 }

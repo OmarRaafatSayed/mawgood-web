@@ -3,16 +3,10 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
 import { CategoryCard } from '@/components/cells'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { HttpTypes } from '@medusajs/types'
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-interface HomeCategoriesProps {
-  heading?: string
-  categories?: HttpTypes.StoreProductCategory[]
-}
-
-interface CategoryItem {
+interface FeaturedCategoryItem {
   id: string
   name: string
   handle: string
@@ -20,39 +14,22 @@ interface CategoryItem {
   image?: string
 }
 
-export function HomeCategories({
-  heading,
+interface FeaturedCategoriesSectionProps {
+  sectionTitle: string
+  viewAllLink: string
+  categories: FeaturedCategoryItem[]
+}
+
+export function FeaturedCategoriesSection({
+  sectionTitle,
+  viewAllLink,
   categories
-}: HomeCategoriesProps) {
-  const t = useTranslations('home')
+}: FeaturedCategoriesSectionProps) {
+  const t = useTranslations('common')
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
-
-  const defaultCategories: CategoryItem[] = [
-    { id: '1', name: 'إلكترونيات', handle: 'electronics', icon: '📱' },
-    { id: '2', name: 'أزياء نسائية', handle: 'fashion-women', icon: '👗' },
-    { id: '3', name: 'أزياء رجالية', handle: 'fashion-men', icon: '👔' },
-    { id: '4', name: 'منزل ومطبخ', handle: 'home', icon: '🏠' },
-    { id: '5', name: 'جمال وعناية', handle: 'beauty', icon: '💄' },
-    { id: '6', name: 'رياضة ولياقة', handle: 'sports', icon: '⚽' },
-    { id: '7', name: 'أطفال ولعب', handle: 'toys', icon: '🧸' },
-    { id: '8', name: 'كتب', handle: 'books', icon: '📚' },
-    { id: '9', name: 'سيارات', handle: 'automotive', icon: '🚗' },
-    { id: '10', name: 'بقالة', handle: 'grocery', icon: '🛒' },
-    { id: '11', name: 'مستلزمات حيوانات', handle: 'pet-supplies', icon: '🐾' },
-    { id: '12', name: 'صحة', handle: 'health', icon: '💊' },
-  ]
-
-  const displayCategories: CategoryItem[] = categories?.length 
-    ? categories.map(c => ({
-        id: c.id,
-        name: c.name,
-        handle: c.handle || '',
-        icon: undefined
-      }))
-    : defaultCategories
 
   const checkScrollPosition = useCallback(() => {
     if (scrollRef.current) {
@@ -81,17 +58,17 @@ export function HomeCategories({
   }
 
   return (
-    <section className="py-6 w-full bg-gradient-to-b from-white to-gray-50/50">
+    <section className="py-6 w-full bg-white">
       <div className="flex items-center justify-between mb-6 px-4 lg:px-8">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-          {heading || t('browseCategories')}
+          {sectionTitle}
         </h2>
         <LocalizedClientLink
-          href="/categories"
+          href={viewAllLink}
           className="flex items-center gap-1.5 text-sm font-semibold text-[#FF8A00] hover:text-[#FF8A00]/80 transition-colors"
         >
           {t('viewAll')}
-          <ChevronRight size={18} className="rtl:rotate-180" />
+          <ArrowRight size={18} className="rtl:rotate-180" />
         </LocalizedClientLink>
       </div>
 
@@ -99,13 +76,13 @@ export function HomeCategories({
       <div className="lg:hidden relative">
         {/* Left fade gradient */}
         <div 
-          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none 
+          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none 
                       transition-opacity duration-300 ${isBeginning ? 'opacity-0' : 'opacity-100'}`}
         />
         
         {/* Right fade gradient */}
         <div 
-          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none
+          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none
                       transition-opacity duration-300 ${isEnd ? 'opacity-0' : 'opacity-100'}`}
         />
 
@@ -117,13 +94,14 @@ export function HomeCategories({
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          {displayCategories.map((category) => (
+          {categories.map((category) => (
             <CategoryCard
               key={category.id}
               id={category.id}
               name={category.name}
               handle={category.handle}
               icon={category.icon}
+              image={category.image}
             />
           ))}
         </div>
@@ -155,13 +133,14 @@ export function HomeCategories({
 
       {/* Desktop: Grid layout */}
       <div className="hidden lg:grid grid-cols-6 gap-4 px-8">
-        {displayCategories.map((category) => (
+        {categories.map((category) => (
           <CategoryCard
             key={category.id}
             id={category.id}
             name={category.name}
             handle={category.handle}
             icon={category.icon}
+            image={category.image}
           />
         ))}
       </div>

@@ -54,6 +54,10 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
     if (countryCode) {
       const option = options?.find((o) => o?.country === countryCode)
       setCurrent(option)
+    } else {
+      // Default to Egypt if no country code
+      const egyptOption = options?.find((o) => o?.country === 'eg')
+      setCurrent(egyptOption)
     }
   }, [options, countryCode])
 
@@ -85,10 +89,10 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
       <div>
         <Listbox
           onChange={handleChange}
-          defaultValue={
+          value={
             countryCode
               ? options?.find((o) => o?.country === countryCode)
-              : undefined
+              : options?.find((o) => o?.country === 'eg')
           }
         >
           <ListboxButton className="relative w-20 flex justify-center items-center h-10 bg-component-secondary text-left cursor-default focus:outline-none border rounded-lg focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-gray-300 focus-visible:ring-offset-2 focus-visible:border-gray-300 text-base-regular px-2">
@@ -105,9 +109,9 @@ const CountrySelect = ({ regions }: CountrySelectProps) => {
                       borderRadius: "4px",
                       objectFit: "cover"
                     }}
-                    countryCode={current.country ?? ""}
+                    countryCode={current.country ?? "eg"}
                   />
-                  <span className="font-medium">{current.country?.toUpperCase()}</span>
+                  <span className="font-medium">{current.country?.toUpperCase() ?? 'EG'}</span>
                 </span>
               )}
             </div>

@@ -124,6 +124,16 @@
     "yourAccount": "Your account",
     "goToProfile": "Go to user profile"
   },
+  "navbar": {
+    "all": "All",
+    "hello": "Hello",
+    "helloSignin": "Hello, Sign in",
+    "accountLists": "Account & Lists",
+    "yourAccount": "Your Account",
+    "wishlist": "Wishlist",
+    "returns": "Returns",
+    "orders": "Orders"
+  },
   "footer": {
     "customerServices": "Customer services",
     "about": "About",
@@ -139,7 +149,10 @@
     "termsConditions": "Terms & Conditions",
     "facebook": "Facebook",
     "instagram": "Instagram",
-    "linkedin": "LinekdIn"
+    "linkedin": "LinkedIn",
+    "contactUs": "Contact Us",
+    "paymentMethods": "Payment Methods",
+    "allRightsReserved": "All rights reserved"
   },
   "hero": {
     "heading": "Snag your style in a flash",
@@ -150,6 +163,13 @@
   "home": {
     "trendingListings": "trending listings",
     "shopByCategory": "SHOP BY CATEGORY",
+    "suggestedForYou": "Suggested For You",
+    "viewAll": "View All",
+    "offers": "Offers",
+    "newArrivals": "New Arrivals",
+    "bestSellers": "Best Sellers",
+    "browseCategories": "Browse Categories",
+    "popularBrands": "Popular Brands",
     "categories": {
       "sneakers": "Sneakers",
       "sandals": "Sandals",
@@ -157,6 +177,43 @@
       "sport": "Sport",
       "accessories": "Accessories"
     }
+  },
+  "categories": {
+    "allCategories": "All Categories",
+    "electronics": "Electronics",
+    "fashion": "Fashion",
+    "home": "Home & Kitchen",
+    "beauty": "Beauty & Personal Care",
+    "sports": "Sports & Outdoors",
+    "toys": "Toys & Games",
+    "books": "Books",
+    "automotive": "Automotive",
+    "grocery": "Grocery",
+    "petSupplies": "Pet Supplies",
+    "office": "Office Supplies",
+    "baby": "Baby",
+    "health": "Health",
+    "jewelry": "Jewelry",
+    "garden": "Garden"
+  },
+  "featuredCategories": {
+    "newArrivals": "New Arrivals",
+    "bestSellers": "Best Sellers",
+    "trending": "Trending Now",
+    "specialOffers": "Special Offers",
+    "premiumBrands": "Premium Brands",
+    "seasonalPicks": "Seasonal Picks"
+  },
+  "vendor": {
+    "becomeVendor": "Sell with Us",
+    "vendorPanel": "Vendor Panel",
+    "loginToVendor": "Vendor Login",
+    "startSelling": "Start Selling",
+    "joinAsSeller": "Join as Seller"
+  },
+  "brands": {
+    "exploreBrands": "Explore Brands",
+    "viewAllBrands": "View All Brands"
   },
   "auth": {
     "email": "Email",

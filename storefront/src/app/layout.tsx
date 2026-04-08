@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Funnel_Display } from 'next/font/google';
+import { Tajawal, Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getLocale } from 'next-intl/server';
 
@@ -14,10 +14,18 @@ import { retrieveCart } from '@/lib/data/cart';
 
 import { Providers } from './providers';
 
-const funnelDisplay = Funnel_Display({
-  variable: '--font-funnel-sans',
+const tajawal = Tajawal({
+  variable: '--font-tajawal',
+  subsets: ['arabic', 'latin'],
+  weight: ['300', '400', '500', '700', '800'],
+  display: 'swap'
+});
+
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600']
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap'
 });
 
 export const metadata: Metadata = {
@@ -143,7 +151,7 @@ export default async function RootLayout({
           href="https://api.mercurjs.com"
         />
       </Head>
-      <body className={`${funnelDisplay.className} relative bg-primary text-secondary antialiased`}>
+      <body className={`${tajawal.variable} ${inter.variable} font-sans relative bg-primary text-secondary antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <HtmlLangSetter />
           <Providers cart={cart}>{children}</Providers>
