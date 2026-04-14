@@ -3,15 +3,35 @@ import { defineConfig, loadEnv } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
+// CORS Configuration for Production & Development
+// Development: Use '*' or localhost URLs
+// Production: Replace with actual domains (Flutter app, storefront, admin panel)
+const STORE_CORS = process.env.NODE_ENV === 'production'
+  ? (process.env.STORE_CORS || 'https://your-storefront-domain.com')
+  : (process.env.STORE_CORS || 'http://localhost:8000,https://docs.medusajs.com')
+
+const ADMIN_CORS = process.env.NODE_ENV === 'production'
+  ? (process.env.ADMIN_CORS || 'https://admin.your-domain.com')
+  : (process.env.ADMIN_CORS || 'http://localhost:5173,http://localhost:9000,https://docs.medusajs.com')
+
+const VENDOR_CORS = process.env.NODE_ENV === 'production'
+  ? (process.env.VENDOR_CORS || 'https://vendor.your-domain.com')
+  : (process.env.VENDOR_CORS || 'http://localhost:5174,http://localhost:9000')
+
+// Flutter app CORS - for mobile development use '*' or specific URLs
+const AUTH_CORS = process.env.NODE_ENV === 'production'
+  ? (process.env.AUTH_CORS || 'https://your-storefront-domain.com,https://admin.your-domain.com')
+  : (process.env.AUTH_CORS || 'http://localhost:5173,http://localhost:5174,http://localhost:8000,http://localhost:9000,https://docs.medusajs.com')
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     http: {
-      storeCors: process.env.STORE_CORS!,
-      adminCors: process.env.ADMIN_CORS!,
+      storeCors: STORE_CORS,
+      adminCors: ADMIN_CORS,
       // @ts-expect-error: vendorCors is not a valid config
-      vendorCors: process.env.VENDOR_CORS!,
-      authCors: process.env.AUTH_CORS!,
+      vendorCors: VENDOR_CORS,
+      authCors: AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
     }

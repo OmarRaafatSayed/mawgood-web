@@ -30,6 +30,7 @@ import { ProductPageDetails } from './ProductPageDetails/ProductPageDetails';
 import { SellerRatingFilter } from './SellerRatingFilter/SellerRatingFilter';
 import { SellerReviewTab } from './SellerReviewTab/SellerReviewTab';
 import { SizeFilter } from './SizeFilter/SizeFilter';
+import { VendorFilter } from './VendorFilter/VendorFilter';
 import { WishlistItem } from './WishlistItem/WishlistItem';
 import { BottomNavbar } from './BottomNavbar/BottomNavbar';
 
@@ -44,6 +45,7 @@ export {
   ConditionFilter,
   ColorFilter,
   SellerRatingFilter,
+  VendorFilter,
   ActiveFilterElement,
   MobileNavbar,
   ProductDetailsHeader,

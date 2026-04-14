@@ -10,6 +10,8 @@ const getOption = (label: string) => {
       return "variants.condition"
     case "rating":
       return "average_rating"
+    case "seller_id":
+      return "seller_id"
     default:
       return ""
   }

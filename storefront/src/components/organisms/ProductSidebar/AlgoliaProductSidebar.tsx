@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { ProductListingActiveFilters } from "../ProductListingActiveFilters/ProductListingActiveFilters"
 import useGetAllSearchParams from "@/hooks/useGetAllSearchParams"
+import { VendorFilter } from "@/components/cells"
 
 export type FacetModel = {
   count: number
@@ -47,6 +48,7 @@ export const AlgoliaProductSidebar = ({ facets }: { facets: Record<string, Facet
         <Modal heading="Filters" onClose={() => setIsOpen(false)}>
           <div className="px-4">
             <ProductListingActiveFilters />
+            <VendorFilter />
             <PriceFilter
               defaultOpen={Boolean(
                 allSearchParams.min_price || allSearchParams.max_price
@@ -61,6 +63,7 @@ export const AlgoliaProductSidebar = ({ facets }: { facets: Record<string, Facet
     </>
   ) : (
     <div>
+      <VendorFilter />
       <PriceFilter />
       <SizeFilter items={facets["variants.size"]} />
       <ColorFilter items={facets["variants.color"]} />

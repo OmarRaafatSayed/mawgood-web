@@ -1,0 +1,1 @@
+export { VendorFilter } from './VendorFilter'
