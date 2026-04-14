@@ -1,1 +1,1 @@
-export { MercurConnect as Component } from "./mecrur-connect";
+export { MawgoodConnect as Component } from "./mecrur-connect";

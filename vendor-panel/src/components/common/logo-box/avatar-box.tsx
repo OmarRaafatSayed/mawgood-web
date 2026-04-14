@@ -1,6 +1,10 @@
 import { motion } from "motion/react"
+import { useEffect, useState } from "react"
 
 import { IconAvatar } from "../icon-avatar"
+
+import logoLight from "@assets/logos/light-mood.png"
+import logoDark from "@assets/logos/dark-mood.png"
 
 export default function AvatarBox({
   checked,
@@ -9,10 +13,28 @@ export default function AvatarBox({
   checked?: boolean
   size?: number
 }) {
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const html = document.querySelector("html")
+    const updateTheme = () => {
+      setIsDark(html?.classList.contains("dark") || false)
+    }
+    
+    updateTheme()
+    
+    const observer = new MutationObserver(updateTheme)
+    if (html) {
+      observer.observe(html, { attributes: true, attributeFilter: ["class"] })
+    }
+    
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <IconAvatar
       size={size === 44 ? "xlarge" : "small"}
-      className="bg-ui-button-neutral shadow-buttons-neutral after:button-neutral-gradient relative mb-4 flex items-center justify-center rounded-xl after:inset-0 after:content-['']"
+      className="relative mb-4 flex items-center justify-center rounded-xl"
     >
       {checked && (
         <motion.div
@@ -50,33 +72,16 @@ export default function AvatarBox({
           </svg>
         </motion.div>
       )}
-      <svg
-        width="44"
-        height="44"
-        viewBox="0 0 44 44"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect width="44" height="44" rx="10" fill="#FAFAFA" />
-        <g clipPath="url(#clip0_11_175)">
-          <path d="M8 7V20.7349L19.821 13.8675L8 7Z" fill="#4C24DD" />
-          <path
-            d="M36.0002 37.0001V23.2651L24.1792 30.1326L36.0002 37.0001Z"
-            fill="#4C24DD"
-          />
-          <path d="M8 23.2651V37L36 20.7349V7L8 23.2651Z" fill="#4C24DD" />
-        </g>
-        <defs>
-          <clipPath id="clip0_11_175">
-            <rect
-              width="28"
-              height="30"
-              fill="white"
-              transform="translate(8 7)"
-            />
-          </clipPath>
-        </defs>
-      </svg>
+      <motion.img
+        src={isDark ? logoDark : logoLight}
+        alt="Mawgood Logo"
+        width={size}
+        height={size}
+        className="rounded-xl object-contain"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      />
     </IconAvatar>
   )
 }

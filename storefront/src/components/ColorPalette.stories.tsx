@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 /**
  * DESIGN SYSTEM - COLOR PALETTE
  * ==============================
- * Primary Gradient: #D97F3E → #8F5429 → #382110
+ * Primary Gradient: #F36418 → #B8480D → #943B0B
  */
 
 const ColorPalette = () => {
@@ -15,23 +15,23 @@ const ColorPalette = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
             <div className="bg-action h-32 rounded-lg shadow-md flex items-center justify-center">
-              <span className="text-action-on-primary font-bold">#D97F3E</span>
+              <span className="text-action-on-primary font-bold">#F36418</span>
             </div>
             <p className="text-primary font-medium">Primary Light</p>
             <p className="text-secondary text-sm">Main brand color</p>
           </div>
           
           <div className="space-y-2">
-            <div style={{backgroundColor: 'rgb(143, 84, 41)'}} className="h-32 rounded-lg shadow-md flex items-center justify-center">
-              <span className="text-white font-bold">#8F5429</span>
+            <div style={{backgroundColor: 'rgb(184, 72, 13)'}} className="h-32 rounded-lg shadow-md flex items-center justify-center">
+              <span className="text-white font-bold">#B8480D</span>
             </div>
             <p className="text-primary font-medium">Primary Mid</p>
             <p className="text-secondary text-sm">Hover & active states</p>
           </div>
           
           <div className="space-y-2">
-            <div style={{backgroundColor: 'rgb(56, 33, 16)'}} className="h-32 rounded-lg shadow-md flex items-center justify-center">
-              <span className="text-white font-bold">#382110</span>
+            <div style={{backgroundColor: 'rgb(148, 59, 11)'}} className="h-32 rounded-lg shadow-md flex items-center justify-center">
+              <span className="text-white font-bold">#943B0B</span>
             </div>
             <p className="text-primary font-medium">Primary Dark</p>
             <p className="text-secondary text-sm">Dark accents</p>
@@ -85,7 +85,7 @@ const ColorPalette = () => {
           
           <div className="bg-action p-6 rounded-lg">
             <p className="text-action-on-primary text-xl font-bold mb-2">White on Orange</p>
-            <p className="text-action-on-primary">Text color: #FFFFFF on #D97F3E</p>
+            <p className="text-action-on-primary">Text color: #FFFFFF on #F36418</p>
             <p className="text-action-on-primary opacity-90">Contrast ratio: 3.8:1 (AA Large)</p>
           </div>
           
@@ -166,7 +166,7 @@ const ColorPalette = () => {
               <span className="text-positive text-2xl">✓</span>
               <span className="text-primary font-bold">AA Compliant</span>
             </div>
-            <p className="text-primary mb-1">#FFFFFF on #8F5429</p>
+            <p className="text-primary mb-1">#FFFFFF on #B8480D</p>
             <p className="text-secondary text-sm">Contrast: 6.2:1</p>
           </div>
           
@@ -175,7 +175,7 @@ const ColorPalette = () => {
               <span className="text-warning text-2xl">⚠</span>
               <span className="text-primary font-bold">AA Large Text Only</span>
             </div>
-            <p className="text-primary mb-1">#FFFFFF on #D97F3E</p>
+            <p className="text-primary mb-1">#FFFFFF on #F36418</p>
             <p className="text-secondary text-sm">Contrast: 3.8:1</p>
           </div>
           
@@ -184,7 +184,7 @@ const ColorPalette = () => {
               <span className="text-positive text-2xl">✓</span>
               <span className="text-primary font-bold">AAA Compliant</span>
             </div>
-            <p className="text-primary mb-1">#FFFFFF on #382110</p>
+            <p className="text-primary mb-1">#FFFFFF on #943B0B</p>
             <p className="text-secondary text-sm">Contrast: 14.5:1</p>
           </div>
         </div>

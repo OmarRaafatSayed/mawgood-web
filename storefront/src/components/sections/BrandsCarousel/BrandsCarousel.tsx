@@ -102,7 +102,7 @@ export function BrandsCarousel({
         </h2>
         <LocalizedClientLink
           href="/brands"
-          className="flex items-center gap-1.5 text-sm font-semibold text-[#FF8A00] hover:text-[#FF8A00]/80 transition-colors"
+          className="flex items-center gap-1.5 text-sm font-semibold text-[#F36418] hover:text-[#F36418]/80 transition-colors"
         >
           {t('viewAll')}
           <ChevronRight size={18} className="rtl:rotate-180" />
@@ -134,10 +134,10 @@ export function BrandsCarousel({
             <div
               key={brand.id}
               className="flex-shrink-0 w-36 h-24 sm:w-44 sm:h-28 bg-gray-50 rounded-xl 
-                         border border-gray-100 hover:border-[#FF8A00]/30 
+                         border border-gray-100 hover:border-[#F36418]/30 
                          transition-all duration-300 ease-out
                          flex items-center justify-center p-4
-                         hover:shadow-md hover:bg-[#FF8A00]/5 group"
+                         hover:shadow-md hover:bg-[#F36418]/5 group"
             >
               {brand.logo ? (
                 <img
@@ -149,7 +149,7 @@ export function BrandsCarousel({
                   loading="lazy"
                 />
               ) : (
-                <span className="text-sm font-semibold text-gray-600 group-hover:text-[#FF8A00]">
+                <span className="text-sm font-semibold text-gray-600 group-hover:text-[#F36418]">
                   {brand.name}
                 </span>
               )}
@@ -161,24 +161,24 @@ export function BrandsCarousel({
         <button
           onClick={() => scroll('left')}
           className={`absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full 
-                     flex items-center justify-center z-20 border-2 border-[#FF8A00]/20
-                     hover:border-[#FF8A00] hover:bg-[#FF8A00]/10 transition-all duration-300
+                     flex items-center justify-center z-20 border-2 border-[#F36418]/20
+                     hover:border-[#F36418] hover:bg-[#F36418]/10 transition-all duration-300
                      ${isBeginning ? 'opacity-0 pointer-events-none' : 'opacity-100'}
                      ${isHovering ? 'opacity-100' : 'opacity-0'}`}
           aria-label="Scroll left"
         >
-          <ChevronLeft size={20} className="text-[#FF8A00]" />
+          <ChevronLeft size={20} className="text-[#F36418]" />
         </button>
         <button
           onClick={() => scroll('right')}
           className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full 
-                     flex items-center justify-center z-20 border-2 border-[#FF8A00]/20
-                     hover:border-[#FF8A00] hover:bg-[#FF8A00]/10 transition-all duration-300
+                     flex items-center justify-center z-20 border-2 border-[#F36418]/20
+                     hover:border-[#F36418] hover:bg-[#F36418]/10 transition-all duration-300
                      ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
                      ${isHovering ? 'opacity-100' : 'opacity-0'}`}
           aria-label="Scroll right"
         >
-          <ChevronRight size={20} className="text-[#FF8A00] rtl:rotate-180" />
+          <ChevronRight size={20} className="text-[#F36418] rtl:rotate-180" />
         </button>
       </div>
     </section>

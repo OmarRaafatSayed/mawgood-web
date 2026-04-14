@@ -249,15 +249,18 @@ export default async function Home({
         slides={[
           {
             id: '1',
-            image: '/images/hero/Image.jpg',
+            image: '/images/hero/banner-web-1.png',
+            imageMobile: '/images/hero/banner-mobile-1.png',
           },
           {
             id: '2',
-            image: '/images/hero/Image.jpg',
+            image: '/images/hero/banner-web-2.png',
+            imageMobile: '/images/hero/banner-mobile-2.png',
           },
           {
             id: '3',
-            image: '/images/hero/Image.jpg',
+            image: '/images/hero/banner-web-3.png',
+            imageMobile: '/images/hero/banner-mobile-1.png',
           }
         ]}
       />

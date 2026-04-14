@@ -2,6 +2,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
 import { Footer, Header } from '@/components/organisms';
+import { BottomNavbar } from '@/components/cells';
 import { TalkJsProvider } from '@/components/providers';
 import { retrieveCustomer } from '@/lib/data/customer';
 
@@ -23,10 +24,11 @@ export default async function RootLayout({
     return (
       <NextIntlClientProvider messages={messages}>
         <Header locale={locale} />
-        <main>
+        <main className="overflow-x-hidden">
           {children}
         </main>
         <Footer />
+        <BottomNavbar />
       </NextIntlClientProvider>
     );
 
@@ -41,10 +43,11 @@ export default async function RootLayout({
         userEmail={user.email}
       >
         <Header locale={locale} />
-        <main>
+        <main className="overflow-x-hidden">
           {children}
         </main>
         <Footer />
+        <BottomNavbar />
       </TalkJsProvider>
     </NextIntlClientProvider>
   );

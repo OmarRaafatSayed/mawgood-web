@@ -1,6 +1,6 @@
 import { ArrowUpTray } from '@medusajs/icons';
 
-export const mercurConnectItems = [
+export const mawgoodConnectItems = [
   {
     name: 'Product Importer',
     description:

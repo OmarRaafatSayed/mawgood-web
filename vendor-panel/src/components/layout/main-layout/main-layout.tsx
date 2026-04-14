@@ -20,7 +20,7 @@ import { Collapsible as RadixCollapsible } from 'radix-ui';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-import { MercurConnect } from '../../../assets/icons/MercurConnect';
+import { MawgoodConnect } from '../../../assets/icons/MercurConnect';
 import { StripeIcon } from '../../../assets/icons/Stripe';
 import { useMe } from '../../../hooks/api';
 import { useSearch } from '../../../providers/search-provider';
@@ -51,7 +51,7 @@ const MainSidebar = () => {
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-1 flex-col">
             <CoreRouteSection />
-            <MercurConnectSection />
+            <MawgoodConnectSection />
             <ExtensionRouteSection />
           </div>
           <UtilitySection />
@@ -282,7 +282,7 @@ const CoreRouteSection = () => {
   );
 };
 
-const MercurConnectSection = () => {
+const MawgoodConnectSection = () => {
   return (
     <div>
       <div className="px-3">
@@ -290,9 +290,9 @@ const MercurConnectSection = () => {
       </div>
       <div className="flex flex-col gap-y-1 py-3">
         <NavItem
-          label="Mercur Connect"
-          to="/mercur-connect"
-          icon={<MercurConnect />}
+          label="Mawgood Connect"
+          to="/mawgood-connect"
+          icon={<MawgoodConnect />}
         />
       </div>
     </div>

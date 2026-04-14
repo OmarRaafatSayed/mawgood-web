@@ -11,9 +11,9 @@ type ItemProps = {
   provider: string;
 };
 
-export const MercurConnectItem = ({
+export const MawgoodConnectItem = ({
   item,
-  testId = 'mercur-connect-item',
+  testId = 'mawgood-connect-item',
   onOpenPrompt
 }: {
   item: ItemProps;
@@ -60,7 +60,7 @@ export const MercurConnectItem = ({
         <div className="flex justify-end">
           {item.provider === 'more' ? (
             <Link
-              to="https://www.mercurjs.com/connect"
+              to="https://www.mawgoodjs.com/connect"
               target="_blank"
             >
               <Button

@@ -11,10 +11,47 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'primary-gradient': 'linear-gradient(135deg, #D97F3E 0%, #8F5429 50%, #382110 100%)',
-        'primary-gradient-hover': 'linear-gradient(135deg, #C36B30 0%, #7D4A24 50%, #2A1A0C 100%)',
-        'primary-gradient-vertical': 'linear-gradient(180deg, #D97F3E 0%, #8F5429 50%, #382110 100%)',
-        'primary-gradient-radial': 'radial-gradient(circle, #D97F3E 0%, #8F5429 50%, #382110 100%)',
+        'primary-gradient': 'linear-gradient(135deg, #F36418 0%, #D9560F 50%, #B8480D 100%)',
+        'primary-gradient-hover': 'linear-gradient(135deg, #D9560F 0%, #B8480D 50%, #943B0B 100%)',
+        'primary-gradient-vertical': 'linear-gradient(180deg, #F36418 0%, #D9560F 50%, #B8480D 100%)',
+        'primary-gradient-radial': 'radial-gradient(circle, #F36418 0%, #D9560F 50%, #B8480D 100%)',
+        'secondary-gradient': 'linear-gradient(135deg, #0E4EB0 0%, #0C449E 50%, #0A3A86 100%)',
+      },
+      colors: {
+        brand: {
+          25: 'rgb(var(--brand-25))',
+          50: 'rgb(var(--brand-50))',
+          100: 'rgb(var(--brand-100))',
+          200: 'rgb(var(--brand-200))',
+          300: 'rgb(var(--brand-300))',
+          400: 'rgb(var(--brand-400))',
+          500: 'rgb(var(--brand-500))',
+          600: 'rgb(var(--brand-600))',
+          700: 'rgb(var(--brand-700))',
+          800: 'rgb(var(--brand-800))',
+          900: 'rgb(var(--brand-900))',
+        },
+        secondary: {
+          25: 'rgb(var(--secondary-25))',
+          50: 'rgb(var(--secondary-50))',
+          100: 'rgb(var(--secondary-100))',
+          200: 'rgb(var(--secondary-200))',
+          300: 'rgb(var(--secondary-300))',
+          400: 'rgb(var(--secondary-400))',
+          500: 'rgb(var(--secondary-500))',
+          600: 'rgb(var(--secondary-600))',
+          700: 'rgb(var(--secondary-700))',
+          800: 'rgb(var(--secondary-800))',
+          900: 'rgb(var(--secondary-900))',
+        },
+        surface: {
+          25: 'rgb(var(--surface-25))',
+          50: 'rgb(var(--surface-50))',
+          100: 'rgb(var(--surface-100))',
+          200: 'rgb(var(--surface-200))',
+          300: 'rgb(var(--surface-300))',
+          400: 'rgb(var(--surface-400))',
+        },
       },
       backgroundColor: {
         primary: "rgba(var(--bg-primary))",
@@ -75,7 +112,7 @@ export default {
           },
         },
       },
-      colors: {
+      textColor: {
         primary: "rgba(var(--content-primary))",
         secondary: "rgba(var(--content-secondary))",
         tertiary: "rgba(var(--content-tertiary))",
@@ -140,10 +177,11 @@ export default {
       fill: {
         primary: "rgba(var(--content-action-on-primary))",
         secondary: "rgba(var(--content-action-on-secondary))",
+        tertiary: "rgba(var(--content-tertiary))",
         disabled: "rgba(var(--content-disabled))",
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-tajawal)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['var(--font-tajawal)', 'var(--font-inter)', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         arabic: ['var(--font-tajawal)', 'system-ui', 'sans-serif'],
         english: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
@@ -153,9 +191,7 @@ export default {
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.scrollbar-hide': {
-          /* Firefox */
           'scrollbar-width': 'none',
-          /* Safari and Chrome */
           '&::-webkit-scrollbar': {
             display: 'none'
           }

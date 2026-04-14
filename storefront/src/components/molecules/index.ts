@@ -37,6 +37,7 @@ import { SellerScore } from './SellerScore/SellerScore';
 import { TabsContent } from './TabsContent/TabsContent';
 import { TabsList } from './TabsList/TabsList';
 import { UserNavigation } from './UserNavigation/UserNavigation';
+import { VTonDialog } from './VTonDialog/VTonDialog';
 
 export {
   PrimeCategoryNavbar,
@@ -77,5 +78,6 @@ export {
   ProfileDetails,
   ProductListingLoadingView,
   ProductListingNoResultsView,
-  ProductListingProductsView
+  ProductListingProductsView,
+  VTonDialog
 };

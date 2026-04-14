@@ -151,7 +151,7 @@ export default async function RootLayout({
           href="https://api.mercurjs.com"
         />
       </Head>
-      <body className={`${tajawal.variable} ${inter.variable} font-sans relative bg-primary text-secondary antialiased`}>
+      <body className={`${tajawal.variable} ${inter.variable} font-sans relative bg-primary text-secondary antialiased overflow-x-hidden`}>
         <NextIntlClientProvider messages={messages}>
           <HtmlLangSetter />
           <Providers cart={cart}>{children}</Providers>

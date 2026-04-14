@@ -20,7 +20,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Path Aliases */
+    /* Path Aliases - Deprecated baseUrl */
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@custom-types/*": ["src/types/*"],

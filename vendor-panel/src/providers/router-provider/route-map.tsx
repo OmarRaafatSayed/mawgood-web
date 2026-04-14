@@ -28,7 +28,7 @@ export const RouteMap: RouteObject[] = [
             lazy: () => import('../../routes/home')
           },
           {
-            path: '/mercur-connect',
+            path: '/mawgood-connect',
             errorElement: <ErrorBoundary />,
             lazy: () => import('../../routes/mercur-connect')
           },

@@ -2,38 +2,38 @@ import { useState } from 'react';
 
 import { RocketLaunch } from '@medusajs/icons';
 
-import { MercurConnectItem } from './components/mercur-connect-item/mercur-connect-item';
-import { MercurConnectModal } from './components/mercur-connect-modal/mercur-connect-modal';
-import { mercurConnectItems } from './const';
+import { MawgoodConnectItem } from './components/mawgood-connect-item/mawgood-connect-item';
+import { MawgoodConnectModal } from './components/mawgood-connect-modal/mawgood-connect-modal';
+import { mawgoodConnectItems } from './const';
 
-export const MercurConnect = () => {
+export const MawgoodConnect = () => {
   const [openPrompt, setOpenPrompt] = useState(false);
 
   return (
     <>
       <div className="grid gap-3 lg:grid-cols-3">
-        {mercurConnectItems.map(item => (
-          <MercurConnectItem
+        {mawgoodConnectItems.map(item => (
+          <MawgoodConnectItem
             key={item.name}
             item={item}
             onOpenPrompt={setOpenPrompt}
           />
         ))}
-        <MercurConnectItem
+        <MawgoodConnectItem
           item={{
             name: 'More comming soon',
             description:
-              'We’re expanding Mercur Connect with new integrations and tools designed to streamline you workflows. Stay tuned – or contact us to learn more.',
+              'We’re expanding Mawgood Connect with new integrations and tools designed to streamline you workflows. Stay tuned – or contact us to learn more.',
             enabled: false,
             icon: <RocketLaunch />,
             provider: 'more'
           }}
         />
       </div>
-      <MercurConnectModal
+      <MawgoodConnectModal
         open={openPrompt}
         onOpenChange={setOpenPrompt}
-        testId="mercur-connect-modal"
+        testId="mawgood-connect-modal"
       />
     </>
   );

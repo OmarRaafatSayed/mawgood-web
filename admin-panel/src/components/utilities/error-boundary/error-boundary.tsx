@@ -18,7 +18,7 @@ export const ErrorBoundary = () => {
       const token = getAuthToken()
 
       if (isTokenExpired(token)) {
-        localStorage.removeItem("medusa_auth_token")
+        localStorage.removeItem("mawgood_auth_token")
 
         return <Navigate to="/login?reason=unauthorized" state={{ from: location }} replace />
       }

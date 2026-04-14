@@ -501,5 +501,18 @@
     "max": "Must be at most {max}",
     "pattern": "Invalid format",
     "passwordMatch": "Passwords must match"
+  },
+  "vton": {
+    "title": "Virtual Try-On",
+    "garment": "Garment",
+    "uploadPerson": "Upload your photo",
+    "yourPhoto": "Your photo",
+    "tryOn": "Try On",
+    "processing": "Processing...",
+    "loading": "AI is trying on your outfit, please wait...",
+    "result": "Result",
+    "addToCart": "Add to Cart",
+    "error": "The model is currently busy, please try again later",
+    "buttonText": "Try On"
   }
 }

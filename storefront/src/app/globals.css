@@ -139,21 +139,26 @@ button:disabled svg path {
   );
 }
 
-/* Primary Gradient - Brand Colors */
+/* Primary Gradient - Brand Colors #F36418 */
 .primary-gradient {
-  background: linear-gradient(135deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+  background: linear-gradient(135deg, #F36418 0%, #D9560F 50%, #B8480D 100%);
 }
 
 .primary-gradient-hover {
-  background: linear-gradient(135deg, #C36B30 0%, #7D4A24 50%, #2A1A0C 100%);
+  background: linear-gradient(135deg, #D9560F 0%, #B8480D 50%, #943B0B 100%);
 }
 
 .primary-gradient-vertical {
-  background: linear-gradient(180deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+  background: linear-gradient(180deg, #F36418 0%, #D9560F 50%, #B8480D 100%);
 }
 
 .primary-gradient-radial {
-  background: radial-gradient(circle, #D97F3E 0%, #8F5429 50%, #382110 100%);
+  background: radial-gradient(circle, #F36418 0%, #D9560F 50%, #B8480D 100%);
+}
+
+/* Secondary Gradient - Brand Blue #0E4EB0 */
+.secondary-gradient {
+  background: linear-gradient(135deg, #0E4EB0 0%, #0C449E 50%, #0A3A86 100%);
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;

@@ -2653,7 +2653,10 @@
         "placeholder": "wrong_size",
         "tooltip": "The value should be a unique identifier for the return reason."
       },
-      "label": { "label": "Label", "placeholder": "Wrong size" },
+      "label": {
+        "label": "Label",
+        "placeholder": "Wrong size"
+      },
       "description": {
         "label": "Description",
         "placeholder": "Customer received the wrong size"
@@ -2662,17 +2665,17 @@
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
-    "title": "Welcome to Mercur Seller Panel",
+    "title": "Welcome to Mawgood Seller Panel",
     "hint": "Sign in to access the account area",
     "notSellerYet": "Not a seller yet? - <0>Create an account</0>"
   },
   "register": {
-    "title": "Join Mercur Seller Panel",
+    "title": "Join Mawgood Seller Panel",
     "hint": "Sign up to start selling",
     "alreadySeller": "Already have an account? - <0>Sign In</0>"
   },
   "invite": {
-    "title": "Welcome to Mercur Seller Panel",
+    "title": "Welcome to Mawgood Seller Panel",
     "hint": "Create your account below",
     "backToLogin": "Back to login",
     "createAccount": "Create account",

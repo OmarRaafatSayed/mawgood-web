@@ -22,9 +22,16 @@ interface AppProps {
 }
 
 function App({ plugins = [] }: AppProps) {
-  const app = new DashboardApp({
-    plugins: [localPlugin, ...plugins],
-  })
+  let app: DashboardApp
+
+  try {
+    app = new DashboardApp({
+      plugins: [localPlugin, ...plugins],
+    })
+  } catch (error) {
+    console.error("Failed to initialize DashboardApp:", error)
+    throw error
+  }
 
   return <div>{app.render()}</div>
 }

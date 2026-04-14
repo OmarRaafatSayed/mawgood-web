@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Button, Heading, Hint, Input, Text } from '@medusajs/ui';
@@ -16,6 +17,7 @@ import { RegisterSchema } from './register-schema.ts';
 export const Register = () => {
   const [success, setSuccess] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -91,6 +93,10 @@ export const Register = () => {
         },
         onSuccess: () => {
           setSuccess(true);
+          // Redirect to dashboard after successful registration
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 500);
         }
       }
     );

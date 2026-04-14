@@ -25,7 +25,9 @@ export function BottomNavbar({
   const vendorT = useTranslations('vendor')
 
   const locale = params?.locale || pathname?.split('/')[1] || 'ar'
-  const vendorPanelUrl = process.env.NEXT_PUBLIC_VENDOR_URL || 'http://localhost:7000'
+  const vendorPanelUrl = process.env.NEXT_PUBLIC_VENDOR_URL || 'http://localhost:5174'
+
+  const vendorRegisterUrl = `${vendorPanelUrl}/register`
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -57,8 +59,8 @@ export function BottomNavbar({
     },
     {
       icon: StoreIcon,
-      label: vendorT('vendorPanel'),
-      href: vendorPanelUrl,
+      label: 'كن تاجرًا',
+      href: vendorRegisterUrl,
       active: activePath.includes('/vendor') || activePath.includes('/seller'),
       isVendor: true
     },
@@ -82,15 +84,15 @@ export function BottomNavbar({
 
   return (
     <>
-      <div 
-        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] w-full"
+      <div
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] w-full max-w-screen mx-auto"
         style={{
           height: '72px',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           boxShadow: '0 -2px 12px rgba(0, 0, 0, 0.08)'
         }}
       >
-        <div className="flex items-end justify-between h-full w-full pb-2">
+        <div className="flex items-end justify-between h-full w-full pb-2 px-2 max-w-screen-lg mx-auto">
           {navItems.map((item, idx) => {
             const Icon = item.icon
 
@@ -105,16 +107,25 @@ export function BottomNavbar({
                   <div className="flex flex-col items-center justify-center">
                     <div
                       className="relative flex items-center justify-center w-12 h-12 -mt-5
-                                 bg-[#FF8A00] rounded-full shadow-lg
-                                 hover:bg-[#FF8A00]/90 active:scale-95 
+                                 bg-[#F36418] rounded-full shadow-lg
+                                 hover:bg-[#F36418]/90 active:scale-95
                                  transition-all duration-200
                                  border-2 border-white"
                       style={{
-                        boxShadow: '0 4px 12px rgba(255, 138, 0, 0.35)'
+                        boxShadow: '0 4px 12px rgba(243, 100, 24, 0.35)'
                       }}
                     >
                       <Icon size={24} className="text-white" />
                     </div>
+                    <span
+                      className="text-[9px] font-medium mt-0.5"
+                      style={{
+                        color: '#9CA3AF',
+                        fontWeight: '500'
+                      }}
+                    >
+                      {item.label}
+                    </span>
                   </div>
                 </a>
               )
@@ -130,7 +141,7 @@ export function BottomNavbar({
                   <div className="relative flex items-center justify-center w-10 h-10">
                     <Icon
                       size={22}
-                      className={item.active ? 'text-[#FF8A00]' : 'text-gray-400'}
+                      className={item.active ? 'text-[#F36418]' : 'text-gray-400'}
                     />
                     {item.badge && item.badge > 0 && (
                       <span
@@ -138,7 +149,7 @@ export function BottomNavbar({
                         style={{
                           minWidth: '16px',
                           height: '16px',
-                          backgroundColor: '#FF8A00',
+                          backgroundColor: '#F36418',
                           color: 'white',
                           fontSize: '9px',
                           borderRadius: '8px',
@@ -152,7 +163,7 @@ export function BottomNavbar({
                   <span
                     className="text-[9px] font-medium mt-0.5"
                     style={{
-                      color: item.active ? '#FF8A00' : '#9CA3AF',
+                      color: item.active ? '#F36418' : '#9CA3AF',
                       fontWeight: item.active ? '600' : '500'
                     }}
                   >

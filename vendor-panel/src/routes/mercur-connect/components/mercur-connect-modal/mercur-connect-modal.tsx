@@ -1,10 +1,10 @@
 import { CurrencyDollar, XMarkMini } from '@medusajs/icons';
 import { Button, Kbd, Prompt, Text } from '@medusajs/ui';
 
-export const MercurConnectModal = ({
+export const MawgoodConnectModal = ({
   open,
   onOpenChange,
-  testId = 'mercur-connect-modal'
+  testId = 'mawgood-connect-modal'
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -48,7 +48,7 @@ export const MercurConnectModal = ({
             className="line-height-[20px] text-ui-fg-base"
             data-testid={`${testId}-title`}
           >
-            Mercur Connect Feature
+            Mawgood Connect Feature
           </Text>
           <Text
             size="small"

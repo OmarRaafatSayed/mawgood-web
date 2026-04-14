@@ -1,3 +1,3 @@
 @echo off
 echo Starting Mawgood Services...
-concurrently --kill-others --names "BACKEND,ADMIN,VENDOR,STORE" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgYellow.bold" "cd backend && npm run dev" "cd admin && npm run dev" "cd vendor && npm run dev" "cd storefront && npm run dev"
+concurrently --kill-others --names "BACKEND,ADMIN,VENDOR,STORE" -c "bgBlue.bold,bgMagenta.bold,bgGreen.bold,bgYellow.bold" "cd backend && npm run dev" "cd admin-panel && npm run dev" "cd vendor-panel && npm run dev" "cd storefront && npm run dev"

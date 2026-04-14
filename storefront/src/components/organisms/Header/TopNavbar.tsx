@@ -6,11 +6,12 @@ import { usePathname, useRouter, useParams } from "next/navigation"
 import { useTransition, useState, useRef, useEffect, useCallback, useMemo } from "react"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { Badge } from "@/components/atoms"
-import { SearchIcon, CartIcon, CollapseIcon, HamburgerMenuIcon, CloseIcon, ProfileIcon } from "@/icons"
+import { SearchIcon, CartIcon, CollapseIcon, HamburgerMenuIcon, CloseIcon, ProfileIcon, VTonIcon } from "@/icons"
 import { useTranslations } from "next-intl"
 import { useCartContext } from "@/components/providers"
 import { HttpTypes } from "@medusajs/types"
 import { cn } from "@/lib/utils"
+import { VTonDialog } from "@/components/molecules"
 
 interface TopNavbarProps {
   isLoggedIn: boolean
@@ -34,9 +35,11 @@ export const TopNavbar = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [vtonOpen, setVtonOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const t = useTranslations("common")
   const tNav = useTranslations("navbar")
+  const tVton = useTranslations("vton")
 
   const { cart } = useCartContext()
   const cartCount = cart?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
@@ -95,9 +98,9 @@ export const TopNavbar = ({
 
   return (
     <>
-      <header className="bg-[#131921] text-white">
+      <header className="bg-[#131921] text-white overflow-hidden">
         {/* Mobile header row */}
-        <div className="flex items-center gap-2 px-3 py-2 sm:hidden mobile-header">
+        <div className="flex items-center gap-2 px-3 py-2 sm:hidden mobile-header max-w-screen-lg mx-auto">
           {/* Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(true)}
@@ -236,6 +239,16 @@ export const TopNavbar = ({
 
           {/* Desktop Right Section */}
           <div className="flex items-center gap-4 flex-shrink-0">
+            {/* Virtual Try-On */}
+            <button
+              onClick={() => setVtonOpen(true)}
+              className="flex flex-col items-center justify-center hover:outline outline-1 outline-white p-1"
+              aria-label={tVton("buttonText")}
+            >
+              <VTonIcon size={24} color="#fff" />
+              <span className="text-xs">{tVton("buttonText")}</span>
+            </button>
+
             {/* Language */}
             <button
               onClick={switchLocale}
@@ -321,7 +334,7 @@ export const TopNavbar = ({
 
         {/* Mobile Search (expandable) */}
         {mobileSearchOpen && (
-          <div className="sm:hidden bg-[#131921] px-3 pb-2">
+          <div className="sm:hidden bg-[#131921] px-3 pb-2 max-w-screen-lg mx-auto">
             <form onSubmit={handleSearch} className="flex">
               <div className="flex-1 relative">
                 <input
@@ -429,11 +442,23 @@ export const TopNavbar = ({
                   />
                   <span>{locale === "ar" ? "العربية" : "English"}</span>
                 </button>
+
+                {/* Mobile VTon Button */}
+                <button
+                  onClick={() => { setVtonOpen(true); setMobileMenuOpen(false) }}
+                  className="flex items-center gap-3 py-3 text-sm text-gray-700 hover:text-[#f08804] w-full text-start"
+                >
+                  <VTonIcon size={20} color="#374151" />
+                  <span>{tVton("buttonText")}</span>
+                </button>
               </div>
             </div>
           </div>
         </>
       )}
+
+      {/* Virtual Try-On Dialog */}
+      <VTonDialog isOpen={vtonOpen} onClose={() => setVtonOpen(false)} />
     </>
   )
 }

@@ -39,36 +39,59 @@ export const Login = () => {
   const { mutateAsync, isPending } = useSignInWithEmailPass()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
-    await mutateAsync(
-      {
-        email,
-        password,
-      },
-      {
-        onError: (error) => {
-          if (isFetchError(error)) {
-            if (error.status === 401) {
-              form.setError("email", {
-                type: "manual",
-                message: error.message,
-              })
-
-              return
-            }
-          }
-
-          form.setError("root.serverError", {
-            type: "manual",
-            message: error.message,
-          })
+    try {
+      console.log("[Login] Attempting login...");
+      
+      const response = await fetch(`${__BACKEND_URL__ || 'http://localhost:9000'}/auth/seller/emailpass`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-publishable-api-key": "pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53",
         },
-        onSuccess: () => {
-          setTimeout(() => {
-            navigate(from, { replace: true })
-          }, 1000)
-        },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
       }
-    )
+
+      const data = await response.json();
+      console.log("[Login] Response received");
+
+      if (!data.token) {
+        throw new Error("No token in response");
+      }
+
+      // Store token
+      localStorage.setItem("medusa_auth_token", data.token);
+      
+      // Verify it's stored
+      const stored = localStorage.getItem("medusa_auth_token");
+      console.log("[Login] Token stored:", stored ? "YES" : "NO");
+
+      if (!stored) {
+        console.error("[Login] FAILED to store token!");
+        form.setError("root.serverError", {
+          type: "manual",
+          message: "Failed to store auth token.",
+        });
+        return;
+      }
+
+      // Success - redirect
+      console.log("[Login] Redirecting...");
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 500);
+    } catch (error) {
+      console.error("[Login] Error:", error);
+      form.setError("root.serverError", {
+        type: "manual",
+        message: error.message || "Login failed",
+      });
+    }
   })
 
   const serverError =

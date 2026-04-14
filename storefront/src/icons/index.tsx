@@ -2069,3 +2069,5 @@ export function StoreIcon({
     </svg>
   );
 }
+
+export { VTonIcon } from './vton-icon';

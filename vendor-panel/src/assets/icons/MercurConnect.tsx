@@ -1,4 +1,4 @@
-export const MercurConnect = () => {
+export const MawgoodConnect = () => {
   return (
     <svg
       width="24"

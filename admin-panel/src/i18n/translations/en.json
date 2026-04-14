@@ -3261,5 +3261,10 @@
   },
   "commissionLines": {
     "domain": "Commission Lines"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to your admin panel",
+    "quickAccess": "Quick access to main sections"
   }
 }

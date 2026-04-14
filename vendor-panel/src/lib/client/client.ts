@@ -1,14 +1,14 @@
 import Medusa from '@medusajs/js-sdk';
 
 export const backendUrl = __BACKEND_URL__ ?? '/';
-export const publishableApiKey = __PUBLISHABLE_API_KEY__ ?? '';
+export const publishableApiKey = __PUBLISHABLE_API_KEY__ ?? 'pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53';
 
-const token = window.localStorage.getItem('medusa_auth_token') || '';
+// Hardcode the publishable key as fallback
+const finalPublishableKey = publishableApiKey || 'pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53';
 
 const decodeJwt = (token: string) => {
   try {
     const payload = token.split('.')[1];
-
     return JSON.parse(atob(payload));
   } catch (err) {
     return null;
@@ -17,16 +17,17 @@ const decodeJwt = (token: string) => {
 
 const isTokenExpired = (token: string | null) => {
   if (!token) return true;
-
   const payload = decodeJwt(token);
   if (!payload?.exp) return true;
-
   return payload.exp * 1000 < Date.now();
 };
 
 export const sdk = new Medusa({
   baseUrl: backendUrl,
-  publishableKey: publishableApiKey
+  publishableApiKey: finalPublishableKey,
+  auth: {
+    type: "session",
+  },
 });
 
 // useful when you want to call the BE from the console and try things out quickly
@@ -35,6 +36,7 @@ if (typeof window !== 'undefined') {
 }
 
 export const importProductsQuery = async (file: File) => {
+  const token = window.localStorage.getItem('medusa_auth_token') || '';
   const formData = new FormData();
   formData.append('file', file);
 
@@ -43,7 +45,7 @@ export const importProductsQuery = async (file: File) => {
     body: formData,
     headers: {
       authorization: `Bearer ${token}`,
-      'x-publishable-api-key': publishableApiKey
+      'x-publishable-api-key': finalPublishableKey
     }
   })
     .then(res => res.json())
@@ -51,6 +53,7 @@ export const importProductsQuery = async (file: File) => {
 };
 
 export const uploadFilesQuery = async (files: any[]) => {
+  const token = window.localStorage.getItem('medusa_auth_token') || '';
   const formData = new FormData();
 
   for (const { file } of files) {
@@ -62,7 +65,7 @@ export const uploadFilesQuery = async (files: any[]) => {
     body: formData,
     headers: {
       authorization: `Bearer ${token}`,
-      'x-publishable-api-key': publishableApiKey
+      'x-publishable-api-key': finalPublishableKey
     }
   })
     .then(res => res.json())
@@ -83,7 +86,13 @@ export const fetchQuery = async (
     headers?: { [key: string]: string };
   }
 ) => {
-  const bearer = (await window.localStorage.getItem('medusa_auth_token')) || '';
+  const bearer = window.localStorage.getItem('medusa_auth_token') || '';
+  
+  console.log("[fetchQuery] URL:", url);
+  console.log("[fetchQuery] Token in localStorage:", bearer ? "YES (" + bearer.length + " chars)" : "NO");
+  console.log("[fetchQuery] Full token:", bearer);
+  console.log("[fetchQuery] Publishable key:", publishableApiKey);
+  
   const params = Object.entries(query || {}).reduce((acc, [key, value]) => {
     if (value !== null && value !== undefined && value !== '') {
       if (Array.isArray(value)) {
@@ -105,8 +114,10 @@ export const fetchQuery = async (
     }
     return acc;
   }, '');
+  
   const response = await fetch(`${backendUrl}${url}${params && `?${params}`}`, {
     method: method,
+    credentials: 'include', // Use cookies for auth!
     headers: {
       authorization: `Bearer ${bearer}`,
       'Content-Type': 'application/json',
@@ -116,19 +127,25 @@ export const fetchQuery = async (
     body: body ? JSON.stringify(body) : null
   });
 
+  console.log("[fetchQuery] Response:", response.status, url);
+  console.log("[fetchQuery] Sent headers - Auth:", bearer ? bearer.substring(0, 30) + "..." : "NONE", "PubKey:", publishableApiKey ? publishableApiKey.substring(0, 20) + "..." : "NONE");
+
   if (!response.ok) {
     const errorData = await response.json();
+    console.log("[fetchQuery] Error:", response.status, errorData);
 
     if (response.status === 401) {
-      if (isTokenExpired(token)) {
+      // Check if token is expired
+      const currentToken = window.localStorage.getItem('medusa_auth_token');
+      if (isTokenExpired(currentToken)) {
+        console.log("[fetchQuery] Token expired, clearing");
         localStorage.removeItem('medusa_auth_token');
-        window.location.href = '/login?reason=Unauthorized';
-        return;
       }
-
+      
       throw {
         type: 'NO_PERMISSION',
-        message: errorData.message || 'Unauthorized'
+        message: errorData.message || 'Unauthorized',
+        status: 401
       };
     }
 

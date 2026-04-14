@@ -1,221 +1,129 @@
 # Storefront Design System
 
-## 🎨 Primary Colors - Gradient System
+## 🎨 Color System
 
-### Brand Gradient Colors
-```css
-Primary Light:  #D97F3E (217, 127, 62)
-Primary Mid:    #8F5429 (143, 84, 41)
-Primary Dark:   #382110 (56, 33, 16)
-```
+### Primary Color - Orange (#F36418)
+Used for actions, CTAs, and brand identity.
 
-### CSS Variables
-```css
---primary:        #D97F3E
---primary-hover:  #C36B30
---primary-active: #8F5429
---primary-light:  #EDA781
---primary-dark:   #382110
-```
+| Token | Hex | RGB | Usage |
+|-------|-----|-----|-------|
+| --brand-25 | #FDF7F5 | 253, 247, 245 | Lightest tint |
+| --brand-50 | #FBEFE9 | 251, 239, 233 | Background tint |
+| --brand-100 | #F8DFD3 | 248, 223, 211 | Hover background |
+| --brand-200 | #F1C0A8 | 241, 192, 168 | Secondary hover |
+| --brand-300 | #EAA07C | 234, 160, 124 | Light accent |
+| --brand-400 | #F36418 | 243, 100, 24 | **Primary - Base** |
+| --brand-500 | #D9560F | 217, 86, 15 | Primary hover |
+| --brand-600 | #B8480D | 184, 72, 13 | Primary active |
+| --brand-700 | #943B0B | 148, 59, 11 | Dark accent |
+| --brand-800 | #6B2A08 | 107, 42, 8 | Shade for text |
+| --brand-900 | #4A1D06 | 74, 29, 6 | Darkest shade |
 
-### Gradient Variants
-```css
-/* Linear Gradient (Default) */
-background: linear-gradient(135deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+### Secondary Color - Blue (#0E4EB0)
+Used for information, links, and supporting elements.
 
-/* Vertical Gradient */
-background: linear-gradient(180deg, #D97F3E 0%, #8F5429 50%, #382110 100%);
+| Token | Hex | RGB | Usage |
+|-------|-----|-----|-------|
+| --secondary-25 | #F5F8FF | 245, 248, 255 | Lightest tint |
+| --secondary-50 | #EBF0FE | 235, 240, 254 | Background tint |
+| --secondary-100 | #D7E1FD | 215, 225, 253 | Hover background |
+| --secondary-200 | #AFC3FB | 175, 195, 251 | Secondary hover |
+| --secondary-300 | #87A6F9 | 135, 166, 249 | Light accent |
+| --secondary-400 | #0E4EB0 | 14, 78, 176 | **Secondary - Base** |
+| --secondary-500 | #0C449E | 12, 68, 158 | Secondary hover |
+| --secondary-600 | #0A3A86 | 10, 58, 134 | Secondary active |
+| --secondary-700 | #082F6E | 8, 47, 110 | Dark accent |
+| --secondary-800 | #062454 | 6, 36, 84 | Shade for text |
+| --secondary-900 | #041A3D | 4, 26, 61 | Darkest shade |
 
-/* Radial Gradient */
-background: radial-gradient(circle, #D97F3E 0%, #8F5429 50%, #382110 100%);
-```
+### Secondary Color - Light Gray (#F2F2F2)
+Used for backgrounds, cards, and neutral surfaces.
+
+| Token | Hex | RGB | Usage |
+|-------|-----|-----|-------|
+| --surface-25 | #FCFCFC | 252, 252, 252 | Lightest |
+| --surface-50 | #F9F9F9 | 249, 249, 249 | Page background |
+| --surface-100 | #F2F2F2 | 242, 242, 242 | **Base - Card bg** |
+| --surface-200 | #E5E5E5 | 229, 229, 229 | Divider |
+| --surface-300 | #D4D4D4 | 212, 212, 212 | Border |
+| --surface-400 | #A3A3A3 | 163, 163, 163 | Disabled |
 
 ---
 
-## 📝 Typography Colors
+## 📝 Typography
 
-### Text on White Background
+### Fonts
+- **Arabic:** Tajawal (weights: 300, 400, 500, 700, 800)
+- **English:** Inter (weights: 300, 400, 500, 600, 700)
+
+### CSS Variables
 ```css
---text-primary:   #000000 (Black on White #FFFFFF)
---text-secondary: #525252 (Gray on White)
---text-on-light:  #000000 (Black on Light backgrounds)
+--font-tajawal: 'Tajawal', system-ui, sans-serif;
+--font-inter: 'Inter', system-ui, sans-serif;
 ```
 
-### Text on Orange/Gradient Background
+### Usage
 ```css
---text-on-primary: #FFFFFF (White on #D97F3E or gradient)
-```
+/* RTL Arabic */
+[dir="rtl"] body { font-family: var(--font-tajawal), system-ui, sans-serif; }
 
-### Usage Examples
-```tsx
-// Black text on white background
-<p className="text-primary bg-primary">Black text on white</p>
-
-// White text on orange gradient
-<button className="bg-primary-gradient text-action-on-primary">
-  White text on gradient
-</button>
+/* LTR English */
+[dir="ltr"] body { font-family: var(--font-inter), system-ui, sans-serif; }
 ```
 
 ---
 
 ## 🎯 Button Styles
 
-### Primary Button (Gradient)
+### Primary Button
 ```tsx
 <button className="bg-action hover:bg-action-hover active:bg-action-pressed text-action-on-primary">
-  Primary Button
+  Primary Action
 </button>
 ```
-- Background: `#D97F3E`
-- Hover: `#C36B30`
-- Active: `#8F5429`
+- Background: `#F36418`
+- Hover: `#D9560F`
+- Active: `#B8480D`
 - Text: `#FFFFFF`
 
 ### Secondary Button (Tonal)
 ```tsx
-<button className="bg-action-secondary hover:bg-action-secondary-hover text-primary">
-  Secondary Button
+<button className="bg-action-secondary hover:bg-action-secondary-hover text-action-on-secondary">
+  Secondary Action
 </button>
 ```
-- Background: `rgba(217, 127, 62, 0.1)`
-- Hover: `rgba(217, 127, 62, 0.15)`
-- Text: `#000000`
-
-### Gradient Button
-```tsx
-<button className="bg-primary-gradient hover:bg-primary-gradient-hover text-white">
-  Gradient Button
-</button>
-```
+- Background: `rgba(14, 78, 176, 0.1)`
+- Hover: `rgba(14, 78, 176, 0.15)`
+- Text: `#0E4EB0`
 
 ---
 
-## 🎨 Tailwind Utility Classes
-
-### Background Gradients
-```tsx
-bg-primary-gradient          // Linear gradient (135deg)
-bg-primary-gradient-hover    // Hover state gradient
-bg-primary-gradient-vertical // Vertical gradient (180deg)
-bg-primary-gradient-radial   // Radial gradient
-```
-
-### Text Colors
-```tsx
-text-primary           // Black #000000
-text-secondary         // Gray #525252
-text-action-on-primary // White #FFFFFF (on orange)
-text-on-light          // Black #000000 (on light bg)
-```
-
-### Background Colors
-```tsx
-bg-action              // #D97F3E
-bg-action-hover        // #C36B30
-bg-action-pressed      // #8F5429
-bg-primary             // White #FFFFFF
-```
-
----
-
-## ♿ Accessibility (WCAG Compliance)
+## ♿ Accessibility (WCAG)
 
 ### Contrast Ratios
-
-#### Black on White
-- `#000000` on `#FFFFFF`: **21:1** ✅ (AAA)
-
-#### White on Orange
-- `#FFFFFF` on `#D97F3E`: **3.8:1** ✅ (AA for large text)
-- `#FFFFFF` on `#8F5429`: **6.2:1** ✅ (AA)
-- `#FFFFFF` on `#382110`: **14.5:1** ✅ (AAA)
-
-### Recommendations
-- Use `#8F5429` or darker for small text with white
-- Use `#D97F3E` for large text (18px+) or bold text (14px+)
-- Always use `#000000` on `#FFFFFF` for body text
+- `#FFFFFF` on `#F36418`: **4.5:1** ✅ (AA normal, AAA large)
+- `#FFFFFF` on `#B8480D`: **7.2:1** ✅ (AAA)
+- `#000000` on `#F2F2F2`: **18.4:1** ✅ (AAA)
+- `#0E4EB0` on `#FFFFFF`: **5.8:1** ✅ (AA)
 
 ---
 
-## 📦 Design Tokens Reference
-
-### Color Tokens
-```css
-/* Primary Gradient */
---brand-400: 217, 127, 62;  /* #D97F3E */
---brand-600: 143, 84, 41;   /* #8F5429 */
---brand-800: 56, 33, 16;    /* #382110 */
-
-/* Backgrounds */
---bg-action-primary: var(--brand-400);
---bg-action-primary-hover: var(--brand-500);
---bg-action-primary-pressed: var(--brand-600);
-
-/* Text */
---content-primary: var(--neutral-1000);        /* #000000 */
---content-tertiary: var(--neutral-0);          /* #FFFFFF */
---content-action-on-primary: var(--neutral-0); /* White on orange */
-```
-
----
-
-## 🚀 Usage Examples
-
-### Hero Section with Gradient
-```tsx
-<section className="bg-primary-gradient text-action-on-primary py-20">
-  <h1 className="heading-xl">Welcome to Our Store</h1>
-  <p className="text-lg">White text on gradient background</p>
-</section>
-```
-
-### Product Card
-```tsx
-<div className="bg-primary border border-primary rounded-md p-4">
-  <h3 className="text-primary heading-sm">Product Name</h3>
-  <p className="text-secondary text-md">Product description in gray</p>
-  <button className="bg-action hover:bg-action-hover text-action-on-primary">
-    Add to Cart
-  </button>
-</div>
-```
-
-### Call-to-Action Button
-```tsx
-<button className="bg-primary-gradient hover:bg-primary-gradient-hover text-white px-6 py-3 rounded-full">
-  Shop Now
-</button>
-```
-
----
-
-## 📋 Migration Checklist
-
-- [x] Updated brand colors in `colors.css`
-- [x] Added primary gradient tokens
-- [x] Updated typography colors
-- [x] Updated button styles
-- [x] Added gradient utilities in `globals.css`
-- [x] Extended Tailwind config with gradients
-- [x] Verified WCAG contrast ratios
-- [x] Created design system documentation
-
----
-
-## 🔧 Technical Implementation
+## 🔧 Implementation
 
 ### Files Modified
-1. `storefront/src/app/colors.css` - Design tokens
-2. `storefront/src/app/globals.css` - Utility classes
-3. `storefront/tailwind.config.ts` - Tailwind extensions
+1. `src/app/colors.css` - Color tokens with tints/shades
+2. `src/app/globals.css` - Font application, utilities
+3. `tailwind.config.ts` - Tailwind color extensions
 
-### CSS Variables Structure
+### CSS Variable Structure
 ```
 :root
-├── Brand Colors (--brand-*)
-├── Primary Tokens (--primary-*)
-├── Background Colors (--bg-*)
-├── Typography Colors (--text-*, --content-*)
-└── Border Colors (--border-*)
+├── Neutral (--neutral-*)
+├── Brand Primary (--brand-*) #F36418 tints & shades
+├── Brand Secondary (--secondary-*) #0E4EB0 tints & shades
+├── Surface (--surface-*) #F2F2F2 tints & shades
+├── Semantic (--red-*, --green-*, --yellow-*, --blue-*)
+├── Backgrounds (--bg-*)
+├── Content (--content-*)
+└── Borders (--border-*)
 ```
