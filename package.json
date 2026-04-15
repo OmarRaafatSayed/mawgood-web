@@ -9,8 +9,7 @@
     "migrate": "medusa migrations run"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.0.0",
-    "@medusajs/payment-manual": "^1.0.0"
+    "@medusajs/medusa": "^1.0.0"
   },
   "devDependencies": {
     "@medusajs/medusa": "^1.0.0"
