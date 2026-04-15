@@ -1,0 +1,19 @@
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "main": "index.js",
+  "scripts": {
+    "start": "medusa start",
+    "build": "medusa build",
+    "migrate": "medusa migrations run"
+  },
+  "dependencies": {
+    "@medusajs/medusa": "^1.0.0",
+    "@medusajs/payment-manual": "^1.0.0",
+    // other dependencies
+  },
+  "devDependencies": {
+    // dev dependencies
+  }
+}
