@@ -10,10 +10,8 @@
   },
   "dependencies": {
     "@medusajs/medusa": "^1.0.0",
-    "@medusajs/payment-manual": "^1.0.0",
-    // other dependencies
+    "@medusajs/payment-manual": "^1.0.0"
   },
   "devDependencies": {
-    // dev dependencies
   }
 }
