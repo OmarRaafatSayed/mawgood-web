@@ -13,5 +13,6 @@
     "@medusajs/payment-manual": "^1.0.0"
   },
   "devDependencies": {
+    "@medusajs/medusa": "^1.0.0"
   }
 }
