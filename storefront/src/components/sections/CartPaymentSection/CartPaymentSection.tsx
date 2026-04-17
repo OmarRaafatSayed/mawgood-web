@@ -48,9 +48,14 @@ const CartPaymentSection = ({
   const setPaymentMethod = async (method: string) => {
     setError(null);
     setSelectedPaymentMethod(method);
-    await initiatePaymentSession(cart, {
-      provider_id: method
-    });
+    try {
+      await initiatePaymentSession(cart, {
+        provider_id: method
+      });
+      router.refresh(); // Refresh the page to update the payment session
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   const paidByGiftcard = cart?.gift_cards && cart?.gift_cards?.length > 0 && cart?.total === 0;
@@ -139,14 +144,15 @@ const CartPaymentSection = ({
                     />
                   </div>
                 ))}
-                <div key="online-payment" className="opacity-60 cursor-not-allowed">
+                {/* Remove the hardcoded "online-payment" option */}
+                {/* <div key="online-payment" className="opacity-60 cursor-not-allowed">
                   <PaymentContainer
                     paymentInfoMap={paymentInfoMap}
                     paymentProviderId="online-payment"
                     selectedPaymentOptionId={null}
                     disabled={true}
                   />
-                </div>
+                </div> */}
               </RadioGroup>
             </>
           )}

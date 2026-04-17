@@ -120,8 +120,10 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
         shippingMethodId: id
       });
       if (!res.ok) {
-        return setError(res.error?.message);
+        setError(res.error?.message || 'Failed to set shipping method'); // Improved error message
+        return;
       }
+      router.push(pathname + '?step=payment', { scroll: false }); // Redirect to payment after setting shipping method
     } catch (error: any) {
       setError(
         error?.message?.replace('Error setting up the request: ', '') || 'An error occurred'
