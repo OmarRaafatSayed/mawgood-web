@@ -1,0 +1,3 @@
+t("shippingProfile.delete.successToast", {
+  name: location.name,
+})

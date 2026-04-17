@@ -106,7 +106,7 @@ function LocationListItem(props: LocationProps) {
     await deleteLocation(undefined, {
       onSuccess: () => {
         toast.success(
-          t("shippingProfile.delete.successToast", {
+          t("stockLocations.delete.successToast", {
             name: location.name,
           })
         )

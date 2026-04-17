@@ -1,0 +1,3 @@
+t("stockLocations.delete.successToast", {
+  name: location.name,
+})
