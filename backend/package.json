@@ -41,7 +41,6 @@
     "@mercurjs/b2c-core": "^1.5.3",
     "@mercurjs/commission": "^1.5.3",
     "@mercurjs/framework": "^1.5.3",
-    "@mercurjs/payment-stripe-connect": "^1.5.3",
     "@mercurjs/requests": "^1.5.3",
     "@mercurjs/resend": "^1.5.3",
     "@mercurjs/reviews": "^1.5.3"

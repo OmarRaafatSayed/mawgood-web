@@ -1,17 +1,11 @@
-import { MedusaAppLoader } from '@medusajs/framework'
-import { createDefaultStoreShipping } from './fix-shipping'
+import { ExecArgs } from "@medusajs/framework/types";
+import { createDefaultStoreShipping } from "./fix-shipping";
 
-async function run() {
-  const { container } = await MedusaAppLoader.load()
-  
+export default async function run({ container }: ExecArgs) {
   try {
-    await createDefaultStoreShipping(container)
-    console.log('✅ Done!')
-    process.exit(0)
+    await createDefaultStoreShipping(container);
+    console.log("✅ Done!");
   } catch (error) {
-    console.error('❌ Error:', error)
-    process.exit(1)
+    console.error("❌ Error:", error);
   }
 }
-
-run()

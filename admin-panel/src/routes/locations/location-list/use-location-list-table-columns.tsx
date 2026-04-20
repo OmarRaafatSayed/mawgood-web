@@ -101,9 +101,9 @@ export const useLocationListTableColumns = () => {
         id: "shipping_fulfillment",
         header: t("stockLocations.fulfillmentSets.shipping.header"),
         cell: ({ getValue }) => {
-          const fulfillmentSets = getValue()
-          const shippingSet = fulfillmentSets?.find(
-            (f) => f.type === FulfillmentSetType.Shipping
+const fulfillmentSets = getValue() ?? []
+          const shippingSet = fulfillmentSets.find(
+            (f) => f?.type === FulfillmentSetType.Shipping
           )
           const fulfillmentSetExists = !!shippingSet
 
@@ -120,9 +120,9 @@ export const useLocationListTableColumns = () => {
         id: "pickup_fulfillment",
         header: t("stockLocations.fulfillmentSets.pickup.header"),
         cell: ({ getValue }) => {
-          const fulfillmentSets = getValue()
-          const pickupSet = fulfillmentSets?.find(
-            (f) => f.type === FulfillmentSetType.Pickup
+const fulfillmentSets = getValue() ?? []
+          const pickupSet = fulfillmentSets.find(
+            (f) => f?.type === FulfillmentSetType.Pickup
           )
           const fulfillmentSetExists = !!pickupSet
 

@@ -1,3 +1,4 @@
+/*
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
 import { Modules } from "@medusajs/framework/utils"
 import { SELLER_MODULE } from "@mercurjs/b2c-core/modules/seller"
@@ -40,9 +41,12 @@ export default async function productCreatedHandler({
     }
   ])
 
-  console.log(`✅ Product ${product.id} assigned to seller ${defaultSeller.name}`)
+  console.log(`? Product ${product.id} assigned to seller ${defaultSeller.name}`)
 }
 
 export const config: SubscriberConfig = {
   event: "product.created",
 }
+*/
+
+export default function() {}

@@ -9,7 +9,8 @@
     "migrate": "medusa migrations run"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.0.0"
+    "@medusajs/medusa": "^1.0.0",
+    "stripe": "^22.0.1"
   },
   "devDependencies": {
     "@medusajs/medusa": "^1.0.0"

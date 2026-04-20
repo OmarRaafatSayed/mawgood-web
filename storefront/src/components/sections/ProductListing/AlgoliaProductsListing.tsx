@@ -18,6 +18,11 @@ import { ProductListingSkeleton } from "@/components/organisms/ProductListingSke
 import { useEffect, useMemo, useState } from "react"
 import { searchProducts } from "@/lib/data/products"
 import { FacetModel } from "@/components/organisms/ProductSidebar/AlgoliaProductSidebar"
+import { FilterIcon } from "@/icons"
+import { Drawer } from "@medusajs/ui"
+import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
+
+const { Trigger, Content, Header, Title, Body } = Drawer
 
 export const AlgoliaProductsListing = ({
   category_id,
@@ -42,7 +47,7 @@ export const AlgoliaProductsListing = ({
     seller_handle
       ? `NOT seller:null AND seller.handle:${seller_handle} AND `
       : "NOT seller:null AND "
-  }NOT seller.store_status:SUSPENDED AND supported_countries:${locale} AND variants.prices.currency_code:${currency_code} AND variants.prices.amount > 0${
+  }NOT seller.store_status:SUSPENDED AND supported_countries:${getCountryFromLocale(locale)} AND variants.prices.currency_code:${currency_code} AND variants.prices.amount > 0${
     category_id
       ? ` AND categories.id:${category_id}${
           collection_id !== undefined
@@ -121,9 +126,16 @@ const ProductsListing = ({
   if (isLoading && products.length === 0) return <ProductListingSkeleton />
 
   return (
-    <div className="min-h-[70vh]">
+    <div className="py-4">
       <div className="flex justify-between w-full items-center">
-        <div className="my-4 label-md">{`${count} listings`}</div>
+        <div className="my-2 label-md">{`${count} listings`}</div>
+        <Trigger asChild>
+          <button 
+            className="md:hidden p-2 bg-brand-400 text-white rounded-md hover:bg-brand-500 transition-colors"
+          >
+            <FilterIcon className="w-5 h-5" />
+          </button>
+        </Trigger>
       </div>
       <div className="hidden md:block">
         <ProductListingActiveFilters />
@@ -146,6 +158,17 @@ const ProductsListing = ({
           </div>
         </div>
       </div>
+
+      <Drawer>
+        <Content>
+          <Header>
+            <Title>Filters</Title>
+          </Header>
+          <Body>
+            <AlgoliaProductSidebar facets={facets} />
+          </Body>
+        </Content>
+      </Drawer>
     </div>
   )
 }

@@ -169,16 +169,16 @@ function LocationListItem(props: LocationProps) {
 
       {/* <SalesChannels salesChannels={location.sales_channels} /> */}
 
-      <FulfillmentSet
+<FulfillmentSet
         type={FulfillmentSetType.Pickup}
         fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Pickup
+          (f) => f?.type === FulfillmentSetType.Pickup
         )}
       />
       <FulfillmentSet
         type={FulfillmentSetType.Shipping}
         fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Shipping
+          (f) => f?.type === FulfillmentSetType.Shipping
         )}
       />
     </Container>

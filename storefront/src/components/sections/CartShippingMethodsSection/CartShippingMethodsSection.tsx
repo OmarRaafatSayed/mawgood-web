@@ -66,9 +66,11 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
   const router = useRouter();
   const pathname = usePathname();
 
-  const isOpen = searchParams.get('step') === 'delivery';
+const isOpen = searchParams.get('step') === 'delivery';
 
-  console.log(availableShippingMethods);
+  console.log('[CartShippingMethods] availableShippingMethods:', availableShippingMethods);
+  console.log('[CartShippingMethods] cart.shipping_address:', cart?.shipping_address);
+  console.log('[CartShippingMethods] cart.id:', cart?.id);
 
   const _shippingMethods = availableShippingMethods?.filter(
     sm => sm.rules?.find((rule: any) => rule.attribute === 'is_return')?.value !== 'true'
@@ -168,11 +170,20 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
   };
   const isEditEnabled = !isOpen && !!cart?.shipping_methods?.length;
 
-  const filteredGroupedBySellerId = Object.keys(groupedBySellerId || {});
-  
+const filteredGroupedBySellerId = Object.keys(groupedBySellerId || {});
+   
   // Add global shipping options (without seller_id)
   const globalShippingMethods = _shippingMethods?.filter(sm => !sm.seller_id) || [];
   const hasGlobalMethods = globalShippingMethods.length > 0;
+
+  // Debug: Check why no shipping options
+  const hasShippingAddress = !!cart?.shipping_address?.address_1;
+  const shippingCountry = cart?.shipping_address?.country_code;
+  const noOptionsReason = !hasShippingAddress 
+    ? 'Please add a shipping address first' 
+    : hasGlobalMethods || filteredGroupedBySellerId.length > 0 
+      ? null 
+      : `No shipping options for ${shippingCountry || 'your location'}. Check shipping zones.`;
 
   return (
     <div className="bg-ui-bg-interactive rounded-sm border p-4">
@@ -200,8 +211,8 @@ const CartShippingMethodsSection: FC<ShippingProps> = ({ cart, availableShipping
           <div className="grid">
             <div data-testid="delivery-options-container">
               <div className="pb-8 pt-2 md:pt-0">
-                {filteredGroupedBySellerId.length === 0 && !hasGlobalMethods
-                  ? 'No shipping options available'
+{filteredGroupedBySellerId.length === 0 && !hasGlobalMethods
+                  ? noOptionsReason || 'No shipping options available'
                   : (
                     <>
                       {/* Global shipping methods */}

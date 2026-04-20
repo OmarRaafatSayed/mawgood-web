@@ -1,6 +1,6 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 
-export default async function seedShippingOptions(container: MedusaContainer) {
+export default async function seedShippingOptions({ container }: { container: MedusaContainer }) {
   const query = container.resolve("query")
   
   try {

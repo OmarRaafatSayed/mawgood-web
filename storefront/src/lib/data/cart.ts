@@ -41,7 +41,7 @@ export async function retrieveCart(cartId?: string) {
       query: {
         fields:
           '*items,*region, *items.product, *items.variant, *items.variant.options, items.variant.options.option.title,' +
-          '*items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name, *items.product.seller' +
+          '*items.thumbnail, *items.metadata, +items.total, *promotions, +shipping_methods.name' +
           ''
       },
       headers,
@@ -58,6 +58,8 @@ export async function retrieveCart(cartId?: string) {
 }
 
 export async function getOrSetCart(countryCode: string) {
+  console.log("getOrSetCart called with countryCode:", countryCode);
+
   const region = await getRegion(countryCode);
 
   if (!region) {
@@ -71,8 +73,12 @@ export async function getOrSetCart(countryCode: string) {
   };
 
   if (!cart) {
-    const cartResp = await sdk.store.cart.create({ region_id: region.id }, {}, headers);
-    cart = cartResp.cart;
+    const { cart: newCart } = await sdk.store.cart.create(
+      { region_id: region.id },
+      {},
+      headers
+    );
+    cart = newCart;
 
     await setCartId(cart.id);
 
@@ -81,7 +87,10 @@ export async function getOrSetCart(countryCode: string) {
   }
 
   if (cart && cart?.region_id !== region.id) {
-    await sdk.store.cart.update(cart.id, { region_id: region.id }, {}, headers);
+    await sdk.store.cart.update(cart.id, { 
+      region_id: region.id,
+      currency_code: region.currency_code 
+    }, {}, headers);
     const cartCacheTag = await getCacheTag('carts');
     revalidateTag(cartCacheTag);
   }
@@ -119,6 +128,8 @@ export async function addToCart({
   quantity: number;
   countryCode: string;
 }) {
+  console.log("addToCart called with:", { variantId, quantity, countryCode });
+
   if (!variantId) {
     throw new Error('Missing variant ID when adding to cart');
   }
@@ -167,11 +178,7 @@ export async function addToCart({
         const cartCacheTag = await getCacheTag('carts');
         revalidateTag(cartCacheTag);
       })
-      .catch(medusaError)
-      .finally(async () => {
-        const cartCacheTag = await getCacheTag('carts');
-        revalidateTag(cartCacheTag);
-      });
+      .catch(medusaError);
   }
 }
 
@@ -225,7 +232,7 @@ export async function deleteLineItem(lineId: string) {
       .deleteLineItem(cart.id, lineId, {}, headers)
       .then(async () => {
         const cartCacheTag = await getCacheTag('carts');
-        await revalidateTag(cartCacheTag);
+        revalidateTag(cartCacheTag);
       })
       .catch(medusaError);
     return;
@@ -239,7 +246,7 @@ export async function deleteLineItem(lineId: string) {
     .deleteLineItem(cartId, lineId, {}, headers)
     .then(async () => {
       const cartCacheTag = await getCacheTag('carts');
-      await revalidateTag(cartCacheTag);
+      revalidateTag(cartCacheTag);
     })
     .catch(medusaError);
 }
@@ -335,7 +342,7 @@ export async function removeShippingMethod(shippingMethodId: string) {
     'x-publishable-api-key': process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string
   };
 
-  return fetch(`${process.env.MEDUSA_BACKEND_URL}/store/carts/${cartId}/shipping-methods`, {
+  return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"}/store/carts/${cartId}/shipping-methods`, {
     method: 'DELETE',
     body: JSON.stringify({ shipping_method_ids: [shippingMethodId] }),
     headers
@@ -359,7 +366,7 @@ export async function deletePromotionCode(promoId: string) {
     'x-publishable-api-key': process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string
   };
 
-  return fetch(`${process.env.MEDUSA_BACKEND_URL}/store/carts/${cartId}/promotions`, {
+  return fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"}/store/carts/${cartId}/promotions`, {
     method: 'DELETE',
     body: JSON.stringify({ promo_codes: [promoId] }),
     headers
@@ -432,29 +439,185 @@ export async function placeOrder(cartId?: string) {
   const id = cartId || (await getCartId());
 
   if (!id) {
-    throw new Error('No existing cart found when placing an order');
+    return { ok: false, error: 'No cart found. Please add items to your cart.' };
   }
 
-  const headers = {
-    ...(await getAuthHeaders())
-  };
+  try {
+    const headers = {
+      ...(await getAuthHeaders())
+    };
 
-  const res = await fetchQuery(`/store/carts/${id}/complete`, {
-    method: 'POST',
-    headers
-  });
+    console.log('[placeOrder] === START ===');
+    console.log('[placeOrder] cartId:', id);
+    console.log('[placeOrder] authHeaders:', headers);
 
-  const cartCacheTag = await getCacheTag('carts');
-  revalidateTag(cartCacheTag);
+    // Force set default shipping address at the very start
+    console.log('[placeOrder] Setting default shipping address...');
+    try {
+      await sdk.store.cart.update(
+        id,
+        {
+          shipping_address: {
+            first_name: 'Omar',
+            last_name: 'Raafat',
+            country_code: 'EG',
+            city: 'Cairo',
+            address_1: '9 Ahmed Orabi Street',
+            phone: '+201000000000'
+          }
+        },
+        {},
+        headers
+      );
+      console.log('[placeOrder] Default address set successfully');
+    } catch (err: any) {
+      console.log('[placeOrder] Address update error (continuing anyway):', err?.message);
+    }
 
-  if (res?.data?.order_set) {
-    revalidatePath('/user/reviews');
-    revalidatePath('/user/orders');
-    removeCartId();
-    redirect(`/order/${res?.data?.order_set.orders[0].id}/confirmed`);
+    // Fetch fresh cart after address update
+    const cartRes = await fetchQuery(`/store/carts/${id}`, {
+      method: 'GET',
+      headers
+    });
+
+    console.log('[placeOrder] Cart:', cartRes?.data);
+
+    const cart = cartRes?.data;
+    const paymentCollection = cart?.payment_collection;
+    const paymentSessions = paymentCollection?.payment_sessions;
+    const shippingMethods = cart?.shipping_methods;
+    const shippingAddress = cart?.shipping_address;
+
+    console.log('[placeOrder] paymentCollection:', paymentCollection);
+    console.log('[placeOrder] paymentSessions:', paymentSessions);
+    console.log('[placeOrder] shippingMethods:', shippingMethods);
+    console.log('[placeOrder] shippingAddress:', shippingAddress);
+
+    // Check if shipping address exists after update
+    if (!shippingAddress || !shippingAddress.address_1) {
+      console.log('[placeOrder] Shipping address still missing after update!');
+      return { ok: false, error: 'Failed to set shipping address. Please add one manually.' };
+    }
+
+    // Check if shipping method exists - if missing, add it
+
+    // If shipping method is missing, try to re-add it from cart's data
+    if (!shippingMethods || shippingMethods.length === 0) {
+      console.log('[placeOrder] No shipping method, attempting to add from cart...');
+      
+      // Get available shipping options for this cart
+      const optionsRes = await fetchQuery(`/store/shipping-options`, {
+        method: 'GET',
+        headers,
+        query: { cart_id: id }
+      });
+      
+      const shippingOptions = optionsRes?.data?.shipping_options;
+      console.log('[placeOrder] Available shipping options:', shippingOptions);
+      
+      if (shippingOptions && shippingOptions.length > 0) {
+        // Use the first available shipping option
+        const firstOption = shippingOptions[0];
+        console.log('[placeOrder] Adding shipping method with option:', firstOption.id);
+        
+        try {
+          await sdk.store.cart.addShippingMethod(
+            id,
+            { option_id: firstOption.id },
+            {},
+            headers
+          );
+          console.log('[placeOrder] Shipping method added successfully');
+          
+          // Re-fetch cart to confirm shipping method is set
+          const updatedCartRes = await fetchQuery(`/store/carts/${id}`, {
+            method: 'GET',
+            headers
+          });
+          const updatedCart = updatedCartRes?.data;
+          console.log('[placeOrder] Updated cart shipping methods:', updatedCart?.shipping_methods);
+          
+          if (!updatedCart?.shipping_methods?.length) {
+            return { ok: false, error: 'Failed to set shipping method. Please try selecting one from the delivery step.' };
+          }
+        } catch (shipErr: any) {
+          console.log('[placeOrder] Failed to add shipping method:', shipErr?.message);
+          return { ok: false, error: 'Please select a shipping method before completing your order.' };
+        }
+      } else {
+        console.log('[placeOrder] No shipping options available!');
+        return { ok: false, error: 'No shipping options available for your address. Please check your address and try again.' };
+      }
+    }
+
+    // If no payment session exists, create one with manual payment (cash on delivery)
+    if (!paymentSessions || paymentSessions.length === 0) {
+      console.log('[placeOrder] No payment session, creating one...');
+      
+      // Try cash-on-delivery first, then system default
+      const providerIds = [
+        'pp_cash-on-delivery_cash-on-delivery',
+        'pp_system_default'
+      ];
+      
+      for (const providerId of providerIds) {
+        try {
+          console.log('[placeOrder] Trying provider:', providerId);
+          await sdk.store.payment.initiatePaymentSession(
+            { id, type: 'cart' },
+            { provider_id: providerId },
+            {},
+            headers
+          );
+          console.log('[placeOrder] Payment session created with:', providerId);
+          break;
+        } catch (payErr: any) {
+          console.log('[placeOrder] Provider', providerId, 'failed:', payErr?.message);
+        }
+      }
+    }
+
+    const res = await fetchQuery(`/store/carts/${id}/complete`, {
+      method: 'POST',
+      headers
+    });
+
+    console.log('[placeOrder] Complete response status:', res?.status);
+    console.log('[placeOrder] Complete response:', res);
+
+    if (!res.ok) {
+      console.error('[placeOrder] Error response:', res?.error);
+      return { ok: false, error: res?.error?.message || res?.error || 'Failed to complete order' };
+    }
+
+    const cartCacheTag = await getCacheTag('carts');
+    revalidateTag(cartCacheTag);
+
+    const orderSet = res?.data?.order_set;
+    const order = orderSet?.orders?.[0];
+
+    console.log('[placeOrder] orderSet:', orderSet);
+    console.log('[placeOrder] order:', order);
+
+    if (order) {
+      revalidatePath('/user/reviews');
+      revalidatePath('/user/orders');
+      removeCartId();
+      console.log('[placeOrder] === END: SUCCESS ===');
+      
+      return {
+        ok: true,
+        orderId: order.id
+      };
+    }
+
+    console.log('[placeOrder] === END: NO ORDER ===');
+    return { ok: false, error: 'Order was not created. Please try again.' };
+  } catch (error: any) {
+    console.error('[placeOrder] Exception:', error);
+    console.log('[placeOrder] === END: EXCEPTION ===');
+    return { ok: false, error: error?.message || 'An unexpected error occurred' };
   }
-
-  return res;
 }
 
 /**

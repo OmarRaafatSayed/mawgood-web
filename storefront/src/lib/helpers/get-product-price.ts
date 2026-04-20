@@ -3,37 +3,36 @@ import { getPercentageDiff } from "./get-precentage-diff"
 import { convertToLocale } from "./money"
 
 export const getPricesForVariant = (variant: any) => {
-  if (
-    !variant?.calculated_price?.calculated_amount_with_tax &&
-    !variant?.calculated_price?.calculated_amount
-  ) {
+  const hasCalculatedPrice = variant?.calculated_price?.calculated_amount_with_tax || variant?.calculated_price?.calculated_amount
+  const hasRawPrices = variant?.prices?.length > 0
+  
+  if (!hasCalculatedPrice && !hasRawPrices) {
     return null
   }
 
+  const currency_code = variant.calculated_price?.currency_code || variant.prices?.[0]?.currency_code || 'egp'
+  const amount = variant.calculated_price?.calculated_amount || variant.calculated_price?.calculated_amount_with_tax || variant.prices?.[0]?.amount || 0
+
   if (!variant?.calculated_price?.calculated_amount_with_tax) {
     return {
-      calculated_price_number: variant.calculated_price.calculated_amount,
+      calculated_price_number: amount,
       calculated_price: convertToLocale({
-        amount: variant.calculated_price.calculated_amount,
-        currency_code: variant.calculated_price.currency_code,
+        amount: amount,
+        currency_code: currency_code,
       }),
       calculated_price_without_tax: convertToLocale({
-        amount: variant.calculated_price.calculated_amount_without_tax,
-        currency_code: variant.calculated_price.currency_code,
+        amount: amount,
+        currency_code: currency_code,
       }),
-      calculated_price_without_tax_number:
-        variant.calculated_price.calculated_amount_without_tax,
-      original_price_number: variant.calculated_price.original_amount,
+      calculated_price_without_tax_number: amount,
+      original_price_number: amount,
       original_price: convertToLocale({
-        amount: variant.calculated_price.original_amount,
-        currency_code: variant.calculated_price.currency_code,
+        amount: amount,
+        currency_code: currency_code,
       }),
-      currency_code: variant.calculated_price.currency_code,
-      price_type: variant.calculated_price.calculated_price.price_list_type,
-      percentage_diff: getPercentageDiff(
-        variant.calculated_price.original_amount,
-        variant.calculated_price.calculated_amount
-      ),
+      currency_code: currency_code,
+      price_type: variant.calculated_price?.calculated_price?.price_list_type || null,
+      percentage_diff: 0,
     }
   }
 
@@ -45,11 +44,11 @@ export const getPricesForVariant = (variant: any) => {
       currency_code: variant.calculated_price.currency_code,
     }),
     calculated_price_without_tax: convertToLocale({
-      amount: variant.calculated_price.calculated_amount_without_tax,
+      amount: variant.calculated_price.calculated_price_without_tax,
       currency_code: variant.calculated_price.currency_code,
     }),
     calculated_price_without_tax_number:
-      variant.calculated_price.calculated_amount_without_tax,
+      variant.calculated_price.calculated_price_without_tax,
     original_price_number: variant.calculated_price.original_amount_with_tax,
     original_price: convertToLocale({
       amount: variant.calculated_price.original_amount_with_tax,
@@ -81,13 +80,11 @@ export function getProductPrice({
     }
 
     return product.variants
-      .filter((v: any) => !!v.calculated_price)
+      .filter((v: any) => !!v.calculated_price || !!v.prices?.length)
       .sort((a: any, b: any) => {
-        return a.calculated_price.calculated_amount_with_tax &&
-          b.calculated_price.calculated_amount_with_tax
-          ? a.calculated_price.calculated_amount_with_tax -
-              b.calculated_price.calculated_amount_with_tax
-          : a.calculated_amount - b.calculated_amount
+        const aPrice = a.calculated_price?.calculated_amount_with_tax || a.calculated_price?.calculated_amount || a.prices?.[0]?.amount || 0
+        const bPrice = b.calculated_price?.calculated_amount_with_tax || b.calculated_price?.calculated_amount || b.prices?.[0]?.amount || 0
+        return aPrice - bPrice
       })[0]
   }
 

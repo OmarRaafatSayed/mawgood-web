@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from '@medusajs/framework'
-import { SELLER_MODULE } from '@mercurjs/b2c-core/modules/seller'
 
 /**
  * GET /store/vendors
@@ -43,11 +42,20 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       offset: metadata?.skip || 0,
       limit: metadata?.take || 20
     })
-  } catch (error) {
+  } catch (error: any) {
+    const errorMsg = error?.message || ''
+    if (errorMsg.includes('seller') || errorMsg.includes('Service with alias')) {
+      return res.json({
+        sellers: [],
+        count: 0,
+        offset: 0,
+        limit: 20
+      })
+    }
     console.error('Error fetching vendors:', error)
     return res.status(500).json({
       error: 'Failed to fetch vendors',
-      message: error.message
+      message: errorMsg
     })
   }
 }

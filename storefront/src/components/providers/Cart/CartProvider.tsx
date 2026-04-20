@@ -134,7 +134,8 @@ export function CartProvider({ cart, children }: CartProviderProps) {
       await refreshCart();
     } catch (error) {
       console.error('Error adding product to cart:', error);
-      await refreshCart();
+      // Don't call refreshCart here - it would overwrite the optimistic update
+      // The optimistic update is already done by handleAddToCart
       throw error;
     } finally {
       setIsAddingItem(false);

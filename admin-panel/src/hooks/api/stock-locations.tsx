@@ -37,7 +37,10 @@ export const useStockLocation = (
     ...options,
   })
 
-  return { ...data, ...rest }
+  return {
+    stock_location: data?.stock_location ?? null,
+    ...rest,
+  }
 }
 
 export const useStockLocations = (
@@ -58,7 +61,11 @@ export const useStockLocations = (
     ...options,
   })
 
-  return { ...data, ...rest }
+  return {
+    stock_locations: data?.stock_locations ?? [],
+    count: data?.count ?? 0,
+    ...rest,
+  }
 }
 
 export const useCreateStockLocation = (

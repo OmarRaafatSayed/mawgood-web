@@ -73,14 +73,14 @@ export const ProductDetailsHeader = ({
     variantId,
   })
 
-  const variantStock =
-    product.variants?.find(({ id }) => id === variantId)?.inventory_quantity ||
-    0
+  const selectedVariantData = product.variants?.find(({ id }) => id === variantId)
+  const variantAllowBackorder = selectedVariantData?.allow_backorder ?? false
+  const variantStock = selectedVariantData?.inventory_quantity ?? null
 
-  const variantHasPrice = !!product.variants?.find(({ id }) => id === variantId)
-    ?.calculated_price
+  const variantHasPrice = !!selectedVariantData?.calculated_price
 
   const isVariantStockMaxLimitReached =
+    variantStock !== null &&
     (cart?.items?.find((item) => item.variant_id === variantId)?.quantity ??
       0) >= variantStock
 
@@ -106,6 +106,8 @@ export const ProductDetailsHeader = ({
     // Optimistic update
     onAddToCart(storeCartLineItem, variantPrice?.currency_code || "eur")
 
+    console.log("Adding to cart:", { variantId, cartId: cart?.id, regionId: locale });
+
     try {
       await addToCart({
         variantId: variantId,
@@ -120,7 +122,8 @@ export const ProductDetailsHeader = ({
     }
   }
 
-  const isAddToCartDisabled = !variantStock || !variantHasPrice || !hasAnyPrice || isVariantStockMaxLimitReached
+  const isOutOfStock = variantStock !== null && variantStock <= 0 && !variantAllowBackorder
+  const isAddToCartDisabled = isOutOfStock || !variantHasPrice || !hasAnyPrice || isVariantStockMaxLimitReached
 
   return (
     <div className="border rounded-sm p-5" data-testid="product-details-header">
@@ -174,9 +177,11 @@ export const ProductDetailsHeader = ({
       >
         {!hasAnyPrice
           ? "NOT AVAILABLE IN YOUR REGION"
-          : variantStock && variantHasPrice
+          : variantHasPrice && !isOutOfStock && !isVariantStockMaxLimitReached
           ? "ADD TO CART"
-          : "OUT OF STOCK"}
+          : isOutOfStock
+          ? "OUT OF STOCK"
+          : "ADD TO CART"}
       </Button>
       {/* Seller message */}
 

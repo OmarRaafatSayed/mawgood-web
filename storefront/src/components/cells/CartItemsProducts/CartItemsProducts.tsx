@@ -23,7 +23,7 @@ export const CartItemsProducts = ({
 
   return (
     <div>
-      {validProducts.map(product => {
+      {validProducts.map((product, index) => {
         const { options } = product.variant ?? {};
 
         const total = convertToLocale({
@@ -33,7 +33,7 @@ export const CartItemsProducts = ({
 
         return (
           <div
-            key={product.id}
+            key={product.id || product.variant_id || `cart-item-${index}`}
             data-testid={`cart-item-${product.id}`}
             className="flex gap-2 rounded-sm border p-1"
           >

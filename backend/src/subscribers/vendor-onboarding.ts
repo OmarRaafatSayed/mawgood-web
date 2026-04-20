@@ -1,14 +1,14 @@
+/*
 import { SubscriberArgs, SubscriberConfig } from '@medusajs/framework'
 import { Modules } from '@medusajs/framework/utils'
 import { SELLER_MODULE } from '@mercurjs/b2c-core/modules/seller'
 
-/**
- * Subscriber to handle vendor onboarding when a new seller is created
- * - Creates default stock location
- * - Sets up shipping options
- * - Sends welcome email
- * - Initializes commission tracking
- */
+Subscriber to handle vendor onboarding when a new seller is created
+- Creates default stock location
+- Sets up shipping options
+- Sends welcome email
+- Initializes commission tracking
+
 export default async function vendorOnboardingHandler({
   event: { data },
   container,
@@ -31,26 +31,17 @@ export default async function vendorOnboardingHandler({
 
     const seller = sellers[0]
 
-    console.log(`🎉 Starting onboarding for vendor: ${seller.name} (${seller.email})`)
+    console.log(`Starting onboarding for vendor: ${seller.name}`)
 
     // TODO: Create default stock location for the vendor
-    // This would use createStockLocationsWorkflow
-    
     // TODO: Set up shipping options for the vendor
-    // This would use createShippingOptionsWorkflow
-    
     // TODO: Send welcome email to vendor
-    // This would use the notification module
-    
     // TODO: Initialize commission tracking
-    // This would use the @mercurjs/commission module
-
     // TODO: Create vendor-specific notification channel
     
-    console.log(`✅ Onboarding completed for vendor: ${seller.name}`)
+    console.log(`Onboarding completed for vendor: ${seller.name}`)
   } catch (error) {
     console.error('Error in vendor onboarding:', error)
-    // Don't throw - we don't want to break the seller creation flow
   }
 }
 
@@ -58,3 +49,6 @@ export const config: SubscriberConfig = {
   event: 'seller.created',
   context: { subscriber: 'vendor-onboarding' }
 }
+*/
+
+export default function() {}

@@ -14,7 +14,7 @@ import {
 export default async function seedProducts({ container }: ExecArgs) {
   const logger = container.resolve('logger')
 
-  logger.info('=== Creating Products ==='
+  logger.info('=== Creating Products ===')
   
   logger.info('Creating product categories...')
   await createProductCategories(container)

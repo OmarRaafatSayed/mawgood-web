@@ -17,8 +17,7 @@ export const VendorFilter = ({ className }: VendorFilterProps) => {
   useEffect(() => {
     const fetchVendors = async () => {
       try {
-        // Fetch active vendors from the backend
-        const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/vendors?limit=50`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/vendors`)
         const data = await response.json()
         
         if (data.sellers) {

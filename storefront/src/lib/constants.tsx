@@ -10,20 +10,12 @@ export const paymentInfoMap: Record<
     title: "الدفع عند الاستلام",
     icon: <Cash />,
   },
-  "pp_card_stripe-connect": {
-    title: "بطاقة ائتمان",
-    icon: <CreditCard />,
+  "pp_cash-on-delivery_cash-on-delivery": {
+    title: "الدفع عند الاستلام",
+    icon: <Cash />,
   },
-  pp_stripe_stripe: {
-    title: "بطاقة ائتمان",
-    icon: <CreditCard />,
-  },
-  "pp_stripe-ideal_stripe": {
-    title: "iDeal",
-    icon: <CreditCard />,
-  },
-  "pp_stripe-bancontact_stripe": {
-    title: "Bancontact",
+  "online-payment": {
+    title: "الدفع اونلاين (قريباً)",
     icon: <CreditCard />,
   },
   pp_paypal_paypal: {
@@ -37,10 +29,6 @@ export const paymentInfoMap: Record<
   // Add more payment providers here
 }
 
-// This only checks if it is native stripe for card payments, it ignores the other stripe-based providers
-export const isStripe = (providerId?: string) => {
-  return providerId?.startsWith("pp_card_stripe-connect")
-}
 export const isPaypal = (providerId?: string) => {
   return providerId?.startsWith("pp_paypal")
 }

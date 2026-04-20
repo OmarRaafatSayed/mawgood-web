@@ -13,18 +13,27 @@ export const ProductDetailsPage = async ({
 }) => {
   const countryCode = getCountryFromLocale(locale);
   
-  const prod = await listProducts({
-    countryCode,
-    queryParams: { handle: [handle], limit: 1 },
-    forceCache: true,
-  }).then(({ response }) => response.products[0])
+  let prod;
+  try {
+    const result = await listProducts({
+      countryCode,
+      queryParams: { handle: [handle], limit: 1 },
+      forceCache: false,
+    })
+    prod = result.response.products[0]
+  } catch (error) {
+    console.error("Error fetching product:", error)
+    return (
+      <div className="text-center py-12">
+        <h2 className="text-xl font-semibold text-red-600">Error loading product</h2>
+        <p className="text-gray-500 mt-2">Please try again later.</p>
+      </div>
+    )
+  }
 
-  if (!prod) return null
-
-  // Allow products without seller or with suspended seller to show
-  // if (prod.seller?.store_status === "SUSPENDED") {
-  //   return NotFound()
-  // }
+  if (!prod) {
+    return NotFound()
+  }
 
   return (
     <>

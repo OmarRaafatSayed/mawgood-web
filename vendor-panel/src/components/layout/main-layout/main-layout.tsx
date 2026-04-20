@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { MawgoodConnect } from '../../../assets/icons/MercurConnect';
-import { StripeIcon } from '../../../assets/icons/Stripe';
 import { useMe } from '../../../hooks/api';
 import { useSearch } from '../../../providers/search-provider';
 import { ImageAvatar } from '../../common/image-avatar';
@@ -219,13 +218,7 @@ const useCoreRoutes = (): Omit<INavItem, 'pathname'>[] => {
 };
 
 const useExtensionRoutes = (): Omit<INavItem, 'pathname'>[] => {
-  return [
-    {
-      icon: <StripeIcon />,
-      label: 'Stripe Connect',
-      to: '/stripe-connect'
-    }
-  ];
+  return []
 };
 
 const Searchbar = () => {

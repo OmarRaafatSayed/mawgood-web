@@ -7,7 +7,7 @@ interface Props {
 
 const ProductListingProductsView = ({ products }: Props) => (
   <div className="w-full">
-    <ul className="flex flex-wrap gap-4">
+    <ul className="flex flex-wrap gap-2 md:gap-4">
       {products.map(
         (product) =>
            (

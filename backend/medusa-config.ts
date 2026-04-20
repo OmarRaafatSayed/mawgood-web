@@ -34,28 +34,39 @@ module.exports = defineConfig({
       authCors: AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
-    }
+    },
+    defaultCurrencyCode: 'egp'
   },
   admin: {
     disable: true,
   },
   plugins: [
-    {
-      resolve: '@mercurjs/b2c-core',
-      options: {}
-    },
-    {
-      resolve: '@mercurjs/commission',
-      options: {}
-    },
-    {
-      resolve: '@mercurjs/reviews',
-      options: {}
-    },
-    {
-      resolve: '@mercurjs/requests',
-      options: {}
-    },
+    // Disabled b2c-core - using Cash on Delivery payment only
+    // {
+    //   resolve: '@mercurjs/b2c-core',
+    //   options: {
+    //     paymentProviders: [
+    //       {
+    //         id: 'cash-on-delivery',
+    //         service: './src/modules/cash-on-delivery'
+    //       }
+    //     ]
+    //   }
+    // },
+    // Disabled due to seller service conflicts
+    // {
+    //   resolve: '@mercurjs/commission',
+    //   options: {}
+    // },
+    // Disabled due to seller service conflicts
+    // {
+    //   resolve: '@mercurjs/reviews',
+    //   options: {}
+    // },
+    // {
+    //   resolve: '@mercurjs/requests',
+    //   options: {}
+    // },
     {
       resolve: '@mercurjs/resend',
       options: {}
@@ -70,14 +81,6 @@ module.exports = defineConfig({
             resolve: './src/modules/cash-on-delivery',
             id: 'cash-on-delivery',
             options: {}
-          },
-          {
-            resolve:
-              '@mercurjs/payment-stripe-connect/providers/stripe-connect',
-            id: 'stripe-connect',
-            options: {
-              apiKey: process.env.STRIPE_SECRET_API_KEY
-            }
           }
         ]
       }
@@ -86,15 +89,16 @@ module.exports = defineConfig({
       resolve: '@medusajs/medusa/notification',
       options: {
         providers: [
-          {
-            resolve: '@mercurjs/resend/providers/resend',
-            id: 'resend',
-            options: {
-              channels: ['email'],
-              api_key: process.env.RESEND_API_KEY,
-              from: process.env.RESEND_FROM_EMAIL
-            }
-          },
+          // Disabled resend provider
+          // {
+          //   resolve: '@mercurjs/resend/providers/resend',
+          //   id: 'resend',
+          //   options: {
+          //     channels: ['email'],
+          //     api_key: process.env.RESEND_API_KEY,
+          //     from: process.env.RESEND_FROM_EMAIL
+          //   }
+          // },
           {
             resolve: '@medusajs/medusa/notification-local',
             id: 'local',
@@ -107,3 +111,4 @@ module.exports = defineConfig({
     }
   ]
 })
+
