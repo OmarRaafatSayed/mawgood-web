@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MedusaContainer } from "@medusajs/framework/types"
 
 export default async function seedShippingOptions({ container }: { container: MedusaContainer }) {

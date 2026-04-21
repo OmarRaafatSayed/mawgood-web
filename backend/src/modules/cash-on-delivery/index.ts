@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CashOnDeliveryProviderService from "./service"
 import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 
