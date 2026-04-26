@@ -1049,6 +1049,11 @@ export function getRouteMap({
               lazy: () => import("../../routes/settings"),
             },
             {
+              path: "developer",
+              errorElement: <ErrorBoundary />,
+              lazy: () => import("../../routes/settings/developer"),
+            },
+            {
               path: "profile",
               errorElement: <ErrorBoundary />,
               lazy: () => import("../../routes/profile/profile-detail"),

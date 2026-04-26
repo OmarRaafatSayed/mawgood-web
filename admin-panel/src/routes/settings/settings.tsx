@@ -9,6 +9,9 @@ export const Settings = () => {
     if (location.pathname === "/settings") {
       navigate("/settings/store", { replace: true })
     }
+    if (location.pathname === "/settings/developer") {
+      navigate("/settings/publishable-api-keys", { replace: true })
+    }
   }, [location.pathname, navigate])
 
   return <Outlet />
