@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@medusajs/medusa": "^1.0.0",
+    "ssh2": "^1.17.0",
     "stripe": "^22.0.1"
   },
   "devDependencies": {
