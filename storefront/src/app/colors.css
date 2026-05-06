@@ -15,30 +15,30 @@
     --neutral-1000: 9, 9, 9;
 
     /* Primary Brand - Orange #F36418 with tints (lighter) and shades (darker) */
-    --brand-25: 253, 247, 245;
-    --brand-50: 251, 239, 233;
-    --brand-100: 248, 223, 211;
-    --brand-200: 241, 192, 168;
-    --brand-300: 234, 160, 124;
-    --brand-400: 243, 100, 24;    /* #F36418 - Primary Base */
-    --brand-500: 217, 86, 15;
-    --brand-600: 184, 72, 13;
-    --brand-700: 148, 59, 11;
-    --brand-800: 107, 42, 8;
-    --brand-900: 74, 29, 6;
+    --brand-25: 253, 245, 240;
+    --brand-50: 251, 235, 225;
+    --brand-100: 248, 215, 200;
+    --brand-200: 245, 175, 145;
+    --brand-300: 243, 135, 90;
+    --brand-400: 242, 99, 24;    /* #F26318 - Primary Base */
+    --brand-500: 215, 85, 20;
+    --brand-600: 185, 70, 15;
+    --brand-700: 150, 55, 10;
+    --brand-800: 110, 40, 5;
+    --brand-900: 75, 25, 3;
 
     /* Secondary Brand - Blue #0E4EB0 with tints and shades */
     --secondary-25: 245, 248, 255;
-    --secondary-50: 235, 240, 254;
-    --secondary-100: 215, 225, 253;
-    --secondary-200: 175, 195, 251;
-    --secondary-300: 135, 166, 249;
-    --secondary-400: 14, 78, 176;  /* #0E4EB0 - Secondary Base */
-    --secondary-500: 12, 68, 158;
-    --secondary-600: 10, 58, 134;
-    --secondary-700: 8, 47, 110;
-    --secondary-800: 6, 36, 84;
-    --secondary-900: 4, 26, 61;
+    --secondary-50: 230, 240, 255;
+    --secondary-100: 200, 220, 255;
+    --secondary-200: 160, 190, 255;
+    --secondary-300: 100, 150, 250;
+    --secondary-400: 14, 77, 174;  /* #0E4DAE - Secondary Base */
+    --secondary-500: 12, 65, 150;
+    --secondary-600: 10, 55, 125;
+    --secondary-700: 8, 45, 100;
+    --secondary-800: 6, 35, 80;
+    --secondary-900: 4, 25, 55;
 
     /* Surface - Light Gray #F2F2F2 with tints and shades */
     --surface-25: 252, 252, 252;

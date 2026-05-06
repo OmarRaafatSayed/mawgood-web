@@ -2,8 +2,8 @@ import { clx } from "@medusajs/ui"
 import { Transition, motion } from "motion/react"
 import { useEffect, useState } from "react"
 
-import logoLight from "@assets/logos/light-mood.png"
-import logoDark from "@assets/logos/dark-mood.png"
+import logoLight from "../../../assets/logos/light-mood.png"
+import logoDark from "../../../assets/logos/dark-mood.png"
 
 type LogoBoxProps = {
   className?: string

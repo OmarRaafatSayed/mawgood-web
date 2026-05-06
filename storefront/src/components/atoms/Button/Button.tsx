@@ -23,38 +23,41 @@ export function Button({
 }: ButtonProps) {
   const isLoadingValue = isLoadingProp ?? loading;
   const baseClasses =
-    "text-md button-text rounded-sm disabled:bg-disabled disabled:text-disabled dark:bg-action-tertiary dark:hover:bg-action-tertiary-hover dark:active:bg-action-tertiary-pressed dark:disabled:bg-disabled"
+    "text-md font-semibold rounded-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
 
   const variantClasses = {
-filled: `bg-action text-action-on-primary hover:bg-action-hover active:bg-action-pressed ${
-      isLoadingValue && "button-text-filled"
-    }`,
+    filled: `bg-brand-400 text-white shadow-sm hover:bg-brand-500 hover:shadow-md active:scale-95 border-b-2 border-brand-600`,
     tonal:
-      "bg-action-secondary hover:bg-action-secondary-hover active:bg-action-secondary-pressed text-action-on-secondary",
-    text: "bg-primary dark:bg-primary hover:bg-action-secondary-hover active:bg-action-secondary-pressed text-primary",
-    destructive: `text-negative-on-primary bg-negative hover:bg-negative-hover active:bg-negative-pressed ${
-      isLoadingValue && "button-text-filled"
-    }`,
+      "bg-secondary-50 text-secondary-700 hover:bg-secondary-100 border border-secondary-200 active:scale-95",
+    text: "bg-transparent hover:bg-surface-100 text-primary active:scale-95",
+    destructive: "bg-red-600 text-white hover:bg-red-700 shadow-sm active:scale-95",
   }
 
   const sizeClasses = {
-    small: "px-[16px] py-[8px]",
-    large: "px-[24px] py-[8px]",
+    small: "px-4 py-2 text-sm",
+    large: "px-8 py-3 text-base shadow-md hover:shadow-lg",
   }
 
   return (
     <button
-      disabled={disabled}
+      disabled={disabled || isLoadingValue}
       className={cn(
+        baseClasses,
         variantClasses[variant],
         sizeClasses[size],
-        baseClasses,
         className
       )}
-data-testid={dataTestId ?? `button-${variant}-${size}`}
+      data-testid={dataTestId ?? `button-${variant}-${size}`}
       {...props}
     >
-      {isLoadingValue ? <Spinner /> : children}
+      {isLoadingValue ? (
+        <div className="flex items-center gap-2">
+          <Spinner size={18} />
+          <span>{children}</span>
+        </div>
+      ) : (
+        children
+      )}
     </button>
   )
 }

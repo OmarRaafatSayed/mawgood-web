@@ -1,19 +1,21 @@
 {
-  "name": "your-project-name",
+  "name": "mawgood-marketplace",
   "version": "1.0.0",
-  "description": "Your project description",
-  "main": "index.js",
+  "description": "Mawgood Multi-Vendor Marketplace",
+  "private": true,
   "scripts": {
-    "start": "medusa start",
-    "build": "medusa build",
-    "migrate": "medusa migrations run"
-  },
-  "dependencies": {
-    "@medusajs/medusa": "^1.0.0",
-    "ssh2": "^1.17.0",
-    "stripe": "^22.0.1"
+    "install:all": "npm install --legacy-peer-deps && cd backend && npm install --legacy-peer-deps && cd ../storefront && npm install --legacy-peer-deps && cd ../admin-panel && npm install --legacy-peer-deps && cd ../vendor-panel && npm install --legacy-peer-deps",
+
+    "build:backend": "cd backend && npm run build",
+    "build:storefront": "cd storefront && npm run build",
+    "build:admin": "cd admin-panel && npm run build",
+    "build:vendor": "cd vendor-panel && npm run build",
+    "build:all": "npm run build:backend && npm run build:storefront && npm run build:admin && npm run build:vendor",
+    "start:pm2": "pm2 start ecosystem.config.js",
+    "stop:pm2": "pm2 stop ecosystem.config.js",
+    "restart:pm2": "pm2 restart ecosystem.config.js"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.0.0"
+    "concurrently": "^8.2.2"
   }
 }

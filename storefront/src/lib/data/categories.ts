@@ -21,8 +21,9 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
         ...query
       },
       cache: 'force-cache',
-      next: { revalidate: 3600 }
+      next: { revalidate: 60 }
     })
+
     .then(({ product_categories }) => product_categories);
 
   const parentCategories = allCategories.filter(cat => !cat.parent_category_id);
@@ -50,13 +51,14 @@ export const listCategories = async ({ query }: Partial<CategoriesProps> = {}) =
 
 export const getCategoryByHandle = async (categoryHandle: string) => {
   return sdk.client
-    .fetch<HttpTypes.StoreProductCategoryListResponse>(`/store/product-categories`, {
+    .fetch<any>(`/store/product-categories`, {
       query: {
-        fields: '*category_children',
+        fields: 'id,handle,name,description,*category_children',
         handle: categoryHandle
       },
       cache: 'force-cache',
       next: { revalidate: 300 }
     })
     .then(({ product_categories }) => product_categories[0]);
+
 };

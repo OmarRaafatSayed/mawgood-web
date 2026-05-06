@@ -1,51 +1,51 @@
 module.exports = {
   apps: [
     {
-      name: 'backend',
+      name: 'mawgood-backend',
       cwd: './backend',
       script: 'npm',
-      args: 'run dev',
+      args: 'run start',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         PORT: 9000
       },
-      watch: false,
+      max_memory_restart: '1G',
       autorestart: true
     },
     {
-      name: 'admin',
-      cwd: './admin',
+      name: 'mawgood-admin',
+      cwd: './admin-panel',
       script: 'npm',
-      args: 'run dev',
+      args: 'run start',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         PORT: 5173
       },
-      watch: false,
+      max_memory_restart: '500M',
       autorestart: true
     },
     {
-      name: 'vendor',
-      cwd: './vendor',
+      name: 'mawgood-vendor',
+      cwd: './vendor-panel',
       script: 'npm',
-      args: 'run dev',
+      args: 'run start',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         PORT: 5174
       },
-      watch: false,
+      max_memory_restart: '500M',
       autorestart: true
     },
     {
-      name: 'storefront',
+      name: 'mawgood-storefront',
       cwd: './storefront',
       script: 'npm',
-      args: 'run dev',
+      args: 'run start',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'production',
         PORT: 3000
       },
-      watch: false,
+      max_memory_restart: '1G',
       autorestart: true
     }
   ]

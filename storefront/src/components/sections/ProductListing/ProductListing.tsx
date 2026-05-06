@@ -8,9 +8,7 @@ import {
 import { PRODUCT_LIMIT } from "@/const"
 import { listProductsWithSort } from "@/lib/data/products"
 import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
-import { Drawer } from "@medusajs/ui"
 
-const { Content, Header, Title, Body } = Drawer
 
 export const ProductListing = async ({
   category_id,
@@ -60,17 +58,7 @@ export const ProductListing = async ({
           <ProductsPagination pages={pages} />
         </section>
       </div>
-
-      <Drawer>
-        <Content>
-          <Header>
-            <Title>Filters</Title>
-          </Header>
-          <Body>
-            <ProductSidebar />
-          </Body>
-        </Content>
-      </Drawer>
     </div>
+
   )
 }

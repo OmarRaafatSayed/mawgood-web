@@ -30,7 +30,8 @@ export const RouteMap: RouteObject[] = [
           {
             path: '/mawgood-connect',
             errorElement: <ErrorBoundary />,
-            lazy: () => import('../../routes/mercur-connect')
+            lazy: () => import('../../routes/mawgood-connect')
+
           },
 
           {
@@ -326,7 +327,7 @@ export const RouteMap: RouteObject[] = [
                         handle: {
                           breadcrumb: (
                             // eslint-disable-next-line max-len
-                            match: UIMatch<HttpTypes.AdminProductVariantResponse>
+                            match: UIMatch<any>
                           ) => <Breadcrumb {...match} />
                         }
                       };
@@ -482,7 +483,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminPromotionResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -585,7 +586,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminCollectionResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -631,7 +632,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminPriceListResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -934,7 +935,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminRegionResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -1011,7 +1012,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminUserResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -1250,7 +1251,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminProductTagResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -1287,7 +1288,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminWorkflowExecutionResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }
@@ -1324,7 +1325,7 @@ export const RouteMap: RouteObject[] = [
                     Component,
                     loader,
                     handle: {
-                      breadcrumb: (match: UIMatch<HttpTypes.AdminProductTypeResponse>) => (
+                      breadcrumb: (match: UIMatch<any>) => (
                         <Breadcrumb {...match} />
                       )
                     }

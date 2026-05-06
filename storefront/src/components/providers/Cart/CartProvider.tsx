@@ -13,11 +13,11 @@ import { Cart, StoreCartLineItemOptimisticUpdate } from '@/types/cart';
 import { CartContext } from './context';
 
 interface CartProviderProps extends PropsWithChildren {
-  cart: Cart | null;
+  cart: any;
 }
 
 export function CartProvider({ cart, children }: CartProviderProps) {
-  const [cartState, setCartState] = useState(cart);
+  const [cartState, setCartState] = useState<any>(cart);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingItem, setIsAddingItem] = useState(false);
   const [isUpdatingItem, setIsUpdatingItem] = useState(false);
@@ -39,27 +39,27 @@ export function CartProvider({ cart, children }: CartProviderProps) {
   }, []);
 
   function handleAddToCart(newItem: StoreCartLineItemOptimisticUpdate, currency_code: string) {
-    setCartState(prev => {
+    setCartState((prev: any) => {
       const currentItems = prev?.items || [];
       const isNewItemInCart = currentItems.find(
-        ({ variant_id }) => variant_id === newItem.variant_id
+        (item: any) => item.variant_id === (newItem as any).variant_id
       );
 
       if (isNewItemInCart) {
-        const updatedItems = currentItems.map(currentItem => {
-          if (currentItem.variant_id !== newItem.variant_id) {
+        const updatedItems = currentItems.map((currentItem: any) => {
+          if ((currentItem as any).variant_id !== (newItem as any).variant_id) {
             return currentItem;
           }
 
-          const newQuantity = currentItem.quantity + (newItem?.quantity || 0);
+          const newQuantity = currentItem.quantity + ((newItem as any)?.quantity || 0);
           return {
             ...currentItem,
             quantity: newQuantity,
-            subtotal: newQuantity * (newItem?.subtotal || 0),
-            total: newQuantity * (newItem?.total || 0),
-            tax_total: newQuantity * (newItem?.tax_total || 0)
+            subtotal: newQuantity * ((newItem as any)?.subtotal || 0),
+            total: newQuantity * ((newItem as any)?.total || 0),
+            tax_total: newQuantity * ((newItem as any)?.tax_total || 0)
           };
-        }) as StoreCartLineItemOptimisticUpdate[];
+        });
 
         const { item_subtotal, total, tax_total } = getItemsSummaryValues(updatedItems);
 
@@ -70,7 +70,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
           total,
           tax_total,
           currency_code
-        } as Cart;
+        };
       }
 
       const updatedItems = [...currentItems, newItem] as StoreCartLineItemOptimisticUpdate[];
@@ -84,7 +84,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
         total,
         tax_total,
         currency_code
-      } as Cart;
+      };
     });
   }
 
@@ -96,7 +96,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
 
     const optimisticCart = {
       ...cartState,
-      items: cartState.items.map(item => (item.id === lineId ? { ...item, quantity } : item))
+      items: cartState.items.map((item: any) => (item.id === lineId ? { ...item, quantity } : item))
     };
 
     setCartState(optimisticCart);
@@ -107,10 +107,12 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     } catch (error) {
       console.error('Error updating item quantity:', error);
       await refreshCart();
+      throw error; // Re-throw to let the UI handle the error
     } finally {
       setIsUpdatingItem(false);
       setIsUpdating(false);
     }
+
   };
 
   const addToCart = async ({
@@ -151,7 +153,7 @@ export function CartProvider({ cart, children }: CartProviderProps) {
 
     const optimisticCart = {
       ...cartState,
-      items: cartState.items.filter(item => item.id !== lineId)
+      items: cartState.items.filter((item: any) => item.id !== lineId)
     };
 
     setCartState(optimisticCart);
@@ -168,9 +170,9 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     }
   };
 
-  function getItemsSummaryValues(items: StoreCartLineItemOptimisticUpdate[]) {
+  function getItemsSummaryValues(items: any[]) {
     return items.reduce(
-      (acc, item) => ({
+      (acc: any, item: any) => ({
         item_subtotal: (acc.item_subtotal || 0) + (item.subtotal || 0),
         total: (acc.total || 0) + (item.total || 0),
         tax_total: (acc.tax_total || 0) + (item.tax_total || 0)

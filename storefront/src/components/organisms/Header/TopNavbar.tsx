@@ -98,13 +98,13 @@ export const TopNavbar = ({
 
   return (
     <>
-      <header className="bg-[#131921] text-white overflow-hidden">
+      <header className="bg-[#0e111a] text-white overflow-hidden border-b border-white/5">
         {/* Mobile header row */}
-        <div className="flex items-center gap-2 px-3 py-2 sm:hidden mobile-header max-w-screen-lg mx-auto">
+        <div className="flex items-center gap-4 px-4 py-3 sm:hidden mobile-header max-w-screen-lg mx-auto">
           {/* Hamburger */}
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="flex-shrink-0 p-1"
+            className="flex-shrink-0 p-1 hover:bg-white/10 rounded-lg transition-colors"
             aria-label="Menu"
           >
             <HamburgerMenuIcon size={24} color="#fff" />
@@ -118,19 +118,19 @@ export const TopNavbar = ({
           >
             <Image
               src="/logo.svg"
-              width={100}
-              height={32}
+              width={120}
+              height={40}
               alt="Logo"
               priority
-              className="h-7 w-auto"
+              className="h-8 w-auto brightness-100"
             />
           </LocalizedClientLink>
 
           {/* Mobile Icons: Search + Cart */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 ms-auto">
             <button
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="p-1"
+              className="p-1 hover:bg-white/10 rounded-lg transition-colors text-white"
               aria-label={t("search")}
             >
               <SearchIcon size={24} color="#fff" />
@@ -138,11 +138,11 @@ export const TopNavbar = ({
 
             <LocalizedClientLink
               href="/cart"
-              className="relative p-1"
+              className="relative p-1 hover:bg-white/10 rounded-lg transition-colors"
             >
-              <CartIcon size={24} color="#fff" />
+              <CartIcon size={24} color="#F26318" />
               {cartCount > 0 && (
-                <Badge className="absolute -top-1 -end-1 w-4 h-4 p-0 bg-[#f08804] border-0 text-white text-[10px] flex items-center justify-center font-bold">
+                <Badge className="absolute -top-1 -end-1 w-5 h-5 p-0 bg-brand-400 border-2 border-[#0e111a] text-white text-[10px] flex items-center justify-center font-black rounded-full">
                   {cartCount}
                 </Badge>
               )}
@@ -151,49 +151,49 @@ export const TopNavbar = ({
         </div>
 
         {/* Desktop header row */}
-        <div className="hidden sm:flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-2 max-w-[1500px] mx-auto">
+        <div className="hidden sm:flex items-center gap-6 px-6 py-3 max-w-[1600px] mx-auto">
           {/* Logo */}
           <LocalizedClientLink
             href="/"
-            className="flex-shrink-0 flex items-center"
+            className="flex-shrink-0 flex items-center group transition-transform active:scale-95"
             aria-label={t("home")}
           >
             <Image
               src="/logo.svg"
-              width={100}
-              height={32}
+              width={140}
+              height={45}
               alt="Logo"
               priority
-              className="h-8 w-auto"
+              className="h-10 w-auto brightness-100 contrast-125"
             />
           </LocalizedClientLink>
 
           {/* Desktop Search */}
-          <form onSubmit={handleSearch} className="flex-1 flex min-w-0">
+          <form onSubmit={handleSearch} className="flex-1 flex min-w-0 group/search shadow-lg">
             {/* Category Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
                 type="button"
                 onClick={() => setShowAllDropdown(!showAllDropdown)}
-                className="flex items-center gap-1 px-2 bg-[#e6e6e6] hover:bg-[#d4d4d4] text-gray-700 rounded-s-md h-10 text-sm"
+                className="flex items-center gap-2 px-4 bg-white/95 hover:bg-white text-secondary-900 rounded-s-xl h-12 text-sm font-bold transition-all border-y border-s border-transparent"
               >
-                <span className="truncate max-w-[80px]">
+                <span className="truncate max-w-[100px]">
                   {selectedCategory === "all"
                     ? tNav("all")
                     : parentCategories.find((p) => p.handle === selectedCategory)?.name ||
                       categories.find((c) => c.handle === selectedCategory)?.name ||
                       tNav("all")}
                 </span>
-                <CollapseIcon size={12} className={chevronDir} />
+                <CollapseIcon size={14} className={`${chevronDir} opacity-60`} />
               </button>
 
               {showAllDropdown && (
-                <div className="absolute top-full start-0 z-50 bg-white text-gray-900 shadow-lg rounded-b-md min-w-[200px] max-h-[300px] overflow-y-auto">
+                <div className="absolute top-full start-0 z-50 bg-white text-gray-900 shadow-2xl rounded-b-xl min-w-[240px] max-h-[450px] overflow-y-auto py-3 border border-gray-100 animate-in fade-in slide-in-from-top-2">
                   <button
                     type="button"
                     onClick={() => handleCategorySelect("all")}
-                    className={`w-full text-start px-4 py-2 text-sm hover:bg-gray-100 ${
-                      selectedCategory === "all" ? "bg-gray-100 font-semibold" : ""
+                    className={`w-full text-start px-5 py-3 text-sm hover:bg-brand-50 hover:text-brand-600 transition-colors ${
+                      selectedCategory === "all" ? "bg-brand-50 text-brand-600 font-bold" : "font-medium"
                     }`}
                   >
                     {tNav("all")}
@@ -203,8 +203,8 @@ export const TopNavbar = ({
                       key={parent.id}
                       type="button"
                       onClick={() => handleCategorySelect(parent.handle!)}
-                      className={`w-full text-start px-4 py-2 text-sm hover:bg-gray-100 ${
-                        selectedCategory === parent.handle ? "bg-gray-100 font-semibold" : ""
+                      className={`w-full text-start px-5 py-3 text-sm hover:bg-brand-50 hover:text-brand-600 transition-colors ${
+                        selectedCategory === parent.handle ? "bg-brand-50 text-brand-600 font-bold" : "font-medium"
                       }`}
                     >
                       {parent.name}
@@ -221,7 +221,7 @@ export const TopNavbar = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t("search")}
-                className="w-full h-10 px-3 text-gray-900 focus:outline-none"
+                className="w-full h-12 px-5 text-gray-900 focus:outline-none bg-white font-medium text-base placeholder:text-gray-400"
                 aria-label={t("search")}
                 dir="auto"
               />
@@ -230,107 +230,98 @@ export const TopNavbar = ({
             {/* Search Button */}
             <button
               type="submit"
-              className="bg-[#febd69] hover:bg-[#f3a847] px-4 rounded-e-md flex items-center justify-center"
+              className="bg-brand-400 hover:bg-brand-500 px-7 rounded-e-xl flex items-center justify-center transition-all group-focus-within/search:ring-2 ring-brand-400/50 active:scale-95"
               aria-label={t("search")}
             >
-              <SearchIcon size={20} color="#111" />
+              <SearchIcon size={24} color="#fff" className="group-hover:scale-110 transition-transform" />
             </button>
           </form>
 
           {/* Desktop Right Section */}
-          <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* Virtual Try-On */}
             <button
               onClick={() => setVtonOpen(true)}
-              className="flex flex-col items-center justify-center hover:outline outline-1 outline-white p-1"
-              aria-label={tVton("buttonText")}
+              className="flex flex-col items-center justify-center hover:bg-white/10 rounded-xl px-4 py-2 transition-all group"
             >
-              <VTonIcon size={24} color="#fff" />
-              <span className="text-xs">{tVton("buttonText")}</span>
+              <VTonIcon size={26} color="#fff" className="group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] font-bold mt-1 text-white tracking-wide uppercase">{tVton("buttonText")}</span>
             </button>
 
             {/* Language */}
             <button
               onClick={switchLocale}
               disabled={isPending}
-              className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-              aria-label={`Switch to ${locale === "ar" ? "English" : "Arabic"}`}
+              className="flex items-center gap-2.5 hover:bg-white/10 rounded-xl px-4 py-2 transition-all text-white"
             >
               <Image
                 src={locale === "ar" ? "/flags/egypt.svg" : "/flags/us.svg"}
                 width={24}
-                height={16}
+                height={18}
                 alt={locale === "ar" ? "Arabic" : "English"}
+                className="rounded shadow-sm"
               />
-              <span className="text-xs uppercase">
+              <span className="text-sm font-black uppercase tracking-wider">
                 {locale === "ar" ? "AR" : "EN"}
               </span>
             </button>
 
             {/* Account */}
-            <div className="relative group">
+            <div className="relative group/account">
               <LocalizedClientLink
                 href={isLoggedIn ? "/user" : "/login"}
-                className="flex flex-col leading-tight hover:outline outline-1 outline-white p-1"
+                className="flex flex-col leading-tight hover:bg-white/10 rounded-xl px-4 py-2 transition-all text-white border border-transparent hover:border-white/10"
               >
-                <span className="text-xs">
+                <span className="text-[11px] font-medium opacity-70">
                   {isLoggedIn ? tNav("hello") : tNav("helloSignin")}
                 </span>
-                <span className="text-sm font-bold">{tNav("accountLists")}</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-black whitespace-nowrap">{tNav("accountLists")}</span>
+                  <CollapseIcon size={12} className="opacity-50" />
+                </div>
               </LocalizedClientLink>
 
-              <div className="absolute top-full end-0 z-50 hidden group-hover:block bg-white text-gray-900 shadow-lg rounded-md min-w-[200px]">
-                <div className="p-3">
+              <div className="absolute top-full end-0 z-50 hidden group-hover/account:block bg-white text-gray-900 shadow-2xl rounded-2xl min-w-[280px] mt-2 border border-gray-100 p-5 animate-in fade-in zoom-in-95">
                   {isLoggedIn ? (
-                    <>
-                      <LocalizedClientLink href="/user" className="block px-3 py-2 text-sm font-semibold hover:bg-gray-100 rounded">{tNav("yourAccount")}</LocalizedClientLink>
-                      <LocalizedClientLink href="/user/orders" className="block px-3 py-2 text-sm hover:bg-gray-100 rounded">{t("orders")}</LocalizedClientLink>
-                      <LocalizedClientLink href="/user/wishlist" className="block px-3 py-2 text-sm hover:bg-gray-100 rounded">{t("wishlist")}</LocalizedClientLink>
-                      <LocalizedClientLink href="/user/settings" className="block px-3 py-2 text-sm hover:bg-gray-100 rounded">{t("settings")}</LocalizedClientLink>
-                      <LocalizedClientLink href="/logout" className="block px-3 py-2 text-sm hover:bg-gray-100 rounded border-t">{t("logout")}</LocalizedClientLink>
-                    </>
+                    <div className="space-y-2">
+                      <LocalizedClientLink href="/user" className="block px-4 py-2.5 text-sm font-bold hover:bg-brand-50 hover:text-brand-600 rounded-lg transition-colors border-l-4 border-transparent hover:border-brand-400">{tNav("yourAccount")}</LocalizedClientLink>
+                      <LocalizedClientLink href="/user/orders" className="block px-4 py-2.5 text-sm font-medium hover:bg-gray-50 rounded-lg transition-colors">{t("orders")}</LocalizedClientLink>
+                      <LocalizedClientLink href="/user/wishlist" className="block px-4 py-2.5 text-sm font-medium hover:bg-gray-50 rounded-lg transition-colors">{t("wishlist")}</LocalizedClientLink>
+                      <LocalizedClientLink href="/user/settings" className="block px-4 py-2.5 text-sm font-medium hover:bg-gray-50 rounded-lg transition-colors">{t("settings")}</LocalizedClientLink>
+                      <div className="border-t border-gray-100 mt-3 pt-3">
+                        <LocalizedClientLink href="/logout" className="block px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors text-center uppercase tracking-tighter">{t("logout")}</LocalizedClientLink>
+                      </div>
+                    </div>
                   ) : (
-                    <>
-                      <LocalizedClientLink href="/login" className="block px-3 py-2 text-sm font-semibold hover:bg-gray-100 rounded">{t("login")}</LocalizedClientLink>
-                      <LocalizedClientLink href="/register" className="block px-3 py-2 text-sm hover:bg-gray-100 rounded">{t("register")}</LocalizedClientLink>
-                    </>
+                    <div className="space-y-4">
+                      <LocalizedClientLink href="/login" className="block w-full text-center bg-brand-400 hover:bg-brand-500 text-white py-3 rounded-xl font-black text-sm shadow-lg shadow-brand-400/20 transition-all active:scale-95 uppercase tracking-widest">{t("login")}</LocalizedClientLink>
+                      <div className="text-center text-xs text-gray-500 font-medium">
+                        {tNav("helloSignin")}? <LocalizedClientLink href="/register" className="text-secondary-600 hover:text-secondary-700 font-bold underline underline-offset-4">{t("register")}</LocalizedClientLink>
+                      </div>
+                    </div>
                   )}
-                </div>
               </div>
             </div>
-
-            {/* Wishlist */}
-            {isLoggedIn && (
-              <LocalizedClientLink
-                href="/user/wishlist"
-                className="relative flex flex-col items-center justify-center hover:outline outline-1 outline-white p-1"
-              >
-                <span className="text-xs">{tNav("wishlist")}</span>
-                {wishlistCount > 0 && (
-                  <Badge className="absolute -top-1 -end-1 w-4 h-4 p-0 bg-[#f08804] border-0">
-                    {wishlistCount}
-                  </Badge>
-                )}
-              </LocalizedClientLink>
-            )}
 
             {/* Cart */}
             <LocalizedClientLink
               href="/cart"
-              className="relative flex items-center gap-1 hover:outline outline-1 outline-white p-1"
+              className="relative flex items-center gap-3 hover:bg-white/10 rounded-xl px-5 py-2 transition-all group text-white bg-white/5 border border-white/10"
             >
               <div className="relative">
-                <CartIcon size={28} color="#fff" />
+                <CartIcon size={30} color="#F26318" className="group-hover:rotate-12 transition-transform" />
                 {cartCount > 0 && (
-                  <Badge className="absolute -top-1 -end-1 w-5 h-5 p-0 bg-[#f08804] border-0 text-white text-xs flex items-center justify-center font-bold">
+                  <Badge className="absolute -top-2 -end-2 w-6 h-6 p-0 bg-brand-400 border-2 border-[#0e111a] text-white text-[12px] flex items-center justify-center font-black rounded-full shadow-lg">
                     {cartCount}
                   </Badge>
                 )}
               </div>
-              <span className="text-sm font-bold">{t("cart")}</span>
+              <span className="text-sm font-black mt-1 uppercase tracking-wider">{t("cart")}</span>
             </LocalizedClientLink>
           </div>
         </div>
+
+
 
         {/* Mobile Search (expandable) */}
         {mobileSearchOpen && (
