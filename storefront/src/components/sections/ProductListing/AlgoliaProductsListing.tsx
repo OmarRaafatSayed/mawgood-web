@@ -15,7 +15,7 @@ import { useSearchParams } from "next/navigation"
 import { getFacedFilters } from "@/lib/helpers/get-faced-filters"
 import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { searchProducts } from "@/lib/data/products"
 import { FacetModel } from "@/components/organisms/ProductSidebar/AlgoliaProductSidebar"
 import { FilterIcon } from "@/icons"
@@ -126,40 +126,39 @@ const ProductsListing = ({
   if (isLoading && products.length === 0) return <ProductListingSkeleton />
 
   return (
-    <div className="py-4">
-      <div className="flex justify-between w-full items-center">
-        <div className="my-2 label-md">{`${count} listings`}</div>
-        <Trigger asChild>
-          <button 
-            className="md:hidden p-2 bg-brand-400 text-white rounded-md hover:bg-brand-500 transition-colors"
-          >
-            <FilterIcon className="w-5 h-5" />
-          </button>
-        </Trigger>
-      </div>
-      <div className="hidden md:block">
-        <ProductListingActiveFilters />
-      </div>
-      <div className="md:flex gap-4">
-        <div className="w-[280px] flex-shrink-0 hidden md:block">
-          <AlgoliaProductSidebar facets={facets} />
+    <Drawer>
+      <div className="py-4">
+        <div className="flex justify-between w-full items-center">
+          <div className="my-2 label-md">{`${count} listings`}</div>
+          <Trigger asChild>
+            <button
+              className="md:hidden p-2 bg-brand-400 text-white rounded-md hover:bg-brand-500 transition-colors"
+            >
+              <FilterIcon className="w-5 h-5" />
+            </button>
+          </Trigger>
         </div>
-        <div className="w-full flex flex-col">
-          {isLoading && <ProductListingLoadingView />}
+        <div className="hidden md:block">
+          <ProductListingActiveFilters />
+        </div>
+        <div className="md:flex gap-4">
+          <div className="w-[280px] flex-shrink-0 hidden md:block">
+            <AlgoliaProductSidebar facets={facets} />
+          </div>
+          <div className="w-full flex flex-col">
+            {isLoading && <ProductListingLoadingView />}
 
-          {!isLoading && !products.length && <ProductListingNoResultsView />}
+            {!isLoading && !products.length && <ProductListingNoResultsView />}
 
-          {!isLoading && products.length > 0 && (
-            <ProductListingProductsView products={products} />
-          )}
+            {!isLoading && products.length > 0 && (
+              <ProductListingProductsView products={products} />
+            )}
 
-          <div className="mt-auto">
-            <ProductsPagination pages={pages} />
+            <div className="mt-auto">
+              <ProductsPagination pages={pages} />
+            </div>
           </div>
         </div>
-      </div>
-
-      <Drawer>
         <Content>
           <Header>
             <Title>Filters</Title>
@@ -168,7 +167,7 @@ const ProductsListing = ({
             <AlgoliaProductSidebar facets={facets} />
           </Body>
         </Content>
-      </Drawer>
-    </div>
+      </div>
+    </Drawer>
   )
 }

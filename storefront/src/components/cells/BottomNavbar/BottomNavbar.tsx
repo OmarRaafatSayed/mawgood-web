@@ -6,6 +6,8 @@ import { useParams } from 'next/navigation'
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
 import { useTranslations } from 'next-intl'
 import { HomeIcon, SearchIcon, CartIcon, ProfileIcon, HeartIcon, StoreIcon } from '@/icons'
+import { useCartContext } from '@/components/providers'
+import Link from 'next/link'
 
 interface BottomNavbarProps {
   isLoggedIn?: boolean
@@ -15,167 +17,155 @@ interface BottomNavbarProps {
 
 export function BottomNavbar({
   isLoggedIn = false,
-  cartItemsCount = 0,
-  wishlistCount = 0
+  wishlistCount = 0,
 }: BottomNavbarProps) {
   const pathname = usePathname()
   const params = useParams()
   const [activePath, setActivePath] = useState('/')
   const t = useTranslations('common')
-  const vendorT = useTranslations('vendor')
+  const tVendor = useTranslations('vendor')
+  const { cart } = useCartContext()
+  const cartCount = (cart as any)?.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0
 
   const locale = params?.locale || pathname?.split('/')[1] || 'ar'
-  const vendorPanelUrl = process.env.NEXT_PUBLIC_VENDOR_URL || 'http://localhost:5174'
-
-  const vendorRegisterUrl = `${vendorPanelUrl}/register`
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname
-      setActivePath(path)
-    }
-  }, [])
+    setActivePath(window.location.pathname)
+  }, [pathname])
 
-  const getActiveState = (path: string) => {
-    const fullPath = `/${locale}${path}`
-    if (path === '/') {
-      return activePath === `/${locale}/` || activePath === `/${locale}` || activePath === '/'
-    }
-    return activePath.includes(path) || activePath.includes(fullPath)
+  const isActive = (path: string) => {
+    const full = `/${locale}${path}`
+    if (path === '/') return activePath === `/${locale}` || activePath === `/${locale}/` || activePath === '/'
+    return activePath.includes(path) || activePath.includes(full)
   }
+
+  const vendorUrl = process.env.NEXT_PUBLIC_VENDOR_URL || 'https://vendor.mercurjs.com'
 
   const navItems = [
     {
       icon: HomeIcon,
       label: t('home'),
       href: '/',
-      active: getActiveState('/')
+      active: isActive('/'),
+      type: 'link' as const,
     },
     {
       icon: SearchIcon,
       label: t('search'),
-      href: '/products',
-      active: getActiveState('/products')
+      href: '/categories',
+      active: isActive('/products') || isActive('/categories'),
+      type: 'link' as const,
     },
     {
       icon: StoreIcon,
-      label: 'كن تاجرًا',
-      href: vendorRegisterUrl,
-      active: activePath.includes('/vendor') || activePath.includes('/seller'),
-      isVendor: true
+      label: tVendor('openStore'),
+      href: vendorUrl,
+      active: false,
+      type: 'external' as const,
+      highlight: true,
     },
     {
       icon: CartIcon,
       label: t('cart'),
       href: '/cart',
-      active: getActiveState('/cart'),
-      badge: cartItemsCount
+      active: isActive('/cart'),
+      badge: cartCount,
+      type: 'link' as const,
     },
     {
       icon: isLoggedIn ? HeartIcon : ProfileIcon,
       label: isLoggedIn ? t('wishlist') : t('profile'),
       href: isLoggedIn ? '/user/wishlist' : '/login',
-      active: isLoggedIn
-        ? getActiveState('/user/wishlist')
-        : getActiveState('/login') || getActiveState('/register'),
-      badge: isLoggedIn ? wishlistCount : undefined
-    }
+      active: isLoggedIn ? isActive('/user/wishlist') : isActive('/login'),
+      badge: isLoggedIn ? wishlistCount : undefined,
+      type: 'link' as const,
+    },
   ]
 
   return (
     <>
-      <div
-        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] w-full max-w-screen mx-auto"
+      <nav
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] border-t border-gray-100"
         style={{
-          height: '72px',
-          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-          boxShadow: '0 -2px 12px rgba(0, 0, 0, 0.08)'
+          height: 'calc(68px + env(safe-area-inset-bottom, 0px))',
+          boxShadow: '0 -2px 12px rgba(0,0,0,0.08)',
         }}
+        aria-label="Bottom navigation"
       >
-        <div className="flex items-end justify-between h-full w-full pb-2 px-2 max-w-screen-lg mx-auto">
+        <div className="flex items-center justify-around h-full px-1 max-w-screen-sm mx-auto">
           {navItems.map((item, idx) => {
             const Icon = item.icon
+            const active = item.active
 
-            if (item.isVendor) {
+            // External link for vendor
+            if (item.type === 'external') {
               return (
-                <a
-                  key={`vendor-${idx}`}
+                <Link
+                  key={`${item.href}-${idx}`}
                   href={item.href}
-                  className="flex flex-col items-center justify-center flex-1 h-full cursor-pointer"
-                  onClick={(e) => e.stopPropagation()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center justify-center flex-1 h-full gap-1 relative"
+                  aria-label={item.label}
                 >
-                  <div className="flex flex-col items-center justify-center">
-                    <div
-                      className="relative flex items-center justify-center w-12 h-12 -mt-5
-                                 bg-[#F36418] rounded-full shadow-lg
-                                 hover:bg-[#F36418]/90 active:scale-95
-                                 transition-all duration-200
-                                 border-2 border-white"
-                      style={{
-                        boxShadow: '0 4px 12px rgba(243, 100, 24, 0.35)'
-                      }}
-                    >
-                      <Icon size={24} className="text-white" />
-                    </div>
-                    <span
-                      className="text-[9px] font-medium mt-0.5"
-                      style={{
-                        color: '#9CA3AF',
-                        fontWeight: '500'
-                      }}
-                    >
-                      {item.label}
-                    </span>
+                  {/* Vendor Store Button - Special Styling */}
+                  <div
+                    className="relative flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-300 active:scale-95"
+                    style={{
+                      background: 'linear-gradient(135deg, #F36418 0%, #FF8C42 100%)',
+                      transform: 'translateY(-8px)',
+                    }}
+                  >
+                    <Icon size={26} color="#FFFFFF" />
                   </div>
-                </a>
+                  <span
+                    className="text-[9px] font-bold leading-none"
+                    style={{ color: '#F36418' }}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
               )
             }
 
+            // Regular navigation items
             return (
               <LocalizedClientLink
                 key={`${item.href}-${idx}`}
                 href={item.href}
-                className="flex flex-col items-center justify-center flex-1 h-full cursor-pointer"
+                className="flex flex-col items-center justify-center flex-1 h-full gap-1 relative"
+                aria-label={item.label}
               >
-                <div className="flex flex-col items-center justify-center">
-                  <div className="relative flex items-center justify-center w-10 h-10">
-                    <Icon
-                      size={22}
-                      className={item.active ? 'text-[#F36418]' : 'text-gray-400'}
-                    />
-                    {item.badge && item.badge > 0 && (
-                      <span
-                        className="absolute -top-1 -right-1 flex items-center justify-center font-bold"
-                        style={{
-                          minWidth: '16px',
-                          height: '16px',
-                          backgroundColor: '#F36418',
-                          color: 'white',
-                          fontSize: '9px',
-                          borderRadius: '8px',
-                          padding: '0 4px'
-                        }}
-                      >
-                        {item.badge > 9 ? '9+' : item.badge}
-                      </span>
-                    )}
-                  </div>
-                  <span
-                    className="text-[9px] font-medium mt-0.5"
-                    style={{
-                      color: item.active ? '#F36418' : '#9CA3AF',
-                      fontWeight: item.active ? '600' : '500'
-                    }}
-                  >
-                    {item.label}
-                  </span>
+                <div className="relative flex items-center justify-center w-9 h-9">
+                  <Icon size={22} className={active ? 'text-[#F36418]' : 'text-gray-400'} />
+                  {item.badge && item.badge > 0 && (
+                    <span
+                      className="absolute -top-1 -right-1 min-w-[16px] h-4 bg-[#F36418] text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1 shadow-sm"
+                    >
+                      {item.badge > 9 ? '9+' : item.badge}
+                    </span>
+                  )}
                 </div>
+                <span
+                  className="text-[9px] leading-none"
+                  style={{ color: active ? '#F36418' : '#9CA3AF', fontWeight: active ? 600 : 400 }}
+                >
+                  {item.label}
+                </span>
+                {/* Active indicator dot */}
+                {active && (
+                  <span className="absolute bottom-1 w-1 h-1 rounded-full bg-[#F36418]" />
+                )}
               </LocalizedClientLink>
             )
           })}
         </div>
-      </div>
-      <div className="lg:hidden w-full" style={{ height: '72px', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+      </nav>
+      {/* Spacer */}
+      <div
+        className="lg:hidden w-full"
+        style={{ height: 'calc(68px + env(safe-area-inset-bottom, 0px))' }}
+      />
     </>
   )
 }

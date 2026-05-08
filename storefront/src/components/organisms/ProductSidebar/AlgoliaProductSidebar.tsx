@@ -35,6 +35,7 @@ export const AlgoliaProductSidebar = ({ facets }: { facets: Record<string, Facet
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768)
     }
+    handleResize() // call immediately on mount
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
