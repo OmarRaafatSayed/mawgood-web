@@ -1,25 +1,19 @@
-// import { defineMiddlewares } from '@medusajs/framework/utils'
-// import { isVendor, isAdmin } from './middlewares/vendor-auth'
+import { defineMiddlewares } from '@medusajs/framework/http'
+import type { MiddlewaresConfig } from '@medusajs/framework/http'
+import express from 'express'
+import path from 'path'
 
-// export default defineMiddlewares({
-//   routes: [
-//     {
-//       matcher: '/admin/vendors*',
-//       middlewares: [isAdmin]
-//     },
-//     {
-//       matcher: '/admin/vendors/:id*',
-//       middlewares: [isAdmin]
-//     },
-//     {
-//       matcher: '/vendor/products*',
-//       middlewares: [isVendor]
-//     },
-//     {
-//       matcher: '/vendor/orders*',
-//       middlewares: [isVendor]
-//     }
-//   ]
-// })
-
-export default {}
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: '/static*',
+      middlewares: [
+        (req, res, next) => {
+          // Serve static files from the static directory
+          const staticPath = path.join(__dirname, '..', '..', 'static')
+          express.static(staticPath)(req, res, next)
+        }
+      ]
+    }
+  ]
+})

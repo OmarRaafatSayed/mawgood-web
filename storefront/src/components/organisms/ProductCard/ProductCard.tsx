@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { Button } from "@/components/atoms"
 import { HttpTypes } from "@medusajs/types"
 import { cn } from "@/lib/utils"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
@@ -12,90 +11,84 @@ export const ProductCard = ({
   product,
   className,
 }: {
-  product: HttpTypes.StoreProduct | Product,
+  product: HttpTypes.StoreProduct | Product
   className?: string
 }) => {
-  if (!product) {
-    return null
-  }
+  if (!product) return null
 
   const { cheapestPrice } = getProductPrice({ product: product as HttpTypes.StoreProduct })
-
   const productName = String(product.title || "Product")
 
   return (
-    <div
+    <LocalizedClientLink
+      href={`/products/${product.handle}`}
       className={cn(
-        "relative group border rounded-sm flex flex-col justify-between p-1 w-full lg:w-[calc(25%-1rem)] min-w-[250px]",
+        "group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100",
+        "hover:shadow-md transition-shadow duration-200",
+        "w-full",
         className
       )}
       data-testid="product-card"
       data-product-handle={product.handle}
+      aria-label={`View ${productName}`}
     >
-      <div className="relative w-full h-full bg-primary aspect-square" data-testid="product-card-image-container">
-        <LocalizedClientLink
-          href={`/products/${product.handle}`}
-          aria-label={`View ${productName}`}
-          title={`View ${productName}`}
-          data-testid="product-card-link"
-        >
-          <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
-            {product.thumbnail ? (
-              <Image
-                priority
-                fetchPriority="high"
-                src={decodeURIComponent(product.thumbnail)}
-                alt={`${productName} image`}
-                width={100}
-                height={100}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
-                data-testid="product-card-image"
-              />
-            ) : (
-              <Image
-                priority
-                fetchPriority="high"
-                src="/images/placeholder.svg"
-                alt={`${productName} image placeholder`}
-                width={100}
-                height={100}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                data-testid="product-card-placeholder-image"
-              />
-            )}
+      {/* Image */}
+      <div className="relative w-full aspect-square bg-gray-50 overflow-hidden">
+        {product.thumbnail ? (
+          <Image
+            src={decodeURIComponent(product.thumbnail)}
+            alt={productName}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            data-testid="product-card-image"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <Image
+              src="/images/placeholder.svg"
+              alt={productName}
+              width={80}
+              height={80}
+              className="opacity-30"
+              data-testid="product-card-placeholder-image"
+            />
           </div>
-        </LocalizedClientLink>
-        <LocalizedClientLink
-          href={`/products/${product.handle}`}
-          aria-label={`See more about ${productName}`}
-          title={`See more about ${productName}`}
-        >
-          <Button className="absolute rounded-sm bg-action text-action-on-primary h-auto lg:h-[48px] lg:group-hover:block hidden w-full uppercase bottom-1 z-10" data-testid="product-card-see-more-button">
-            See More
-          </Button>
-        </LocalizedClientLink>
+        )}
       </div>
-      <LocalizedClientLink
-        href={`/products/${product.handle}`}
-        aria-label={`Go to ${productName} page`}
-        title={`Go to ${productName} page`}
-      >
-        <div className="flex justify-between p-4" data-testid="product-card-info">
-          <div className="w-full">
-            <h3 className="heading-sm truncate" data-testid="product-card-title">{product.title}</h3>
-            <div className="flex items-center gap-2 mt-2" data-testid="product-card-price">
-              <p className="font-medium" data-testid="product-card-current-price">{cheapestPrice?.calculated_price}</p>
-              {cheapestPrice?.calculated_price !==
-                cheapestPrice?.original_price && (
-                <p className="text-sm text-gray-500 line-through" data-testid="product-card-original-price">
-                  {cheapestPrice?.original_price}
-                </p>
+
+      {/* Info */}
+      <div className="p-3 flex flex-col gap-1" data-testid="product-card-info">
+        <h3
+          className="text-[13px] sm:text-sm font-medium text-gray-800 line-clamp-2 leading-snug"
+          data-testid="product-card-title"
+        >
+          {product.title}
+        </h3>
+
+        <div className="flex items-center gap-2 mt-1" data-testid="product-card-price">
+          {cheapestPrice?.calculated_price ? (
+            <>
+              <span
+                className="text-sm font-bold text-[#F36418]"
+                data-testid="product-card-current-price"
+              >
+                {cheapestPrice.calculated_price}
+              </span>
+              {cheapestPrice.calculated_price !== cheapestPrice.original_price && (
+                <span
+                  className="text-xs text-gray-400 line-through"
+                  data-testid="product-card-original-price"
+                >
+                  {cheapestPrice.original_price}
+                </span>
               )}
-            </div>
-          </div>
+            </>
+          ) : (
+            <span className="text-xs text-gray-400">—</span>
+          )}
         </div>
-      </LocalizedClientLink>
-    </div>
+      </div>
+    </LocalizedClientLink>
   )
 }

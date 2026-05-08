@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+  <rect width="780" height="500" rx="40" fill="#2E7D32"/>
+  <!-- Cash/money icon -->
+  <!-- Outer rectangle (bill) -->
+  <rect x="80" y="130" width="500" height="300" rx="20" fill="none" stroke="#FFFFFF" stroke-width="16"/>
+  <rect x="80" y="130" width="500" height="300" rx="20" fill="#FFFFFF" opacity="0.1"/>
+  <!-- Inner oval -->
+  <ellipse cx="330" cy="280" rx="90" ry="90" fill="none" stroke="#FFFFFF" stroke-width="14"/>
+  <!-- Corner squares -->
+  <rect x="110" y="160" width="60" height="60" rx="8" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="490" y="160" width="60" height="60" rx="8" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="110" y="340" width="60" height="60" rx="8" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+  <rect x="490" y="340" width="60" height="60" rx="8" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+  <!-- EGP symbol -->
+  <text x="330" y="305" font-family="Arial,sans-serif" font-size="80" font-weight="900" fill="#FFFFFF" text-anchor="middle">£</text>
+  <!-- Right side text -->
+  <text x="660" y="260" font-family="Arial,sans-serif" font-size="68" font-weight="900" fill="#FFFFFF" text-anchor="middle">COD</text>
+  <text x="660" y="340" font-family="Arial,sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF" text-anchor="middle">عند</text>
+  <text x="660" y="395" font-family="Arial,sans-serif" font-size="44" font-weight="bold" fill="#FFFFFF" text-anchor="middle">الاستلام</text>
+</svg>

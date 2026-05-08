@@ -10,6 +10,11 @@ interface VendorFilterProps {
 }
 
 export const VendorFilter = ({ className }: VendorFilterProps) => {
+  // Vendor filter is disabled because seller module is not available
+  // This requires @mercurjs/b2c-core which needs stripe package
+  return null
+
+  /* Original code - disabled
   const { updateFilters, filters, isFilterActive } = useFilters('seller_id')
   const [vendors, setVendors] = useState<SellerProps[]>([])
   const [loading, setLoading] = useState(true)
@@ -71,4 +76,5 @@ export const VendorFilter = ({ className }: VendorFilterProps) => {
       </div>
     </div>
   )
+  */
 }

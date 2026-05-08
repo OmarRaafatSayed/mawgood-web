@@ -31,16 +31,12 @@ export function BrandsCarousel({
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
 
-  // Default brands for demonstration
+  // Default brands - vendors from our platform
   const defaultBrands: Brand[] = [
-    { id: '1', name: 'Nike', logo: '/images/brands/Nike.svg' },
-    { id: '2', name: 'Adidas', logo: '/images/brands/Adidas.svg' },
-    { id: '3', name: 'Puma', logo: '/images/brands/Puma.svg' },
-    { id: '4', name: 'Zara', logo: '/images/brands/Zara.svg' },
-    { id: '5', name: 'H&M', logo: '/images/brands/H&M.svg' },
-    { id: '6', name: 'Apple', logo: '/images/brands/Apple.svg' },
-    { id: '7', name: 'Samsung', logo: '/images/brands/Samsung.svg' },
-    { id: '8', name: 'Sony', logo: '/images/brands/Sony.svg' },
+    { id: '1', name: 'H-I-X' },
+    { id: '2', name: 'H&S' },
+    { id: '3', name: 'Rehab Lafy' },
+    { id: '4', name: 'E-S-H Factory' },
   ]
 
   const displayBrands = brands && brands.length > 0 ? brands : defaultBrands

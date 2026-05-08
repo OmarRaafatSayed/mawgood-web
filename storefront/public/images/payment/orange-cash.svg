@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+  <rect width="780" height="500" rx="40" fill="#FF6600"/>
+  <!-- Orange circle logo -->
+  <circle cx="210" cy="250" r="140" fill="none" stroke="#FFFFFF" stroke-width="30"/>
+  <circle cx="210" cy="250" r="70" fill="#FFFFFF"/>
+  <text x="490" y="230" font-family="Arial,sans-serif" font-size="110" font-weight="900" fill="#FFFFFF" text-anchor="middle">Orange</text>
+  <text x="490" y="340" font-family="Arial,sans-serif" font-size="68" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Cash</text>
+</svg>

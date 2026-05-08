@@ -16,18 +16,32 @@
     "build": "medusa build",
     "start": "medusa start",
     "dev": "medusa develop",
-    "seed": "medusa exec ./src/scripts/seed.ts",
-    
+    "seed": "medusa exec ./scripts/seed.ts",
+    "import:excel": "medusa exec ./scripts/import-excel-products.ts",
+    "import:simple": "medusa exec ./scripts/import-products-simple.ts",
+    "import:professional": "medusa exec ./scripts/import-products-professional.ts",
+    "clean:products": "medusa exec ./scripts/clean-and-reimport-with-images.ts",
+    "update:products": "medusa exec ./scripts/update-products-info.ts",
+    "update:images": "medusa exec ./scripts/update-product-images.ts",
+    "check:products": "medusa exec ./scripts/check-products.ts",
+    "check:regions": "medusa exec ./scripts/check-regions.ts",
+    "link:sales-channel": "medusa exec ./scripts/link-products-to-sales-channel.ts",
+    "fix:visibility": "medusa exec ./scripts/fix-excel-products-visibility.ts",
+    "clean:categories": "medusa exec ./scripts/clean-default-categories.ts",
+    "db:cleanup-import": "medusa exec ./scripts/full-database-cleanup-and-import.ts",
+    "check:readiness": "medusa exec ./scripts/check-import-readiness.ts",
+    "fix:categories": "medusa exec ./scripts/fix-categories-from-products.ts",
     "production:build": "NODE_ENV=production medusa build",
     "production:start": "NODE_ENV=production medusa start",
     "production:migrate": "NODE_ENV=production medusa db:migrate",
-    "production:seed": "NODE_ENV=production medusa exec ./src/scripts/seed.ts",
-    
+    "production:seed": "NODE_ENV=production medusa exec ./scripts/seed.ts",
     "dev:full": "concurrently \"medusa develop\" \"medusa start\"",
     "db:migrate": "medusa db:migrate",
     "db:reset": "medusa db:reset",
     "db:setup": "medusa db:create && medusa db:migrate",
-    
+    "export:data": "medusa exec ./scripts/export-data-for-migration.ts",
+    "import:data": "medusa exec ./scripts/import-data-from-export.ts",
+    "production:import": "NODE_ENV=production medusa exec ./scripts/import-data-from-export.ts",
     "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
     "test:integration:modules": "TEST_TYPE=integration:modules NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
     "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit"
@@ -43,7 +57,8 @@
     "@mercurjs/framework": "^1.5.3",
     "@mercurjs/requests": "^1.5.3",
     "@mercurjs/resend": "^1.5.3",
-    "@mercurjs/reviews": "^1.5.3"
+    "@mercurjs/reviews": "^1.5.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.11.3",

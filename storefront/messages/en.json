@@ -209,7 +209,9 @@
     "vendorPanel": "Vendor Panel",
     "loginToVendor": "Vendor Login",
     "startSelling": "Start Selling",
-    "joinAsSeller": "Join as Seller"
+    "joinAsSeller": "Join as Seller",
+    "openStore": "Open Store",
+    "sellWithUs": "Sell with Us"
   },
   "brands": {
     "exploreBrands": "Explore Brands",

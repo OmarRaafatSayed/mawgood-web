@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+  <rect width="780" height="500" rx="40" fill="#F8F9FA"/>
+  <rect width="780" height="500" rx="40" fill="#1A3C6E"/>
+  <!-- Bank building icon -->
+  <!-- Roof triangle -->
+  <polygon points="390,60 120,200 660,200" fill="#FFFFFF"/>
+  <!-- Columns -->
+  <rect x="155" y="200" width="50" height="180" rx="5" fill="#FFFFFF"/>
+  <rect x="255" y="200" width="50" height="180" rx="5" fill="#FFFFFF"/>
+  <rect x="365" y="200" width="50" height="180" rx="5" fill="#FFFFFF"/>
+  <rect x="475" y="200" width="50" height="180" rx="5" fill="#FFFFFF"/>
+  <rect x="575" y="200" width="50" height="180" rx="5" fill="#FFFFFF"/>
+  <!-- Base -->
+  <rect x="100" y="380" width="580" height="30" rx="5" fill="#FFFFFF"/>
+  <rect x="80" y="410" width="620" height="20" rx="5" fill="#FFFFFF"/>
+  <!-- Text -->
+  <text x="390" y="475" font-family="Arial,sans-serif" font-size="52" font-weight="bold" fill="#FFFFFF" text-anchor="middle">تحويل بنكي</text>
+</svg>

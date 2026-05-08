@@ -1,10 +1,12 @@
 import { HomeProductsCarousel } from "@/components/organisms"
 import { Product } from "@/types/product"
 import { getCountryFromLocale } from "@/lib/helpers/locale-mapping"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
+import { ChevronRight } from "lucide-react"
 
 export const HomeProductSection = async ({
   heading,
-  locale = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl",
+  locale = process.env.NEXT_PUBLIC_DEFAULT_REGION || "eg",
   products = [],
   home = false,
 }: {
@@ -13,13 +15,26 @@ export const HomeProductSection = async ({
   products?: Product[]
   home?: boolean
 }) => {
-  const countryCode = getCountryFromLocale(locale);
-  
+  const countryCode = getCountryFromLocale(locale)
+
   return (
-    <section className="py-8 w-full">
-      <h2 className="mb-6 heading-lg font-bold tracking-tight uppercase">
-        {heading}
-      </h2>
+    <section className="w-full">
+      {/* Section header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-base sm:text-lg font-bold text-gray-900">
+          {heading}
+        </h2>
+        {home && (
+          <LocalizedClientLink
+            href="/products"
+            className="text-xs font-semibold text-[#F36418] hover:underline flex items-center gap-1"
+          >
+            عرض الكل
+            <ChevronRight size={14} className="rtl:rotate-180" />
+          </LocalizedClientLink>
+        )}
+      </div>
+
       <HomeProductsCarousel
         locale={countryCode}
         sellerProducts={products.slice(0, 4)}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="780" height="500">
+  <rect width="780" height="500" rx="40" fill="#FFFFFF"/>
+  <rect width="780" height="500" rx="40" fill="#F7A800"/>
+  <!-- Fawry F icon -->
+  <rect x="120" y="100" width="80" height="300" rx="10" fill="#FFFFFF"/>
+  <rect x="120" y="100" width="260" height="80" rx="10" fill="#FFFFFF"/>
+  <rect x="120" y="220" width="200" height="70" rx="10" fill="#FFFFFF"/>
+  <text x="480" y="310" font-family="Arial,sans-serif" font-size="160" font-weight="900" fill="#FFFFFF" text-anchor="middle">awry</text>
+</svg>

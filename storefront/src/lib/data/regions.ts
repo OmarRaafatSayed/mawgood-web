@@ -59,9 +59,10 @@ export const getRegion = async (countryCode: string) => {
       });
     });
 
-    const region = countryCode ? regionMap.get(countryCode) : regionMap.get('us');
+    // Try exact match first, then fallback to first available region
+    const region = regionMap.get(countryCode) ?? regionMap.get('us') ?? regions[0];
 
-    return region;
+    return region ?? null;
   } catch (e: any) {
     return null;
   }

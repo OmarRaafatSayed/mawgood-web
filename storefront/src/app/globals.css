@@ -190,3 +190,28 @@ button:disabled svg path {
 .no-arrows-number-input {
   -moz-appearance: textfield;
 }
+
+/* Mobile touch improvements */
+@media (max-width: 1024px) {
+  /* Larger tap targets */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent text size adjustment on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Product card hover only on non-touch */
+@media (hover: none) {
+  .group:hover .lg\:group-hover\:-mt-14 {
+    margin-top: 0;
+  }
+}

@@ -41,32 +41,8 @@ module.exports = defineConfig({
     disable: true,
   },
   plugins: [
-    // Disabled b2c-core - using Cash on Delivery payment only
-    // {
-    //   resolve: '@mercurjs/b2c-core',
-    //   options: {
-    //     paymentProviders: [
-    //       {
-    //         id: 'cash-on-delivery',
-    //         service: './src/modules/cash-on-delivery'
-    //       }
-    //     ]
-    //   }
-    // },
-    // Disabled due to seller service conflicts
-    // {
-    //   resolve: '@mercurjs/commission',
-    //   options: {}
-    // },
-    // Disabled due to seller service conflicts
-    // {
-    //   resolve: '@mercurjs/reviews',
-    //   options: {}
-    // },
-    // {
-    //   resolve: '@mercurjs/requests',
-    //   options: {}
-    // },
+    // All mercurjs plugins disabled - they require seller module from b2c-core
+    // which requires stripe package
     {
       resolve: '@mercurjs/resend',
       options: {}

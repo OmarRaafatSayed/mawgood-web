@@ -16,15 +16,19 @@ export const ProductListing = async ({
   seller_id,
   showSidebar = false,
   locale = process.env.NEXT_PUBLIC_DEFAULT_REGION || "pl",
+  searchParams,
 }: {
   category_id?: string
   collection_id?: string
   seller_id?: string
   showSidebar?: boolean
   locale?: string
+  searchParams?: { [key: string]: string | string[] | undefined }
 }) => {
-  // Convert locale (language) to country code
   const countryCode = getCountryFromLocale(locale);
+  
+  // Get page from searchParams
+  const page = searchParams?.page ? parseInt(searchParams.page as string) : 1;
   
   const { response } = await listProductsWithSort({
     seller_id,
@@ -32,14 +36,13 @@ export const ProductListing = async ({
     collection_id,
     countryCode,
     sortBy: "created_at",
+    page,
     queryParams: {
       limit: PRODUCT_LIMIT,
     },
   })
 
-  const { products } = await response
-
-  const count = products.length
+  const { products, count } = await response
 
   const pages = Math.ceil(count / PRODUCT_LIMIT) || 1
 
@@ -52,7 +55,7 @@ export const ProductListing = async ({
       <div className="grid grid-cols-1 md:grid-cols-4 mt-4 gap-4">
         {showSidebar && <ProductSidebar />}
         <section className={showSidebar ? "col-span-3" : "col-span-4"} data-testid="product-listing-section">
-          <div className="flex flex-wrap gap-4" data-testid="product-list">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" data-testid="product-list">
             <ProductsList products={products} />
           </div>
           <ProductsPagination pages={pages} />

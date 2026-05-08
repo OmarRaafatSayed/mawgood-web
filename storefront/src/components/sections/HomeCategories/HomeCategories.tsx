@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react'
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
-import { CategoryCard } from '@/components/cells'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { HttpTypes } from '@medusajs/types'
 import { useTranslations } from 'next-intl'
@@ -12,12 +11,34 @@ interface HomeCategoriesProps {
   categories?: HttpTypes.StoreProductCategory[]
 }
 
-interface CategoryItem {
-  id: string
-  name: string
-  handle: string
-  icon?: string
-  image?: string
+// Category background colors - واقعية ومتناسقة
+const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
+  't-shirts':   { bg: '#FFF3E0', text: '#E65100' },
+  'shirts':     { bg: '#E3F2FD', text: '#1565C0' },
+  'dresses':    { bg: '#FCE4EC', text: '#880E4F' },
+  'pants':      { bg: '#E8F5E9', text: '#1B5E20' },
+  'jackets':    { bg: '#EDE7F6', text: '#4527A0' },
+  'blouses':    { bg: '#FFF8E1', text: '#F57F17' },
+  'skirts':     { bg: '#F3E5F5', text: '#6A1B9A' },
+  'shorts':     { bg: '#E0F7FA', text: '#006064' },
+  'suits':      { bg: '#EFEBE9', text: '#3E2723' },
+  'general':    { bg: '#F5F5F5', text: '#424242' },
+}
+
+const DEFAULT_COLOR = { bg: '#FFF3E0', text: '#E65100' }
+
+// Category icons - حروف أولى بدل إيموجي
+function getCategoryInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map(w => w[0]?.toUpperCase() || '')
+    .join('')
+}
+
+function getCategoryColor(handle: string) {
+  const key = handle?.toLowerCase().replace(/[^a-z-]/g, '') || ''
+  return CATEGORY_COLORS[key] || DEFAULT_COLOR
 }
 
 export function HomeCategories({
@@ -28,31 +49,6 @@ export function HomeCategories({
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-
-  const defaultCategories: CategoryItem[] = [
-    { id: '1', name: 'إلكترونيات', handle: 'electronics', icon: '📱' },
-    { id: '2', name: 'أزياء نسائية', handle: 'fashion-women', icon: '👗' },
-    { id: '3', name: 'أزياء رجالية', handle: 'fashion-men', icon: '👔' },
-    { id: '4', name: 'منزل ومطبخ', handle: 'home', icon: '🏠' },
-    { id: '5', name: 'جمال وعناية', handle: 'beauty', icon: '💄' },
-    { id: '6', name: 'رياضة ولياقة', handle: 'sports', icon: '⚽' },
-    { id: '7', name: 'أطفال ولعب', handle: 'toys', icon: '🧸' },
-    { id: '8', name: 'كتب', handle: 'books', icon: '📚' },
-    { id: '9', name: 'سيارات', handle: 'automotive', icon: '🚗' },
-    { id: '10', name: 'بقالة', handle: 'grocery', icon: '🛒' },
-    { id: '11', name: 'مستلزمات حيوانات', handle: 'pet-supplies', icon: '🐾' },
-    { id: '12', name: 'صحة', handle: 'health', icon: '💊' },
-  ]
-
-  const displayCategories: CategoryItem[] = categories?.length 
-    ? categories.map(c => ({
-        id: c.id,
-        name: c.name,
-        handle: c.handle || '',
-        icon: undefined
-      }))
-    : defaultCategories
 
   const checkScrollPosition = useCallback(() => {
     if (scrollRef.current) {
@@ -64,106 +60,118 @@ export function HomeCategories({
 
   useEffect(() => {
     checkScrollPosition()
-  }, [checkScrollPosition])
+  }, [checkScrollPosition, categories])
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'right' ? 200 : -200
       scrollRef.current.scrollBy({
-        left: direction === 'right' ? scrollAmount : -scrollAmount,
-        behavior: 'smooth'
+        left: direction === 'right' ? 240 : -240,
+        behavior: 'smooth',
       })
     }
   }
 
-  const handleScroll = () => {
-    checkScrollPosition()
-  }
+  // No categories = don't render
+  if (!categories || categories.length === 0) return null
 
   return (
-    <section className="py-6 w-full bg-gradient-to-b from-white to-gray-50/50">
-      <div className="flex items-center justify-between mb-6 px-4 lg:px-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+    <section className="py-5 w-full">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4 px-4 lg:px-8">
+        <h2 className="text-base sm:text-lg font-bold text-gray-900">
           {heading || t('browseCategories')}
         </h2>
         <LocalizedClientLink
           href="/categories"
-          className="flex items-center gap-1.5 text-sm font-semibold text-[#F36418] hover:text-[#F36418]/80 transition-colors"
+          className="text-xs font-semibold text-[#F36418] hover:underline flex items-center gap-1"
         >
           {t('viewAll')}
-          <ChevronRight size={18} className="rtl:rotate-180" />
+          <ChevronRight size={14} className="rtl:rotate-180" />
         </LocalizedClientLink>
       </div>
 
-      {/* Mobile: Horizontal scrollable */}
+      {/* Mobile: horizontal scroll */}
       <div className="lg:hidden relative">
-        {/* Left fade gradient */}
-        <div 
-          className={`absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none 
-                      transition-opacity duration-300 ${isBeginning ? 'opacity-0' : 'opacity-100'}`}
+        <div
+          className={`absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none transition-opacity ${isBeginning ? 'opacity-0' : 'opacity-100'}`}
         />
-        
-        {/* Right fade gradient */}
-        <div 
-          className={`absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none
-                      transition-opacity duration-300 ${isEnd ? 'opacity-0' : 'opacity-100'}`}
+        <div
+          className={`absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none transition-opacity ${isEnd ? 'opacity-0' : 'opacity-100'}`}
         />
 
         <div
           ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex gap-3 overflow-x-auto px-4 pb-4 scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+          onScroll={checkScrollPosition}
+          className="flex gap-3 overflow-x-auto px-4 pb-2 scrollbar-hide"
+          style={{ scrollbarWidth: 'none' }}
         >
-          {displayCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              id={category.id}
-              name={category.name}
-              handle={category.handle}
-              icon={category.icon}
-            />
-          ))}
+          {categories.map((cat) => {
+            const color = getCategoryColor(cat.handle || '')
+            const initials = getCategoryInitials(cat.name)
+            return (
+              <LocalizedClientLink
+                key={cat.id}
+                href={`/categories/${cat.handle}`}
+                className="flex-shrink-0 flex flex-col items-center gap-2 group"
+              >
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-lg transition-transform duration-200 group-active:scale-95"
+                  style={{ backgroundColor: color.bg, color: color.text }}
+                >
+                  {initials}
+                </div>
+                <span className="text-[11px] font-medium text-gray-700 text-center max-w-[64px] leading-tight line-clamp-2">
+                  {cat.name}
+                </span>
+              </LocalizedClientLink>
+            )
+          })}
         </div>
 
-        {/* Navigation buttons - visible on hover */}
-        <button
-          onClick={() => scroll('left')}
-          className={`absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full 
-                     flex items-center justify-center z-20 border-2 border-[#F36418]/20
-                     hover:border-[#F36418] hover:bg-[#F36418]/10 transition-all duration-300
-                     ${isBeginning ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-                     ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-          aria-label="Scroll left"
-        >
-          <ChevronLeft size={20} className="text-[#F36418]" />
-        </button>
-        <button
-          onClick={() => scroll('right')}
-          className={`absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-lg rounded-full 
-                     flex items-center justify-center z-20 border-2 border-[#F36418]/20
-                     hover:border-[#F36418] hover:bg-[#F36418]/10 transition-all duration-300
-                     ${isEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}
-                     ${isHovering ? 'opacity-100' : 'opacity-0'}`}
-          aria-label="Scroll right"
-        >
-          <ChevronRight size={20} className="text-[#F36418] rtl:rotate-180" />
-        </button>
+        {/* Scroll buttons */}
+        {!isBeginning && (
+          <button
+            onClick={() => scroll('left')}
+            className="absolute left-1 top-7 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center z-20 border border-gray-100"
+            aria-label="Scroll left"
+          >
+            <ChevronLeft size={16} className="text-gray-600" />
+          </button>
+        )}
+        {!isEnd && (
+          <button
+            onClick={() => scroll('right')}
+            className="absolute right-1 top-7 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center z-20 border border-gray-100"
+            aria-label="Scroll right"
+          >
+            <ChevronRight size={16} className="text-gray-600 rtl:rotate-180" />
+          </button>
+        )}
       </div>
 
-      {/* Desktop: Grid layout */}
-      <div className="hidden lg:grid grid-cols-6 gap-4 px-8">
-        {displayCategories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            id={category.id}
-            name={category.name}
-            handle={category.handle}
-            icon={category.icon}
-          />
-        ))}
+      {/* Desktop: grid */}
+      <div className="hidden lg:flex flex-wrap gap-4 px-8">
+        {categories.map((cat) => {
+          const color = getCategoryColor(cat.handle || '')
+          const initials = getCategoryInitials(cat.name)
+          return (
+            <LocalizedClientLink
+              key={cat.id}
+              href={`/categories/${cat.handle}`}
+              className="flex flex-col items-center gap-2 group w-24"
+            >
+              <div
+                className="w-20 h-20 rounded-2xl flex items-center justify-center font-bold text-xl transition-all duration-200 group-hover:scale-105 group-hover:shadow-md"
+                style={{ backgroundColor: color.bg, color: color.text }}
+              >
+                {initials}
+              </div>
+              <span className="text-xs font-medium text-gray-700 text-center leading-tight line-clamp-2">
+                {cat.name}
+              </span>
+            </LocalizedClientLink>
+          )
+        })}
       </div>
     </section>
   )

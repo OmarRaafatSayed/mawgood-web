@@ -27,13 +27,61 @@ const brands = [
 ]
 
 const paymentMethods = [
-  { name: 'Visa', icon: '💳' },
-  { name: 'MasterCard', icon: '💳' },
-  { name: 'Meeza', icon: '💳' },
-  { name: 'Fawry', icon: '📱' },
-  { name: 'ValU', icon: '💰' },
-  { name: 'Vodafone Cash', icon: '📱' },
-  { name: 'InstaPay', icon: '🏦' },
+  {
+    name: 'Visa',
+    logo: '/images/payment/visa.svg',
+    bg: '#1A1F71',
+  },
+  {
+    name: 'Mastercard',
+    logo: '/images/payment/mastercard.svg',
+    bg: '#F7F7F7',
+  },
+  {
+    name: 'Meeza',
+    logo: '/images/payment/meeza.svg',
+    bg: '#C8102E',
+  },
+  {
+    name: 'Fawry',
+    logo: '/images/payment/fawry.svg',
+    bg: '#F7A800',
+  },
+  {
+    name: 'InstaPay',
+    logo: '/images/payment/instapay.svg',
+    bg: '#6B2D8B',
+  },
+  {
+    name: 'Vodafone Cash',
+    logo: '/images/payment/vodafone-cash.svg',
+    bg: '#E60000',
+  },
+  {
+    name: 'اتصالات Cash',
+    logo: '/images/payment/etisalat-cash.svg',
+    bg: '#00A651',
+  },
+  {
+    name: 'Orange Cash',
+    logo: '/images/payment/orange-cash.svg',
+    bg: '#FF6600',
+  },
+  {
+    name: 'WE Pay',
+    logo: '/images/payment/we-pay.svg',
+    bg: '#0033A0',
+  },
+  {
+    name: 'تحويل بنكي',
+    logo: '/images/payment/bank-transfer.svg',
+    bg: '#1A3C6E',
+  },
+  {
+    name: 'الدفع عند الاستلام',
+    logo: '/images/payment/cod.svg',
+    bg: '#2E7D32',
+  },
 ]
 
 const policies = [
@@ -90,9 +138,9 @@ export function FooterContact() {
           <span>📞</span>
           <span>19911</span>
         </a>
-        <a href="mailto:support@mercur.com" className="flex items-center gap-2 text-gray-600">
+        <a href="mailto:support@mawgood.com" className="flex items-center gap-2 text-gray-600">
           <span>✉️</span>
-          <span>support@mercur.com</span>
+          <span>support@mawgood.com</span>
         </a>
         <div className="flex items-center gap-2 text-gray-600">
           <LocationIcon size={18} />
@@ -117,16 +165,75 @@ export function FooterContact() {
 
 export function FooterPayment() {
   const t = useTranslations('footer')
-  
+
   return (
     <div className="mb-6">
       <h3 className="font-bold text-gray-800 mb-4">{t('paymentMethods')}</h3>
-      <div className="grid grid-cols-4 gap-2">
-        {paymentMethods.map((method) => (
-          <div key={method.name} className="h-12 bg-gray-100 rounded-lg flex items-center justify-center text-xl" title={method.name}>
-            {method.icon}
-          </div>
-        ))}
+
+      {/* Mobile wallets group */}
+      <p className="text-xs text-gray-500 mb-2 font-medium">المحافظ الإلكترونية</p>
+      <div className="grid grid-cols-4 gap-2 mb-3">
+        {paymentMethods
+          .filter(m => ['Vodafone Cash', 'اتصالات Cash', 'Orange Cash', 'WE Pay'].includes(m.name))
+          .map((method) => (
+            <div
+              key={method.name}
+              title={method.name}
+              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
+            >
+              <Image
+                src={method.logo}
+                alt={method.name}
+                width={80}
+                height={44}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+      </div>
+
+      {/* Cards & payment services */}
+      <p className="text-xs text-gray-500 mb-2 font-medium">بطاقات وخدمات الدفع</p>
+      <div className="grid grid-cols-4 gap-2 mb-3">
+        {paymentMethods
+          .filter(m => ['Visa', 'Mastercard', 'Meeza', 'Fawry', 'InstaPay'].includes(m.name))
+          .map((method) => (
+            <div
+              key={method.name}
+              title={method.name}
+              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
+            >
+              <Image
+                src={method.logo}
+                alt={method.name}
+                width={80}
+                height={44}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+      </div>
+
+      {/* Bank & COD */}
+      <p className="text-xs text-gray-500 mb-2 font-medium">طرق أخرى</p>
+      <div className="grid grid-cols-2 gap-2">
+        {paymentMethods
+          .filter(m => ['تحويل بنكي', 'الدفع عند الاستلام'].includes(m.name))
+          .map((method) => (
+            <div
+              key={method.name}
+              title={method.name}
+              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
+            >
+              <Image
+                src={method.logo}
+                alt={method.name}
+                width={160}
+                height={44}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
       </div>
     </div>
   )
@@ -206,7 +313,7 @@ export function Footer() {
               <ul className="space-y-2">
                 <li><LocalizedClientLink href="/faq" className="text-sm text-gray-600">الأسئلة الشائعة</LocalizedClientLink></li>
                 <li><LocalizedClientLink href="/track-order" className="text-sm text-gray-600">تتبع طلبك</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/returns" className="text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/return-policy" className="text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink></li>
                 <li><LocalizedClientLink href="/delivery" className="text-sm text-gray-600">التوصيل والشحن</LocalizedClientLink></li>
               </ul>
             </div>
@@ -257,7 +364,7 @@ export function Footer() {
                       <>
                         <LocalizedClientLink href="/faq" className="block text-sm text-gray-600">الأسئلة الشائعة</LocalizedClientLink>
                         <LocalizedClientLink href="/track-order" className="block text-sm text-gray-600">تتبع طلبك</LocalizedClientLink>
-                        <LocalizedClientLink href="/returns" className="block text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink>
+                        <LocalizedClientLink href="/return-policy" className="block text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink>
                       </>
                     )}
                     {section === 'about' && (

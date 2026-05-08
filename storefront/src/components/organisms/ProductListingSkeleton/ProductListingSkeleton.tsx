@@ -1,34 +1,25 @@
 export const ProductListingSkeleton = () => {
   return (
-    <div className='py-4' data-testid="product-listing-skeleton">
-      <div className='lg:flex justify-between lg:h-10 items-center'>
-        <div className='h-6 bg-secondary w-20 rounded-sm animate-pulse' />
-        <div className='h-10 w-[200px] bg-secondary rounded-sm animate-pulse hidden lg:block' />
-        <div className='flex lg:hidden gap-2 mt-4 mb-2'>
-          <div className='w-1/2 h-[38px] bg-secondary rounded-sm animate-pulse' />
-          <div className='w-1/2 h-[38px] bg-secondary rounded-sm animate-pulse' />
-        </div>
+    <div className="py-4" data-testid="product-listing-skeleton">
+      {/* Header skeleton */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="h-5 bg-gray-200 w-24 rounded animate-pulse" />
+        <div className="h-8 w-28 bg-gray-200 rounded animate-pulse hidden lg:block" />
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-4 mt-6'>
-        <div>
-          <div className='rounded-sm bg-secondary h-80 border border-white animate-pulse' />
-          <div className='rounded-sm bg-secondary h-80 border border-white animate-pulse' />
-          <div className='rounded-sm bg-secondary h-80 border border-white animate-pulse' />
-        </div>
-        <div className='col-span-3'>
-          <div className='grid sm:grid-cols-2 xl:grid-cols-3'>
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
-            <div className='rounded-sm bg-secondary h-[600px] border border-white animate-pulse' />
+
+      {/* Grid skeleton - 2 cols mobile, 3 tablet, 4 desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="rounded-xl overflow-hidden bg-white border border-gray-100">
+            <div className="aspect-square bg-gray-200 animate-pulse" />
+            <div className="p-3 space-y-2">
+              <div className="h-3.5 bg-gray-200 rounded animate-pulse w-4/5" />
+              <div className="h-3 bg-gray-200 rounded animate-pulse w-3/5" />
+              <div className="h-4 bg-gray-200 rounded animate-pulse w-2/5" />
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
-  );
-};
+  )
+}

@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     }
   },
   images: {
+    unoptimized: process.env.NODE_ENV === 'development',
     qualities: [75, 80, 85, 90, 95, 100],
     remotePatterns: [
       {
@@ -26,6 +27,16 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'api.mercurjs.com'
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000'
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000'
       },
       {
         protocol: 'http',

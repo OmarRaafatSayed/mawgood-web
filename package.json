@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "install:all": "npm install --legacy-peer-deps && cd backend && npm install --legacy-peer-deps && cd ../storefront && npm install --legacy-peer-deps && cd ../admin-panel && npm install --legacy-peer-deps && cd ../vendor-panel && npm install --legacy-peer-deps",
-
     "build:backend": "cd backend && npm run build",
     "build:storefront": "cd storefront && npm run build",
     "build:admin": "cd admin-panel && npm run build",
@@ -16,6 +15,7 @@
     "restart:pm2": "pm2 restart ecosystem.config.js"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "xlsx": "^0.18.5"
   }
 }

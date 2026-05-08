@@ -325,33 +325,44 @@ export const TopNavbar = ({
 
         {/* Mobile Search (expandable) */}
         {mobileSearchOpen && (
-          <div className="sm:hidden bg-[#131921] px-3 pb-2 max-w-screen-lg mx-auto">
-            <form onSubmit={handleSearch} className="flex">
+          <div className="sm:hidden bg-[#0e111a] px-4 pb-3 max-w-screen-lg mx-auto animate-in slide-in-from-top-2 duration-200">
+            <form onSubmit={handleSearch} className="flex gap-2">
               <div className="flex-1 relative">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t("search")}
-                  className="w-full h-10 px-3 pe-10 text-gray-900 rounded-s-md focus:outline-none"
+                  className="w-full h-11 px-4 pe-11 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-400 text-base"
                   aria-label={t("search")}
                   dir="auto"
                   autoFocus
                 />
-                <button
-                  type="button"
-                  onClick={() => { setMobileSearchOpen(false); setSearchQuery("") }}
-                  className="absolute end-2 top-1/2 -translate-y-1/2 p-1"
-                >
-                  <CloseIcon size={16} color="#666" />
-                </button>
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute end-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-gray-100 rounded-full transition-colors"
+                    aria-label="Clear"
+                  >
+                    <CloseIcon size={18} color="#666" />
+                  </button>
+                )}
               </div>
               <button
                 type="submit"
-                className="bg-[#febd69] hover:bg-[#f3a847] px-4 rounded-e-md flex items-center justify-center"
+                className="bg-brand-400 hover:bg-brand-500 px-5 rounded-lg flex items-center justify-center transition-all active:scale-95 shadow-lg"
                 aria-label={t("search")}
               >
-                <SearchIcon size={20} color="#111" />
+                <SearchIcon size={22} color="#fff" />
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMobileSearchOpen(false); setSearchQuery("") }}
+                className="bg-gray-700 hover:bg-gray-600 px-4 rounded-lg flex items-center justify-center transition-all active:scale-95"
+                aria-label={t("close")}
+              >
+                <CloseIcon size={20} color="#fff" />
               </button>
             </form>
           </div>

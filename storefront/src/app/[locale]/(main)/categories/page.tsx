@@ -70,10 +70,13 @@ const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY
 
 async function AllCategories({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const { locale } = await params
+  const resolvedSearchParams = await searchParams
 
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -145,7 +148,7 @@ async function AllCategories({
 
       <Suspense fallback={<div data-testid="all-categories-page-loading"><ProductListingSkeleton /></div>}>
         {bot || !ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-          <ProductListing showSidebar locale={locale} />
+          <ProductListing showSidebar locale={locale} searchParams={resolvedSearchParams} />
         ) : (
           <AlgoliaProductsListing
             locale={locale}

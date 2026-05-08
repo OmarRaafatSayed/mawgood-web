@@ -39,14 +39,15 @@ export const ProductCarousel = ({
               <Image
                 priority={idx === 0}
                 fetchPriority={idx === 0 ? "high" : "auto"}
-                src={decodeURIComponent(slide.url)}
-                alt="Product image"
+                src={slide.url ? decodeURIComponent(slide.url) : '/placeholder.png'}
+                alt={`Product image ${idx + 1}`}
                 width={700}
                 height={700}
                 quality={idx === 0 ? 85 : 70}
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="max-h-[700px] w-full h-auto aspect-square object-cover object-center object-center"
                 data-testid={`product-carousel-image-${idx}`}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
               />
             </div>
           ))}

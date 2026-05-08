@@ -1,7 +1,6 @@
 'use client'
 
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
-import { useTranslations } from 'next-intl'
 
 interface CategoryCardProps {
   id: string
@@ -11,147 +10,65 @@ interface CategoryCardProps {
   image?: string
 }
 
-export function CategoryCard({ id, name, handle, icon, image }: CategoryCardProps) {
-  const t = useTranslations('categories')
-  
-  // Use provided icon or default to category-specific emoji
-  const displayIcon = icon || getCategoryDefaultIcon(handle)
-  
+// Color palette for category cards
+const PALETTE = [
+  { bg: '#FFF3E0', text: '#E65100' },
+  { bg: '#E3F2FD', text: '#1565C0' },
+  { bg: '#FCE4EC', text: '#880E4F' },
+  { bg: '#E8F5E9', text: '#1B5E20' },
+  { bg: '#EDE7F6', text: '#4527A0' },
+  { bg: '#FFF8E1', text: '#F57F17' },
+  { bg: '#F3E5F5', text: '#6A1B9A' },
+  { bg: '#E0F7FA', text: '#006064' },
+  { bg: '#EFEBE9', text: '#3E2723' },
+  { bg: '#F5F5F5', text: '#424242' },
+]
+
+function getColor(handle: string) {
+  // Deterministic color based on handle string
+  let hash = 0
+  for (let i = 0; i < handle.length; i++) {
+    hash = handle.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  return PALETTE[Math.abs(hash) % PALETTE.length]
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .slice(0, 2)
+    .map(w => w[0]?.toUpperCase() || '')
+    .join('')
+}
+
+export function CategoryCard({ id, name, handle, image }: CategoryCardProps) {
+  const color = getColor(handle)
+  const initials = getInitials(name)
+
   return (
     <LocalizedClientLink
       href={`/categories/${handle}`}
-      className="group flex flex-col items-center justify-center p-4 bg-white rounded-2xl 
-                 border border-gray-100 hover:border-[#F36418]/30 hover:bg-[#F36418]/5 
-                 transition-all duration-300 ease-out shadow-sm hover:shadow-md
-                 min-w-[100px] sm:min-w-[120px] flex-1"
+      className="group flex flex-col items-center gap-2"
     >
-      <div className="relative mb-3 transition-transform duration-300 group-hover:scale-110">
-        {image ? (
-          <div 
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-gradient-to-br from-[#F36418]/10 to-[#F36418]/20 
-                       flex items-center justify-center"
-          >
-            <img 
-              src={image} 
-              alt={name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        ) : (
-          <div 
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-[#F36418]/10 to-[#F36418]/20 
-                       flex items-center justify-center text-2xl sm:text-3xl
-                       group-hover:from-[#F36418]/20 group-hover:to-[#F36418]/30
-                       transition-all duration-300"
-          >
-            {displayIcon}
-          </div>
-        )}
-        {/* Orange accent ring on hover */}
-        <div 
-          className="absolute inset-0 rounded-full border-2 border-[#F36418] opacity-0 
-                     group-hover:opacity-100 transition-opacity duration-300 scale-105"
-        />
-      </div>
-      <span 
-        className="text-xs sm:text-sm font-medium text-gray-700 text-center 
-                   group-hover:text-[#F36418] transition-colors duration-300
-                   line-clamp-2 max-w-full"
+      <div
+        className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl flex items-center justify-center font-bold text-lg
+                   transition-transform duration-200 group-active:scale-95 group-hover:scale-105 overflow-hidden"
+        style={{ backgroundColor: color.bg, color: color.text }}
       >
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <span>{initials}</span>
+        )}
+      </div>
+      <span className="text-[11px] sm:text-xs font-medium text-gray-700 text-center leading-tight line-clamp-2 max-w-[64px]">
         {name}
       </span>
     </LocalizedClientLink>
   )
-}
-
-// Helper function to get default icon for category handle
-function getCategoryDefaultIcon(handle: string): string {
-  const iconMap: Record<string, string> = {
-    // Fashion
-    'fashion': '👕',
-    'fashion-women': '👗',
-    'fashion-men': '👔',
-    'clothing': '👕',
-    'shoes': '👟',
-    'accessories': '👜',
-    'jewelry': '💍',
-    'watches': '⌚',
-    
-    // Electronics
-    'electronics': '📱',
-    'phones': '📱',
-    'computers': '💻',
-    'tablets': '📱',
-    'audio': '🎧',
-    'cameras': '📷',
-    'gaming': '🎮',
-    
-    // Home & Living
-    'home': '🏠',
-    'kitchen': '🍳',
-    'furniture': '🛋️',
-    'decor': '🖼️',
-    'garden': '🌿',
-    'bedding': '🛏️',
-    
-    // Beauty & Health
-    'beauty': '💄',
-    'skincare': '🧴',
-    'makeup': '💋',
-    'fragrance': '🌸',
-    'health': '💊',
-    'wellness': '🧘',
-    
-    // Sports & Outdoors
-    'sports': '⚽',
-    'fitness': '🏋️',
-    'outdoors': '🏕️',
-    'cycling': '🚴',
-    'running': '🏃',
-    'yoga': '🧘',
-    
-    // Kids & Baby
-    'kids': '🧒',
-    'baby': '👶',
-    'toys': '🧸',
-    'games': '🎲',
-    'books': '📚',
-    
-    // Food & Grocery
-    'grocery': '🛒',
-    'food': '🍎',
-    'snacks': '🍿',
-    'beverages': '🥤',
-    
-    // Automotive
-    'automotive': '🚗',
-    'car-accessories': '🔧',
-    'motorcycle': '🏍️',
-    
-    // Pets
-    'pets': '🐾',
-    'pet-supplies': '🦴',
-    
-    // Office
-    'office': '📎',
-    'stationery': '✏️',
-    
-    // Default
-    'default': '📦'
-  }
-  
-  // Try exact match first
-  if (iconMap[handle]) {
-    return iconMap[handle]
-  }
-  
-  // Try partial match
-  for (const [key, icon] of Object.entries(iconMap)) {
-    if (handle.includes(key)) {
-      return icon
-    }
-  }
-  
-  return iconMap['default']
 }

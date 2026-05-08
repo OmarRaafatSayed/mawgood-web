@@ -215,7 +215,9 @@
     "vendorPanel": "لوحة البائعين",
     "loginToVendor": "دخول البائعين",
     "startSelling": "ابدأ البيع",
-    "joinAsSeller": "انضم كبائع"
+    "joinAsSeller": "انضم كبائع",
+    "openStore": "افتح متجر",
+    "sellWithUs": "بع معنا"
   },
   "brands": {
     "exploreBrands": "استكشف العلامات",
