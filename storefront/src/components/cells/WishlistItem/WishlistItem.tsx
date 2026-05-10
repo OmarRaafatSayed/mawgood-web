@@ -1,5 +1,8 @@
+"use client"
+
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import Image from "next/image"
+import { useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { WishlistButton } from "../WishlistButton/WishlistButton"
 import { Wishlist } from "@/types/wishlist"
@@ -7,6 +10,8 @@ import { convertToLocale } from "@/lib/helpers/money"
 import { Button } from "@/components/atoms"
 import clsx from "clsx"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
+
+const FALLBACK = "/images/placeholder.svg"
 
 export const WishlistItem = ({
   product,
@@ -28,6 +33,11 @@ export const WishlistItem = ({
     currency_code: cheapestPrice?.currency_code
   });
 
+  const [imgSrc, setImgSrc] = useState(
+    product.thumbnail ? decodeURIComponent(product.thumbnail) : FALLBACK
+  )
+  const [imgErrored, setImgErrored] = useState(false)
+
   return (
     <div
       className={clsx(
@@ -45,26 +55,18 @@ export const WishlistItem = ({
         </div>
         <LocalizedClientLink href={`/products/${product.handle}`}>
           <div className="overflow-hidden rounded-sm w-full h-full flex justify-center align-center ">
-            {product.thumbnail ? (
-              <Image
-                src={decodeURIComponent(product.thumbnail)}
-                alt={product.title}
-                width={360}
-                height={360}
-                className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
-                priority
-                data-testid={testIdPrefix ? `${testIdPrefix}-thumbnail` : undefined}
-              />
-            ) : (
-              <Image
-                src="/images/placeholder.svg"
-                alt="Product placeholder"
-                width={100}
-                height={100}
-                className="flex margin-auto w-[100px] h-auto"
-                data-testid={testIdPrefix ? `${testIdPrefix}-placeholder` : undefined}
-              />
-            )}
+            <Image
+              src={imgSrc}
+              alt={product.title || "Product"}
+              width={360}
+              height={360}
+              className="object-cover aspect-square w-full object-center h-full lg:group-hover:-mt-14 transition-all duration-300 rounded-xs"
+              priority
+              onError={() => {
+                if (!imgErrored) { setImgErrored(true); setImgSrc(FALLBACK) }
+              }}
+              data-testid={testIdPrefix ? `${testIdPrefix}-thumbnail` : undefined}
+            />
           </div>
         </LocalizedClientLink>
         <LocalizedClientLink href={`/products/${product.handle}`}>

@@ -223,7 +223,13 @@ export async function updateLineItem({ lineId, quantity }: { lineId: string; qua
     revalidateTag(cartCacheTag);
 
     return res;
-  } catch (error) {
+  } catch (error: any) {
+    // If cart is already completed, remove it and throw a user-friendly error
+    if (error?.message?.includes('already completed')) {
+      console.log("[updateLineItem] Cart already completed, removing cart ID...");
+      await removeCartId();
+      throw new Error('Your previous order was completed. Please refresh the page to start a new cart.');
+    }
     return medusaError(error);
   }
 }
@@ -253,7 +259,14 @@ export async function deleteLineItem(lineId: string) {
         const cartCacheTag = await getCacheTag('carts');
         revalidateTag(cartCacheTag);
       })
-      .catch(medusaError);
+      .catch(async (error: any) => {
+        if (error?.message?.includes('already completed')) {
+          console.log("[deleteLineItem] Cart already completed, removing cart ID...");
+          await removeCartId();
+        } else {
+          medusaError(error);
+        }
+      });
     return;
   }
 
@@ -267,7 +280,14 @@ export async function deleteLineItem(lineId: string) {
       const cartCacheTag = await getCacheTag('carts');
       revalidateTag(cartCacheTag);
     })
-    .catch(medusaError);
+    .catch(async (error: any) => {
+      if (error?.message?.includes('already completed')) {
+        console.log("[deleteLineItem] Cart already completed, removing cart ID...");
+        await removeCartId();
+      } else {
+        medusaError(error);
+      }
+    });
 }
 
 export async function setShippingMethod({

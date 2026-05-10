@@ -85,14 +85,19 @@ export function BottomNavbar({
   return (
     <>
       <nav
-        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white z-[9999] border-t border-gray-100"
+        className="lg:hidden fixed bottom-0 left-0 right-0 !w-screen !max-w-none bg-white z-[9999] border-t border-gray-100"
         style={{
           height: 'calc(68px + env(safe-area-inset-bottom, 0px))',
           boxShadow: '0 -2px 12px rgba(0,0,0,0.08)',
+          width: '100vw',
+          maxWidth: 'none',
+          left: 0,
+          right: 0,
+          margin: 0,
         }}
         aria-label="Bottom navigation"
       >
-        <div className="flex items-center justify-around h-full px-1 max-w-screen-sm mx-auto">
+        <div className="flex items-center justify-around h-full px-1 w-full">
           {navItems.map((item, idx) => {
             const Icon = item.icon
             const active = item.active

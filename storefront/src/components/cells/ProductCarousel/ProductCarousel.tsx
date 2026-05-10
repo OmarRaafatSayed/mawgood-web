@@ -3,8 +3,45 @@
 import useEmblaCarousel from "embla-carousel-react"
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
+import { useState } from "react"
 import { ProductCarouselIndicator } from "@/components/molecules"
 import { useScreenSize } from "@/hooks/useScreenSize"
+
+const FALLBACK_IMAGE = "/images/placeholder.svg"
+
+function CarouselSlide({
+  slide,
+  idx,
+}: {
+  slide: NonNullable<HttpTypes.StoreProduct["images"]>[number]
+  idx: number
+}) {
+  const [src, setSrc] = useState(
+    slide.url ? decodeURIComponent(slide.url) : FALLBACK_IMAGE
+  )
+  const [errored, setErrored] = useState(false)
+
+  return (
+    <Image
+      priority={idx === 0}
+      fetchPriority={idx === 0 ? "high" : "auto"}
+      src={src}
+      alt={`Product image ${idx + 1}`}
+      width={700}
+      height={700}
+      quality={idx === 0 ? 85 : 70}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      className="max-h-[700px] w-full h-auto aspect-square object-cover object-center"
+      data-testid={`product-carousel-image-${idx}`}
+      onError={() => {
+        if (!errored) {
+          setErrored(true)
+          setSrc(FALLBACK_IMAGE)
+        }
+      }}
+    />
+  )
+}
 
 export const ProductCarousel = ({
   slides = [],
@@ -36,19 +73,7 @@ export const ProductCarousel = ({
               className="embla__slide min-w-0 h-[350px] lg:h-fit"
               data-testid={`product-carousel-slide-${idx}`}
             >
-              <Image
-                priority={idx === 0}
-                fetchPriority={idx === 0 ? "high" : "auto"}
-                src={slide.url ? decodeURIComponent(slide.url) : '/placeholder.png'}
-                alt={`Product image ${idx + 1}`}
-                width={700}
-                height={700}
-                quality={idx === 0 ? 85 : 70}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="max-h-[700px] w-full h-auto aspect-square object-cover object-center object-center"
-                data-testid={`product-carousel-image-${idx}`}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-              />
+              <CarouselSlide slide={slide} idx={idx} />
             </div>
           ))}
         </div>

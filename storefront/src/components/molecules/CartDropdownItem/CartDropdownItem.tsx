@@ -1,6 +1,11 @@
+"use client"
+
 import { convertToLocale } from "@/lib/helpers/money"
 import { HttpTypes } from "@medusajs/types"
 import Image from "next/image"
+import { useState } from "react"
+
+const FALLBACK = "/images/placeholder.svg"
 
 export const CartDropdownItem = ({
   item,
@@ -9,10 +14,10 @@ export const CartDropdownItem = ({
   item: HttpTypes.StoreCartLineItem
   currency_code: string
 }) => {
-  const original_total = convertToLocale({
-    amount: (item.compare_at_unit_price || 0) * item.quantity,
-    currency_code,
-  })
+  const [imgSrc, setImgSrc] = useState(
+    item.thumbnail ? decodeURIComponent(item.thumbnail) : FALLBACK
+  )
+  const [errored, setErrored] = useState(false)
 
   const total = convertToLocale({
     amount: item.subtotal ?? 0,
@@ -22,24 +27,17 @@ export const CartDropdownItem = ({
   return (
     <div className="border rounded-sm p-1 flex gap-2 mb-4">
       <div className="w-[100px] h-[132px] flex items-center justify-center">
-        {item.thumbnail ? (
-          <Image
-            src={decodeURIComponent(item.thumbnail)}
-            alt={item.product_title || ""}
-            width={80}
-            height={90}
-            className="w-[80px] h-[90px] object-cover rounded-xs"
-            priority
-          />
-        ) : (
-          <Image
-            src={"/images/placeholder.svg"}
-            alt="Product thumbnail"
-            width={50}
-            height={66}
-            className="rounded-xs w-[50px] h-[66px] object-contain opacity-30"
-          />
-        )}
+        <Image
+          src={imgSrc}
+          alt={item.product_title || "Product"}
+          width={80}
+          height={90}
+          className="w-[80px] h-[90px] object-cover rounded-xs"
+          onError={() => {
+            if (!errored) { setErrored(true); setImgSrc(FALLBACK) }
+          }}
+          priority
+        />
       </div>
 
       <div className="py-2">

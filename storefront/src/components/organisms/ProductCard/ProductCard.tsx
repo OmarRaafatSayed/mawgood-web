@@ -1,11 +1,14 @@
 "use client"
 
 import Image from "next/image"
+import { useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { cn } from "@/lib/utils"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { getProductPrice } from "@/lib/helpers/get-product-price"
 import { Product } from "@/types/product"
+
+const FALLBACK_IMAGE = "/images/placeholder.svg"
 
 export const ProductCard = ({
   product,
@@ -14,10 +17,22 @@ export const ProductCard = ({
   product: HttpTypes.StoreProduct | Product
   className?: string
 }) => {
+  const [imgSrc, setImgSrc] = useState<string | null>(
+    product?.thumbnail ? decodeURIComponent(product.thumbnail) : null
+  )
+  const [imgError, setImgError] = useState(false)
+
   if (!product) return null
 
   const { cheapestPrice } = getProductPrice({ product: product as HttpTypes.StoreProduct })
   const productName = String(product.title || "Product")
+
+  const handleImageError = () => {
+    if (!imgError) {
+      setImgError(true)
+      setImgSrc(FALLBACK_IMAGE)
+    }
+  }
 
   return (
     <LocalizedClientLink
@@ -34,19 +49,20 @@ export const ProductCard = ({
     >
       {/* Image */}
       <div className="relative w-full aspect-square bg-gray-50 overflow-hidden">
-        {product.thumbnail ? (
+        {imgSrc && !imgError ? (
           <Image
-            src={decodeURIComponent(product.thumbnail)}
+            src={imgSrc}
             alt={productName}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={handleImageError}
             data-testid="product-card-image"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-100">
             <Image
-              src="/images/placeholder.svg"
+              src={FALLBACK_IMAGE}
               alt={productName}
               width={80}
               height={80}

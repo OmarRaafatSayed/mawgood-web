@@ -58,6 +58,10 @@
     "@mercurjs/requests": "^1.5.3",
     "@mercurjs/resend": "^1.5.3",
     "@mercurjs/reviews": "^1.5.3",
+    "compression": "^1.8.1",
+    "express-rate-limit": "^8.5.1",
+    "helmet": "^8.1.0",
+    "sharp": "^0.34.5",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

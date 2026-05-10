@@ -24,7 +24,7 @@ export default async function RootLayout({
     return (
       <NextIntlClientProvider messages={messages}>
         <Header locale={locale} />
-        <main className="overflow-x-hidden">
+        <main>
           {children}
         </main>
         <Footer />
@@ -43,7 +43,7 @@ export default async function RootLayout({
         userEmail={user.email}
       >
         <Header locale={locale} />
-        <main className="overflow-x-hidden">
+        <main>
           {children}
         </main>
         <Footer />

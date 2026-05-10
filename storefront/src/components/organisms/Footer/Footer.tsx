@@ -26,62 +26,16 @@ const brands = [
   { name: 'LG', logo: '/brands/lg.png' },
 ]
 
-const paymentMethods = [
-  {
-    name: 'Visa',
-    logo: '/images/payment/visa.svg',
-    bg: '#1A1F71',
-  },
-  {
-    name: 'Mastercard',
-    logo: '/images/payment/mastercard.svg',
-    bg: '#F7F7F7',
-  },
-  {
-    name: 'Meeza',
-    logo: '/images/payment/meeza.svg',
-    bg: '#C8102E',
-  },
-  {
-    name: 'Fawry',
-    logo: '/images/payment/fawry.svg',
-    bg: '#F7A800',
-  },
-  {
-    name: 'InstaPay',
-    logo: '/images/payment/instapay.svg',
-    bg: '#6B2D8B',
-  },
-  {
-    name: 'Vodafone Cash',
-    logo: '/images/payment/vodafone-cash.svg',
-    bg: '#E60000',
-  },
-  {
-    name: 'اتصالات Cash',
-    logo: '/images/payment/etisalat-cash.svg',
-    bg: '#00A651',
-  },
-  {
-    name: 'Orange Cash',
-    logo: '/images/payment/orange-cash.svg',
-    bg: '#FF6600',
-  },
-  {
-    name: 'WE Pay',
-    logo: '/images/payment/we-pay.svg',
-    bg: '#0033A0',
-  },
-  {
-    name: 'تحويل بنكي',
-    logo: '/images/payment/bank-transfer.svg',
-    bg: '#1A3C6E',
-  },
-  {
-    name: 'الدفع عند الاستلام',
-    logo: '/images/payment/cod.svg',
-    bg: '#2E7D32',
-  },
+// Real payment logo images for the footer strip
+const paymentLogoStrip = [
+  { name: 'Visa & Mastercard', file: '/images/payments/viza-mastercard.jpg' },
+  { name: 'Fawry', file: '/images/payments/fawry.jpeg' },
+  { name: 'InstaPay', file: '/images/payments/instapay.png' },
+  { name: 'Vodafone Cash', file: '/images/payments/vodafone.webp' },
+  { name: 'Etisalat / WE', file: '/images/payments/ET_Logo.png' },
+  { name: 'WE Pay', file: '/images/payments/we-pay.png' },
+  { name: 'Bank Masr', file: '/images/payments/bankmasr.webp' },
+  { name: 'NBE', file: '/images/payments/NBE_logo.png' },
 ]
 
 const policies = [
@@ -94,11 +48,11 @@ const policies = [
 export function FooterBrands() {
   return (
     <div className="mb-6">
-      <h3 className="font-bold text-gray-800 mb-4">الماركات</h3>
+      <h3 className="font-bold text-white mb-4">الماركات</h3>
       <div className="grid grid-cols-3 gap-4">
         {brands.map((brand) => (
-          <div key={brand.name} className="h-12 bg-gray-50 rounded-lg flex items-center justify-center">
-            <span className="text-gray-400 text-sm">{brand.name}</span>
+          <div key={brand.name} className="h-12 bg-white/10 rounded-lg flex items-center justify-center">
+            <span className="text-white/50 text-sm">{brand.name}</span>
           </div>
         ))}
       </div>
@@ -111,13 +65,13 @@ export function FooterPopularSearch() {
   
   return (
     <div className="mb-6">
-      <h3 className="font-bold text-gray-800 mb-4">البحث الشائع</h3>
+      <h3 className="font-bold text-white mb-4">البحث الشائع</h3>
       <div className="flex flex-wrap gap-2">
         {popularSearchTerms.map((term) => (
           <LocalizedClientLink
             key={term}
             href={`/search?q=${encodeURIComponent(term)}`}
-            className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 transition-colors"
+            className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/70 hover:bg-white/20 hover:text-white transition-colors"
           >
             {term}
           </LocalizedClientLink>
@@ -132,17 +86,17 @@ export function FooterContact() {
   
   return (
     <div className="mb-6">
-      <h3 className="font-bold text-gray-800 mb-4">{t('contactUs')}</h3>
+      <h3 className="font-bold text-white mb-4">{t('contactUs')}</h3>
       <div className="space-y-3">
-        <a href="tel:19911" className="flex items-center gap-2 text-gray-600">
+        <a href="tel:19911" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
           <span>📞</span>
           <span>19911</span>
         </a>
-        <a href="mailto:support@mawgood.com" className="flex items-center gap-2 text-gray-600">
+        <a href="mailto:support@mawgood.com" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
           <span>✉️</span>
           <span>support@mawgood.com</span>
         </a>
-        <div className="flex items-center gap-2 text-gray-600">
+        <div className="flex items-center gap-2 text-white/70">
           <LocationIcon size={18} />
           <span>القاهرة، مصر</span>
         </div>
@@ -163,94 +117,45 @@ export function FooterContact() {
   )
 }
 
-export function FooterPayment() {
-  const t = useTranslations('footer')
-
-  return (
-    <div className="mb-6">
-      <h3 className="font-bold text-gray-800 mb-4">{t('paymentMethods')}</h3>
-
-      {/* Mobile wallets group */}
-      <p className="text-xs text-gray-500 mb-2 font-medium">المحافظ الإلكترونية</p>
-      <div className="grid grid-cols-4 gap-2 mb-3">
-        {paymentMethods
-          .filter(m => ['Vodafone Cash', 'اتصالات Cash', 'Orange Cash', 'WE Pay'].includes(m.name))
-          .map((method) => (
-            <div
-              key={method.name}
-              title={method.name}
-              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
-            >
-              <Image
-                src={method.logo}
-                alt={method.name}
-                width={80}
-                height={44}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-      </div>
-
-      {/* Cards & payment services */}
-      <p className="text-xs text-gray-500 mb-2 font-medium">بطاقات وخدمات الدفع</p>
-      <div className="grid grid-cols-4 gap-2 mb-3">
-        {paymentMethods
-          .filter(m => ['Visa', 'Mastercard', 'Meeza', 'Fawry', 'InstaPay'].includes(m.name))
-          .map((method) => (
-            <div
-              key={method.name}
-              title={method.name}
-              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
-            >
-              <Image
-                src={method.logo}
-                alt={method.name}
-                width={80}
-                height={44}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-      </div>
-
-      {/* Bank & COD */}
-      <p className="text-xs text-gray-500 mb-2 font-medium">طرق أخرى</p>
-      <div className="grid grid-cols-2 gap-2">
-        {paymentMethods
-          .filter(m => ['تحويل بنكي', 'الدفع عند الاستلام'].includes(m.name))
-          .map((method) => (
-            <div
-              key={method.name}
-              title={method.name}
-              className="h-11 rounded-lg overflow-hidden flex items-center justify-center shadow-sm border border-gray-100"
-            >
-              <Image
-                src={method.logo}
-                alt={method.name}
-                width={160}
-                height={44}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-      </div>
-    </div>
-  )
-}
-
 export function FooterPolicies() {
   return (
-    <div className="py-4 border-t border-b border-gray-200">
+    <div className="py-4 border-t border-b border-white/10">
       <div className="flex flex-wrap justify-center gap-4 lg:gap-8">
         {policies.map((policy) => (
           <LocalizedClientLink
             key={policy.label}
             href={policy.href}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm text-white/60 hover:text-white transition-colors"
           >
             {policy.label}
           </LocalizedClientLink>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function FooterPaymentLogos() {
+  return (
+    <div className="w-full bg-[#080b12] border-t border-white/10 py-4 px-4">
+      <p className="text-center text-xs text-white/40 mb-3 uppercase tracking-widest font-medium">
+        وسائل الدفع المتاحة
+      </p>
+      <div className="flex flex-wrap justify-center items-center gap-3 max-w-screen-xl mx-auto">
+        {paymentLogoStrip.map((logo) => (
+          <div
+            key={logo.name}
+            title={logo.name}
+            className="h-10 w-20 bg-white rounded-lg overflow-hidden flex items-center justify-center p-1.5 grayscale hover:grayscale-0 transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105"
+          >
+            <Image
+              src={logo.file}
+              alt={logo.name}
+              width={80}
+              height={40}
+              className="w-full h-full object-contain"
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -262,8 +167,8 @@ export function FooterBottom() {
   const tFooter = useTranslations('footer')
   
   return (
-    <div className="py-4 text-center">
-      <p className="text-sm text-gray-500">
+    <div className="py-4 text-center border-t border-white/10">
+      <p className="text-sm text-white/40">
         © 2026 {tFooter('allRightsReserved')}
       </p>
     </div>
@@ -286,9 +191,9 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-gray-50 mt-12 overflow-hidden">
+    <footer className="bg-[#0e111a] mt-12 overflow-hidden">
       <div className="container mx-auto px-4 py-8 max-w-screen-lg">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div>
             <FooterBrands />
           </div>
@@ -300,60 +205,56 @@ export function Footer() {
           <div>
             <FooterContact />
           </div>
-          
-          <div>
-            <FooterPayment />
-          </div>
         </div>
 
-        <div className="hidden lg:block border-t border-gray-200 mt-8 pt-8">
+        <div className="hidden lg:block border-t border-white/10 mt-8 pt-8">
           <div className="grid grid-cols-4 gap-8">
             <div>
-              <h4 className="font-bold text-gray-800 mb-4">خدمات العملاء</h4>
+              <h4 className="font-bold text-white mb-4">خدمات العملاء</h4>
               <ul className="space-y-2">
-                <li><LocalizedClientLink href="/faq" className="text-sm text-gray-600">الأسئلة الشائعة</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/track-order" className="text-sm text-gray-600">تتبع طلبك</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/return-policy" className="text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/delivery" className="text-sm text-gray-600">التوصيل والشحن</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/faq" className="text-sm text-white/60 hover:text-white transition-colors">الأسئلة الشائعة</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/track-order" className="text-sm text-white/60 hover:text-white transition-colors">تتبع طلبك</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/return-policy" className="text-sm text-white/60 hover:text-white transition-colors">سياسة الإرجاع</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/delivery" className="text-sm text-white/60 hover:text-white transition-colors">التوصيل والشحن</LocalizedClientLink></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-gray-800 mb-4">عن الموقع</h4>
+              <h4 className="font-bold text-white mb-4">عن الموقع</h4>
               <ul className="space-y-2">
-                <li><LocalizedClientLink href="/about" className="text-sm text-gray-600">من نحن</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/blog" className="text-sm text-gray-600">المدونة</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/careers" className="text-sm text-gray-600">وظائف</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/contact" className="text-sm text-gray-600">اتصل بنا</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/about" className="text-sm text-white/60 hover:text-white transition-colors">من نحن</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/blog" className="text-sm text-white/60 hover:text-white transition-colors">المدونة</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/careers" className="text-sm text-white/60 hover:text-white transition-colors">وظائف</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">اتصل بنا</LocalizedClientLink></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-gray-800 mb-4">سياسات</h4>
+              <h4 className="font-bold text-white mb-4">سياسات</h4>
               <ul className="space-y-2">
-                <li><LocalizedClientLink href="/privacy-policy" className="text-sm text-gray-600">سياسة الخصوصية</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/terms-conditions" className="text-sm text-gray-600">الشروط والأحكام</LocalizedClientLink></li>
-                <li><LocalizedClientLink href="/return-policy" className="text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/privacy-policy" className="text-sm text-white/60 hover:text-white transition-colors">سياسة الخصوصية</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/terms-conditions" className="text-sm text-white/60 hover:text-white transition-colors">الشروط والأحكام</LocalizedClientLink></li>
+                <li><LocalizedClientLink href="/return-policy" className="text-sm text-white/60 hover:text-white transition-colors">سياسة الإرجاع</LocalizedClientLink></li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-gray-800 mb-4">تحميل التطبيق</h4>
+              <h4 className="font-bold text-white mb-4">تحميل التطبيق</h4>
               <div className="flex gap-2">
-                <button className="px-4 py-2 bg-black text-white rounded-lg text-sm">App Store</button>
-                <button className="px-4 py-2 bg-black text-white rounded-lg text-sm">Google Play</button>
+                <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm transition-colors">App Store</button>
+                <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-sm transition-colors">Google Play</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="lg:hidden border-t border-gray-200 mt-8 pt-4">
+        <div className="lg:hidden border-t border-white/10 mt-8 pt-4">
           <div className="space-y-2">
             {['services', 'about', 'policies', 'app'].map((section) => (
-              <div key={section} className="border-b border-gray-200">
+              <div key={section} className="border-b border-white/10">
                 <button 
                   onClick={() => toggleSection(section)}
-                  className="w-full flex items-center justify-between py-3 text-gray-800 font-medium"
+                  className="w-full flex items-center justify-between py-3 text-white font-medium"
                 >
                   <span>{section === 'services' ? 'خدمات العملاء' : section === 'about' ? 'عن الموقع' : section === 'policies' ? 'سياسات' : 'تحميل التطبيق'}</span>
                   <ArrowRightIcon size={16} className={`transition-transform ${isExpanded[section] ? 'rotate-90' : ''}`} />
@@ -362,28 +263,28 @@ export function Footer() {
                   <div className="pb-3 space-y-2">
                     {section === 'services' && (
                       <>
-                        <LocalizedClientLink href="/faq" className="block text-sm text-gray-600">الأسئلة الشائعة</LocalizedClientLink>
-                        <LocalizedClientLink href="/track-order" className="block text-sm text-gray-600">تتبع طلبك</LocalizedClientLink>
-                        <LocalizedClientLink href="/return-policy" className="block text-sm text-gray-600">سياسة الإرجاع</LocalizedClientLink>
+                        <LocalizedClientLink href="/faq" className="block text-sm text-white/60 hover:text-white transition-colors">الأسئلة الشائعة</LocalizedClientLink>
+                        <LocalizedClientLink href="/track-order" className="block text-sm text-white/60 hover:text-white transition-colors">تتبع طلبك</LocalizedClientLink>
+                        <LocalizedClientLink href="/return-policy" className="block text-sm text-white/60 hover:text-white transition-colors">سياسة الإرجاع</LocalizedClientLink>
                       </>
                     )}
                     {section === 'about' && (
                       <>
-                        <LocalizedClientLink href="/about" className="block text-sm text-gray-600">من نحن</LocalizedClientLink>
-                        <LocalizedClientLink href="/blog" className="block text-sm text-gray-600">المدونة</LocalizedClientLink>
-                        <LocalizedClientLink href="/contact" className="block text-sm text-gray-600">اتصل بنا</LocalizedClientLink>
+                        <LocalizedClientLink href="/about" className="block text-sm text-white/60 hover:text-white transition-colors">من نحن</LocalizedClientLink>
+                        <LocalizedClientLink href="/blog" className="block text-sm text-white/60 hover:text-white transition-colors">المدونة</LocalizedClientLink>
+                        <LocalizedClientLink href="/contact" className="block text-sm text-white/60 hover:text-white transition-colors">اتصل بنا</LocalizedClientLink>
                       </>
                     )}
                     {section === 'policies' && (
                       <>
-                        <LocalizedClientLink href="/privacy-policy" className="block text-sm text-gray-600">سياسة الخصوصية</LocalizedClientLink>
-                        <LocalizedClientLink href="/terms-conditions" className="block text-sm text-gray-600">الشروط والأحكام</LocalizedClientLink>
+                        <LocalizedClientLink href="/privacy-policy" className="block text-sm text-white/60 hover:text-white transition-colors">سياسة الخصوصية</LocalizedClientLink>
+                        <LocalizedClientLink href="/terms-conditions" className="block text-sm text-white/60 hover:text-white transition-colors">الشروط والأحكام</LocalizedClientLink>
                       </>
                     )}
                     {section === 'app' && (
                       <div className="flex gap-2">
-                        <button className="px-4 py-2 bg-black text-white rounded-lg text-sm">App Store</button>
-                        <button className="px-4 py-2 bg-black text-white rounded-lg text-sm">Google Play</button>
+                        <button className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm">App Store</button>
+                        <button className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm">Google Play</button>
                       </div>
                     )}
                   </div>
@@ -396,6 +297,9 @@ export function Footer() {
         <FooterPolicies />
         <FooterBottom />
       </div>
+
+      {/* Payment logos strip — full width outside the container */}
+      <FooterPaymentLogos />
     </footer>
   )
 }

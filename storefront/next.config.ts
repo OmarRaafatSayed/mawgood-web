@@ -3,31 +3,46 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000'
+
+// Extract hostname from backend URL for image domains
+let backendHostname = 'localhost'
+let backendPort: string | undefined = '9000'
+let backendProtocol: 'http' | 'https' = 'http'
+try {
+  const url = new URL(BACKEND_URL)
+  backendHostname = url.hostname
+  backendPort = url.port || undefined
+  backendProtocol = url.protocol.replace(':', '') as 'http' | 'https'
+} catch {}
+
 const nextConfig: NextConfig = {
   output: "standalone",
   trailingSlash: false,
   reactStrictMode: true,
+  // Remove console.log in production
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
   logging: {
     fetches: {
-      fullUrl: true
+      fullUrl: process.env.NODE_ENV !== 'production',
     }
   },
   images: {
-    unoptimized: process.env.NODE_ENV === 'development',
+    // Always optimize images in production
+    unoptimized: false,
+    formats: ['image/avif', 'image/webp'],
     qualities: [75, 80, 85, 90, 95, 100],
+    minimumCacheTTL: 31536000, // 1 year
     remotePatterns: [
+      // Dynamic backend URL
       {
-        protocol: 'https',
-        hostname: 'medusa-public-images.s3.eu-west-1.amazonaws.com'
+        protocol: backendProtocol,
+        hostname: backendHostname,
+        port: backendPort,
       },
-      {
-        protocol: 'https',
-        hostname: 'mercur-connect.s3.eu-central-1.amazonaws.com'
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.mercurjs.com'
-      },
+      // Common dev ports
       {
         protocol: 'http',
         hostname: 'localhost',
@@ -41,6 +56,19 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost'
+      },
+      // Production CDN / S3
+      {
+        protocol: 'https',
+        hostname: 'medusa-public-images.s3.eu-west-1.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'mercur-connect.s3.eu-central-1.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.mercurjs.com'
       },
       {
         protocol: 'https',
@@ -56,25 +84,43 @@ const nextConfig: NextConfig = {
         hostname: 's3.eu-central-1.amazonaws.com'
       },
       {
-        protocol: "https",
-        hostname: "mercur-testing.up.railway.app",
+        protocol: 'https',
+        hostname: 'mercur-testing.up.railway.app',
       },
       {
         protocol: 'https',
+        hostname: '*.hf.space'
+      },
+      {
+        protocol: 'https',
+        hostname: 'huggingface.co'
+      },
+      // Allow any HTTPS hostname (for flexibility with Hostinger)
+      {
+        protocol: 'https',
         hostname: '**'
-      },
-      {
-        protocol: "https",
-        hostname: "*.hf.space"
-      },
-      {
-        protocol: "https",
-        hostname: "huggingface.co"
       }
     ]
   },
   typescript: {
     ignoreBuildErrors: true
+  },
+  // Production headers for caching
+  async headers() {
+    return [
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        ]
+      },
+      {
+        source: '/images/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        ]
+      }
+    ]
   }
 };
 

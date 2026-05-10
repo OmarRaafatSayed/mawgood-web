@@ -1,0 +1,113 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ─── Checkout ────────────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ─── Setup Node ──────────────────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ─── Install & Build Backend ─────────────────────────────────────────────
+      - name: Install backend dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./backend
+
+      - name: Build backend
+        run: npm run build
+        working-directory: ./backend
+        env:
+          NODE_ENV: production
+
+      # ─── Install & Build Storefront ──────────────────────────────────────────
+      - name: Install storefront dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./storefront
+
+      - name: Build storefront
+        run: npm run build
+        working-directory: ./storefront
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${{ secrets.PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.STOREFRONT_URL }}
+          NEXT_PUBLIC_SITE_NAME: "Mawgood - موجود"
+
+      # ─── Install & Build Admin Panel ─────────────────────────────────────────
+      - name: Install admin-panel dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./admin-panel
+
+      - name: Build admin-panel
+        run: npm run build:preview
+        working-directory: ./admin-panel
+        env:
+          NODE_ENV: production
+          VITE_MEDUSA_BACKEND_URL: ${{ secrets.BACKEND_URL }}
+
+      # ─── Install & Build Vendor Panel ────────────────────────────────────────
+      - name: Install vendor-panel dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: ./vendor-panel
+
+      - name: Build vendor-panel
+        run: npm run build:preview
+        working-directory: ./vendor-panel
+        env:
+          NODE_ENV: production
+          VITE_MEDUSA_BACKEND_URL: ${{ secrets.BACKEND_URL }}
+
+      # ─── Deploy to Hostinger via SSH ─────────────────────────────────────────
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd /var/www/mawgood
+
+            echo "=== Pulling latest code ==="
+            git pull origin main
+
+            echo "=== Installing backend dependencies ==="
+            cd backend && npm install --legacy-peer-deps --production
+            cd ..
+
+            echo "=== Running database migrations ==="
+            cd backend && NODE_ENV=production npm run db:migrate
+            cd ..
+
+            echo "=== Installing storefront dependencies ==="
+            cd storefront && npm install --legacy-peer-deps --production
+            cd ..
+
+            echo "=== Restarting services with PM2 ==="
+            pm2 reload ecosystem.config.js --update-env || pm2 start ecosystem.config.js
+
+            echo "=== Saving PM2 process list ==="
+            pm2 save
+
+            echo "=== Health check ==="
+            sleep 5
+            curl -f http://localhost:9000/health || (echo "Backend health check failed" && exit 1)
+
+            echo "=== Deployment complete ==="

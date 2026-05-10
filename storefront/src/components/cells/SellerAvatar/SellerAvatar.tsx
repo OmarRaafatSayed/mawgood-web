@@ -1,4 +1,9 @@
+"use client"
+
 import Image from "next/image"
+import { useState } from "react"
+
+const FALLBACK = "/images/placeholder.svg"
 
 export const SellerAvatar = ({
   photo = "",
@@ -9,23 +14,20 @@ export const SellerAvatar = ({
   size?: number
   alt?: string
 }) => {
-  return photo ? (
+  const [src, setSrc] = useState(photo ? decodeURIComponent(photo) : FALLBACK)
+  const [errored, setErrored] = useState(false)
+
+  return (
     <Image
-      src={decodeURIComponent(photo)}
+      src={src}
       alt={alt}
       width={size}
       height={size}
-      className="shrink-0"
+      className="shrink-0 rounded-sm object-cover"
       style={{ maxWidth: size, maxHeight: size }}
-    />
-  ) : (
-    <Image
-      src="/images/placeholder.svg"
-      alt={alt}
-      className="opacity-30 w-8 h-8 shrink-0"
-      width={32}
-      height={32}
-      style={{ maxWidth: 32, maxHeight: 32 }}
+      onError={() => {
+        if (!errored) { setErrored(true); setSrc(FALLBACK) }
+      }}
     />
   )
 }

@@ -1,9 +1,31 @@
+"use client"
+
 import { Divider } from "@/components/atoms"
 import { convertToLocale } from "@/lib/helpers/money"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
+
+const FALLBACK = "/images/placeholder.svg"
+
+function ProductImage({ src, alt }: { src?: string; alt: string }) {
+  const [imgSrc, setImgSrc] = useState(src || FALLBACK)
+  const [errored, setErrored] = useState(false)
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      width={66}
+      height={66}
+      className="object-cover w-full h-full"
+      onError={() => {
+        if (!errored) { setErrored(true); setImgSrc(FALLBACK) }
+      }}
+    />
+  )
+}
 
 export const OrderProductListItem = ({
   item,
@@ -19,24 +41,11 @@ export const OrderProductListItem = ({
     <li className={cn("flex items-center", withDivider && "mt-2")}>
       <div className="grid grid-cols-1 sm:grid-cols-7 w-full sm:gap-4 mb-2">
         <div className="sm:col-span-2 flex gap-2 items-center">
-          <div className="w-[66px] h-16 relative rounded-sm overflow-hidden flex items-center justify-center">
-            {item.thumbnail ? (
-              <Image
-                src={item.thumbnail}
-                alt={item.title}
-                width={66}
-                height={66}
-                className="object-cover"
-              />
-            ) : (
-              <Image
-                src={"/images/placeholder.svg"}
-                alt={item.title}
-                width={45}
-                height={45}
-                className="opacity-25"
-              />
-            )}
+          <div className="w-[66px] h-16 relative rounded-sm overflow-hidden flex items-center justify-center bg-gray-50">
+            <ProductImage
+              src={item.thumbnail}
+              alt={item.title || item.product_title || "Product"}
+            />
           </div>
           <p className="label-md text-secondary">{item.product_title}</p>
           <LocalizedClientLink

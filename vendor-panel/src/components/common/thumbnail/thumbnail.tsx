@@ -1,5 +1,6 @@
 import { Photo } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
+import { useState } from "react"
 
 type ThumbnailProps = {
   src?: string | null
@@ -8,6 +9,8 @@ type ThumbnailProps = {
 }
 
 export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
+  const [hasError, setHasError] = useState(false)
+
   return (
     <div
       className={clx(
@@ -19,11 +22,13 @@ export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
         }
       )}
     >
-      {src ? (
+      {src && !hasError ? (
         <img
           src={src}
           alt={alt}
           className="h-full w-full object-cover object-center"
+          loading="lazy"
+          onError={() => setHasError(true)}
         />
       ) : (
         <Photo className="text-ui-fg-subtle" />

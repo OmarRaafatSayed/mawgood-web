@@ -61,7 +61,7 @@ export default async function RootLayout({
     <html
       lang={htmlLang}
       dir={htmlLang === 'ar' ? 'rtl' : 'ltr'}
-      className=""
+      className="overflow-x-hidden"
     >
       <Head>
         <link
@@ -151,7 +151,7 @@ export default async function RootLayout({
           href="https://api.mercurjs.com"
         />
       </Head>
-      <body className={`${tajawal.variable} ${inter.variable} font-sans relative bg-primary text-secondary antialiased overflow-x-hidden`}>
+      <body className={`${tajawal.variable} ${inter.variable} font-sans relative bg-primary text-secondary antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <HtmlLangSetter />
           <Providers cart={cart}>{children}</Providers>

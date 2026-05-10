@@ -1,27 +1,32 @@
-
 import { defineConfig, loadEnv } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
-// CORS Configuration for Production & Development
-// Development: Use '*' or localhost URLs
-// Production: Replace with actual domains (Flutter app, storefront, admin panel)
-const STORE_CORS = process.env.NODE_ENV === 'production'
-  ? (process.env.STORE_CORS || 'https://your-storefront-domain.com')
-  : (process.env.STORE_CORS || 'http://localhost:8000,https://docs.medusajs.com')
+const isProduction = process.env.NODE_ENV === 'production'
 
-const ADMIN_CORS = process.env.NODE_ENV === 'production'
-  ? (process.env.ADMIN_CORS || 'https://admin.your-domain.com')
-  : (process.env.ADMIN_CORS || 'http://localhost:5173,http://localhost:9000,https://docs.medusajs.com')
+// CORS Configuration
+// In production: read from .env only (no localhost fallback)
+// In development: allow all common dev ports
+const devOrigins = 'http://localhost:5173,http://localhost:5174,http://localhost:5175,http://localhost:3000,http://localhost:7001,http://localhost:9000,https://docs.medusajs.com'
 
-const VENDOR_CORS = process.env.NODE_ENV === 'production'
-  ? (process.env.VENDOR_CORS || 'https://vendor.your-domain.com')
-  : (process.env.VENDOR_CORS || 'http://localhost:5174,http://localhost:9000')
+const STORE_CORS = process.env.STORE_CORS || (isProduction ? '' : devOrigins)
+const ADMIN_CORS = process.env.ADMIN_CORS || (isProduction ? '' : devOrigins)
+const AUTH_CORS  = process.env.AUTH_CORS  || (isProduction ? '' : devOrigins)
 
-// Flutter app CORS - for mobile development use '*' or specific URLs
-const AUTH_CORS = process.env.NODE_ENV === 'production'
-  ? (process.env.AUTH_CORS || 'https://your-storefront-domain.com,https://admin.your-domain.com')
-  : (process.env.AUTH_CORS || 'http://localhost:5173,http://localhost:5174,http://localhost:8000,http://localhost:9000,https://docs.medusajs.com')
+// Validate production secrets
+if (isProduction) {
+  const jwtSecret = process.env.JWT_SECRET
+  const cookieSecret = process.env.COOKIE_SECRET
+  if (!jwtSecret || jwtSecret === 'supersecret') {
+    console.warn('[SECURITY WARNING] JWT_SECRET is not set or using default value in production!')
+  }
+  if (!cookieSecret || cookieSecret === 'supersecret') {
+    console.warn('[SECURITY WARNING] COOKIE_SECRET is not set or using default value in production!')
+  }
+  if (!process.env.DATABASE_URL) {
+    throw new Error('[FATAL] DATABASE_URL is required in production')
+  }
+}
 
 module.exports = defineConfig({
   projectConfig: {
@@ -29,20 +34,18 @@ module.exports = defineConfig({
     http: {
       storeCors: STORE_CORS,
       adminCors: ADMIN_CORS,
-      // @ts-expect-error: vendorCors is not a valid config
-      vendorCors: VENDOR_CORS,
       authCors: AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
     },
-    defaultCurrencyCode: 'egp'
+    defaultCurrencyCode: 'egp',
+    // Redis for caching and queues (required in production)
+    ...(process.env.REDIS_URL ? { redisUrl: process.env.REDIS_URL } : {})
   },
   admin: {
     disable: true,
   },
   plugins: [
-    // All mercurjs plugins disabled - they require seller module from b2c-core
-    // which requires stripe package
     {
       resolve: '@mercurjs/resend',
       options: {}
@@ -65,16 +68,6 @@ module.exports = defineConfig({
       resolve: '@medusajs/medusa/notification',
       options: {
         providers: [
-          // Disabled resend provider
-          // {
-          //   resolve: '@mercurjs/resend/providers/resend',
-          //   id: 'resend',
-          //   options: {
-          //     channels: ['email'],
-          //     api_key: process.env.RESEND_API_KEY,
-          //     from: process.env.RESEND_FROM_EMAIL
-          //   }
-          // },
           {
             resolve: '@medusajs/medusa/notification-local',
             id: 'local',
@@ -87,4 +80,3 @@ module.exports = defineConfig({
     }
   ]
 })
-
