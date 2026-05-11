@@ -11,16 +11,17 @@ const devOrigins = 'http://localhost:5173,http://localhost:5174,http://localhost
 
 const STORE_CORS = process.env.STORE_CORS || (isProduction ? '' : devOrigins)
 const ADMIN_CORS = process.env.ADMIN_CORS || (isProduction ? '' : devOrigins)
+const VENDOR_CORS = process.env.VENDOR_CORS || (isProduction ? '' : devOrigins)
 const AUTH_CORS  = process.env.AUTH_CORS  || (isProduction ? '' : devOrigins)
 
 // Validate production secrets
 if (isProduction) {
   const jwtSecret = process.env.JWT_SECRET
   const cookieSecret = process.env.COOKIE_SECRET
-  if (!jwtSecret || jwtSecret === 'supersecret') {
+  if (!jwtSecret || jwtSecret === 'supersecret' || jwtSecret === 'CHANGE_THIS_TO_RANDOM_64_CHAR_STRING') {
     console.warn('[SECURITY WARNING] JWT_SECRET is not set or using default value in production!')
   }
-  if (!cookieSecret || cookieSecret === 'supersecret') {
+  if (!cookieSecret || cookieSecret === 'supersecret' || cookieSecret === 'CHANGE_THIS_TO_ANOTHER_RANDOM_64_CHAR_STRING') {
     console.warn('[SECURITY WARNING] COOKIE_SECRET is not set or using default value in production!')
   }
   if (!process.env.DATABASE_URL) {
@@ -34,12 +35,13 @@ module.exports = defineConfig({
     http: {
       storeCors: STORE_CORS,
       adminCors: ADMIN_CORS,
+      vendorCors: VENDOR_CORS,
       authCors: AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
     },
     defaultCurrencyCode: 'egp',
-    // Redis for caching and queues (required in production)
+    // Redis for caching and queues (recommended in production)
     ...(process.env.REDIS_URL ? { redisUrl: process.env.REDIS_URL } : {})
   },
   admin: {

@@ -10,13 +10,13 @@ build/
 .turbo/
 .medusa/
 
-# Environment files
+# Environment files (keep templates)
 .env
 .env.local
-.env.production
 .env.development
 .env.test
-*.env
+!.env.template
+!.env.production.template
 
 # Logs
 *.log
@@ -24,39 +24,61 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# IDE
-.vscode/
-.idea/
 *.swp
 *.swo
 
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
 # Coverage
 coverage/
+*.lcov
 
-# Temp scripts
+# Temp scripts (development only)
 check-*.js
 debug-*.js
 fix-*.js
 verify-*.js
+build-preview.js
 *.sql
-run_qwen_openrouter.py
-test_models.py
-install-qwen.bat
+*.py
+*.bat
 tokens.json
 
-# Kiro AI
+# AI Tools
 .aider*
+.kiro/
 
 # PM2
 .pm2/
+pm2.log
 
-# TypeScript build info
+# TypeScript
 *.tsbuildinfo
+*.tsbuildinfo.*
 
 # Storybook
 storybook-static/
+
+# Testing
+.nyc_output/
+
+# Misc
+.vercel
+.yarn
+.pnp.*
+
+# Production (don't commit production env)
+.env.production

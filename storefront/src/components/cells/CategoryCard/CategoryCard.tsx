@@ -1,6 +1,7 @@
 'use client'
 
 import LocalizedClientLink from '@/components/molecules/LocalizedLink/LocalizedLink'
+import Image from 'next/image'
 
 interface CategoryCardProps {
   id: string
@@ -52,14 +53,16 @@ export function CategoryCard({ id, name, handle, image }: CategoryCardProps) {
     >
       <div
         className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl flex items-center justify-center font-bold text-lg
-                   transition-transform duration-200 group-active:scale-95 group-hover:scale-105 overflow-hidden"
+                   transition-transform duration-200 group-active:scale-95 group-hover:scale-105 overflow-hidden relative"
         style={{ backgroundColor: color.bg, color: color.text }}
       >
         {image ? (
-          <img
+          <Image
             src={image}
             alt={name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 64px, 72px"
             loading="lazy"
           />
         ) : (

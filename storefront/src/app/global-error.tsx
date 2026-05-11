@@ -57,8 +57,8 @@ export default function GlobalError({
               >
                 حاول مرة أخرى
               </button>
-              <a
-                href="/"
+              <button
+                onClick={() => window.location.href = "/"}
                 style={{
                   padding: "0.6rem 1.5rem",
                   background: "#f3f4f6",
@@ -73,7 +73,7 @@ export default function GlobalError({
                 }}
               >
                 الصفحة الرئيسية
-              </a>
+              </button>
             </div>
           </div>
         </div>
