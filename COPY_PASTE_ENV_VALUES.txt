@@ -1,0 +1,79 @@
+# ═══════════════════════════════════════════════════════════
+# المعلومات المطلوبة - Copy & Paste
+# ═══════════════════════════════════════════════════════════
+
+# ───────────────────────────────────────────────────────────
+# 1. MEDUSA_BACKEND_URL
+# ───────────────────────────────────────────────────────────
+MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+
+# ───────────────────────────────────────────────────────────
+# 2. NEXT_PUBLIC_MEDUSA_BACKEND_URL
+# ───────────────────────────────────────────────────────────
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+
+# ───────────────────────────────────────────────────────────
+# 3. NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+# ───────────────────────────────────────────────────────────
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53
+
+# ═══════════════════════════════════════════════════════════
+# ملف .env الكامل للـ Backend
+# ═══════════════════════════════════════════════════════════
+
+NODE_ENV=production
+PORT=9000
+DATABASE_URL=postgres://mawgood_user:Dawoodd!@#0123$%@localhost:5432/mawgood_db
+JWT_SECRET=Daw2@3#4$ood_Nada
+COOKIE_SECRET=Daw2@3#4$ood_Nada
+STORE_CORS=https://mawgood.cloud,https://www.mawgood.cloud
+ADMIN_CORS=https://admin.mawgood.cloud,https://mawgood.cloud
+VENDOR_CORS=https://vendor.mawgood.cloud,https://mawgood.cloud
+AUTH_CORS=https://mawgood.cloud,https://www.mawgood.cloud,https://admin.mawgood.cloud,https://vendor.mawgood.cloud
+MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53
+REDIS_URL=redis://localhost:6379
+ADMIN_EMAIL=admin@mawgood.cloud
+ADMIN_PASSWORD=ChangeThisPassword123!
+MAX_FILE_SIZE=10485760
+UPLOAD_DIR=./static
+SESSION_SECRET=Daw2@3#4$ood_Nada_Session
+RATE_LIMIT_ENABLED=true
+RATE_LIMIT_MAX_REQUESTS=100
+RATE_LIMIT_WINDOW_MS=60000
+LOG_LEVEL=info
+LOG_FILE=./logs/backend.log
+DEFAULT_REGION=eg
+DEFAULT_CURRENCY=EGP
+
+# ═══════════════════════════════════════════════════════════
+# ملف .env.production الكامل للـ Storefront
+# ═══════════════════════════════════════════════════════════
+
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53
+NEXT_PUBLIC_BASE_URL=https://mawgood.cloud
+NEXT_PUBLIC_SITE_NAME=Mawgood - موجود
+NEXT_PUBLIC_SITE_DESCRIPTION=موقع إلكتروني يضم كل المنتجات المحلية المصرية والعربية
+NEXT_PUBLIC_DEFAULT_REGION=eg
+NEXT_PUBLIC_DEFAULT_CURRENCY=EGP
+NEXT_PUBLIC_ENABLE_WISHLIST=true
+NEXT_PUBLIC_ENABLE_REVIEWS=true
+NEXT_PUBLIC_ENABLE_CHAT=true
+NEXT_PUBLIC_IMAGE_DOMAINS=api.mawgood.cloud,mawgood.cloud
+REVALIDATE_TIME=3600
+
+# ═══════════════════════════════════════════════════════════
+# ملف .env.production الكامل للـ Admin Panel
+# ═══════════════════════════════════════════════════════════
+
+VITE_MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+VITE_MEDUSA_PUBLISHABLE_KEY=pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53
+
+# ═══════════════════════════════════════════════════════════
+# ملف .env.production الكامل للـ Vendor Panel
+# ═══════════════════════════════════════════════════════════
+
+VITE_MEDUSA_BACKEND_URL=https://api.mawgood.cloud
+VITE_MEDUSA_PUBLISHABLE_KEY=pk_3e5434677a64beba278f80dfdd444cb978debabab7f445b20b2977233cd37c53
