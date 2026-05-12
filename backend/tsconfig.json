@@ -33,7 +33,8 @@
     ".medusa/server",
     ".medusa/admin",
     ".cache",
-    "src/scripts"
+    "src/scripts",
+    "scripts"
   ]
 
 }
