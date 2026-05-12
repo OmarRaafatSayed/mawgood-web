@@ -39,7 +39,6 @@ module.exports = defineConfig({
       jwtSecret: process.env.JWT_SECRET || 'supersecret',
       cookieSecret: process.env.COOKIE_SECRET || 'supersecret'
     },
-    defaultCurrencyCode: 'egp',
     // Redis for caching and queues (recommended in production)
     ...(process.env.REDIS_URL ? { redisUrl: process.env.REDIS_URL } : {})
   },
