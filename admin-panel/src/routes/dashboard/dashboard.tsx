@@ -1,5 +1,5 @@
 import { Heading, Text, Container, Button } from "@medusajs/ui"
-import { ArrowUpRightMini, ShoppingCart, Tag, Cube, Users } from "@medusajs/icons"
+import { ArrowUpRightMini, ShoppingCart, Tag, Users } from "@medusajs/icons"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
@@ -17,7 +17,7 @@ export const Dashboard = () => {
     {
       title: t("products.domain"),
       description: "View and manage products",
-      icon: Cube,
+      icon: ShoppingCart,
       link: "/products",
       color: "text-blue-500",
     },
