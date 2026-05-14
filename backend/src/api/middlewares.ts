@@ -7,11 +7,22 @@ import fs from 'fs'
 // Production middleware imports
 let compression: any = null
 let helmet: any = null
-let rateLimit: any = null
+let rateLimitLib: any = null
+let rateLimiter: any = null
 
 try { compression = require('compression') } catch {}
 try { helmet = require('helmet') } catch {}
-try { rateLimit = require('express-rate-limit') } catch {}
+try { 
+  rateLimitLib = require('express-rate-limit')
+  // Create rate limiter instance at initialization
+  rateLimiter = rateLimitLib({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests, please try again later.' }
+  })
+} catch {}
 
 // Fallback placeholder SVG (inline, no file dependency)
 const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
@@ -81,14 +92,8 @@ export default defineMiddlewares({
       matcher: '/store*',
       middlewares: [
         (req: any, res: any, next: any) => {
-          if (rateLimit) {
-            rateLimit({
-              windowMs: 15 * 60 * 1000, // 15 minutes
-              max: 200,
-              standardHeaders: true,
-              legacyHeaders: false,
-              message: { error: 'Too many requests, please try again later.' }
-            })(req, res, next)
+          if (rateLimiter) {
+            rateLimiter(req, res, next)
           } else {
             next()
           }
