@@ -36,5 +36,5 @@ WORKDIR /app
 
 EXPOSE 7000
 
-# Serve static files
-CMD ["serve", "-s", ".", "-l", "7000"]
+# Serve static files with SPA mode enabled
+CMD ["serve", "-s", ".", "-l", "7000", "-n"]

@@ -1,0 +1,103 @@
+═══════════════════════════════════════════════════════════
+🚀 أوامر سريعة لإصلاح Admin Panel
+═══════════════════════════════════════════════════════════
+
+📋 نسخ الأوامر دي والصقها في ترمينال السيرفر واحد ورا التاني:
+
+───────────────────────────────────────────────────────────
+1️⃣ الانتقال للمشروع وتحديث الكود
+───────────────────────────────────────────────────────────
+
+cd /var/www/mawgood-web
+git pull origin main
+
+
+───────────────────────────────────────────────────────────
+2️⃣ إعادة تشغيل Admin Panel في PM2
+───────────────────────────────────────────────────────────
+
+pm2 delete mawgood-admin
+pm2 start ecosystem.config.js --only mawgood-admin
+pm2 save
+
+
+───────────────────────────────────────────────────────────
+3️⃣ تحديث Nginx Configuration
+───────────────────────────────────────────────────────────
+
+sudo tee /etc/nginx/sites-available/mawgood-admin > /dev/null << 'EOF'
+server {
+    listen 80;
+    server_name admin.mawgood.cloud;
+
+    location / {
+        proxy_pass http://localhost:5173;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        
+        proxy_intercept_errors on;
+        error_page 404 = @fallback;
+    }
+    
+    location @fallback {
+        proxy_pass http://localhost:5173;
+    }
+}
+EOF
+
+
+───────────────────────────────────────────────────────────
+4️⃣ تفعيل وإعادة تحميل Nginx
+───────────────────────────────────────────────────────────
+
+sudo ln -sf /etc/nginx/sites-available/mawgood-admin /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+
+
+───────────────────────────────────────────────────────────
+5️⃣ التحقق من الحالة
+───────────────────────────────────────────────────────────
+
+pm2 list | grep admin
+curl -I http://localhost:5173
+
+
+═══════════════════════════════════════════════════════════
+✅ بعد تنفيذ الأوامر:
+═══════════════════════════════════════════════════════════
+
+1. افتح المتصفح: http://admin.mawgood.cloud
+2. جرب الدخول على صفحات مختلفة (Products, Orders, إلخ)
+3. إذا اشتغل كله، نفذ أمر SSL:
+
+   sudo certbot --nginx -d admin.mawgood.cloud
+
+
+═══════════════════════════════════════════════════════════
+🔍 إذا في مشكلة، شوف اللوجات:
+═══════════════════════════════════════════════════════════
+
+pm2 logs mawgood-admin --lines 50
+sudo tail -f /var/log/nginx/error.log
+
+
+═══════════════════════════════════════════════════════════
+📝 ملاحظة مهمة:
+═══════════════════════════════════════════════════════════
+
+إذا مجلد dist مش موجود في admin-panel، نفذ الأوامر دي الأول:
+
+cd /var/www/mawgood-web/admin-panel
+cp ../PRODUCTION_ENV_ADMIN.env .env
+yarn install --frozen-lockfile
+yarn build:preview
+cd ..
+
+ثم ارجع للخطوة 2 أعلاه.

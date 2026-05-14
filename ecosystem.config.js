@@ -51,7 +51,7 @@ module.exports = {
       name: 'mawgood-admin',
       cwd: './admin-panel',
       script: 'npx',
-      args: 'serve -s dist -l 5173',
+      args: 'serve -s dist -l 5173 -n',
       env: {
         NODE_ENV: 'production',
         PORT: 5173
@@ -72,7 +72,7 @@ module.exports = {
       name: 'mawgood-vendor',
       cwd: './vendor-panel',
       script: 'npx',
-      args: 'serve -s dist -l 5174',
+      args: 'serve -s dist -l 5174 -n',
       env: {
         NODE_ENV: 'production',
         PORT: 5174

@@ -33,5 +33,5 @@ WORKDIR /app
 
 EXPOSE 8000
 
-# Serve static files
-CMD ["serve", "-s", ".", "-l", "8000"]
+# Serve static files with SPA mode enabled
+CMD ["serve", "-s", ".", "-l", "8000", "-n"]

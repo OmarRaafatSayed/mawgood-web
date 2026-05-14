@@ -69,6 +69,14 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
+        
+        # SPA fallback - handle client-side routing
+        proxy_intercept_errors on;
+        error_page 404 = @fallback;
+    }
+    
+    location @fallback {
+        proxy_pass http://localhost:5173;
     }
 }
 ```
@@ -90,6 +98,14 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
+        
+        # SPA fallback - handle client-side routing
+        proxy_intercept_errors on;
+        error_page 404 = @fallback;
+    }
+    
+    location @fallback {
+        proxy_pass http://localhost:5174;
     }
 }
 ```
