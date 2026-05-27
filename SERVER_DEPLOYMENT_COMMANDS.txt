@@ -1,0 +1,111 @@
+═══════════════════════════════════════════════════════════════
+🚀 MAWGOOD BACKEND DEPLOYMENT - COMPLETE FIX
+═══════════════════════════════════════════════════════════════
+
+⚠️ PROBLEM: Backend missing .medusa/server/main.js (not built)
+✅ SOLUTION: Build backend properly and update .env
+
+═══════════════════════════════════════════════════════════════
+📋 STEP-BY-STEP COMMANDS (Copy & Paste on Server)
+═══════════════════════════════════════════════════════════════
+
+# 1️⃣ Navigate to project directory
+cd /var/www/mawgood-web
+
+# 2️⃣ Stop all PM2 processes
+pm2 stop all
+
+# 3️⃣ Pull latest code from GitHub
+git pull origin main
+
+# 4️⃣ Update backend .env with production CORS
+cat > backend/.env << 'EOF'
+STORE_CORS=https://mawgood.cloud,https://admin.mawgood.cloud,https://vendor.mawgood.cloud,http://localhost:5173,http://localhost:5174,http://localhost:3000
+ADMIN_CORS=https://admin.mawgood.cloud,https://vendor.mawgood.cloud,https://mawgood.cloud,http://localhost:5173,http://localhost:5174,http://localhost:3000
+AUTH_CORS=https://admin.mawgood.cloud,https://vendor.mawgood.cloud,https://mawgood.cloud,http://localhost:5173,http://localhost:5174,http://localhost:3000
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=supersecret
+COOKIE_SECRET=supersecret
+DATABASE_URL=postgresql://postgres:02486@localhost:5432/mercurjs
+DB_NAME=mercurjs
+EOF
+
+# 5️⃣ Install backend dependencies
+cd backend
+npm install --production=false
+
+# 6️⃣ Build backend (THIS IS THE KEY STEP!)
+npm run build
+
+# 7️⃣ Verify build succeeded
+ls -la .medusa/server/main.js
+
+# 8️⃣ Go back to root and restart PM2
+cd /var/www/mawgood-web
+pm2 restart all
+
+# 9️⃣ Wait for backend to start (60 seconds)
+echo "⏳ Waiting 60 seconds for backend to initialize..."
+sleep 60
+
+# 🔟 Check backend health
+curl http://localhost:9000/health
+
+# 1️⃣1️⃣ Check PM2 status
+pm2 status
+
+# 1️⃣2️⃣ Check backend logs
+pm2 logs mawgood-backend --lines 30 --nostream
+
+═══════════════════════════════════════════════════════════════
+🔍 VERIFICATION CHECKLIST
+═══════════════════════════════════════════════════════════════
+
+✅ Backend build created .medusa/server/main.js
+✅ PM2 shows mawgood-backend as "online"
+✅ curl http://localhost:9000/health returns 200 OK
+✅ No "KnexTimeoutError" in logs
+✅ No "Cannot find module" errors
+
+═══════════════════════════════════════════════════════════════
+🧪 TEST ADMIN PANEL
+═══════════════════════════════════════════════════════════════
+
+1. Open: https://admin.mawgood.cloud/login
+2. Should see login form (no "Failed to fetch" error)
+3. Try logging in with credentials
+
+═══════════════════════════════════════════════════════════════
+🆘 IF BACKEND STILL FAILS
+═══════════════════════════════════════════════════════════════
+
+# Check if PostgreSQL is running
+sudo systemctl status postgresql
+
+# Test database connection manually
+psql -U postgres -d mercurjs -c "SELECT 1;"
+
+# Check PostgreSQL connections
+psql -U postgres -c "SELECT count(*) FROM pg_stat_activity;"
+
+# If too many connections, restart PostgreSQL
+sudo systemctl restart postgresql
+
+# Then rebuild and restart backend
+cd /var/www/mawgood-web/backend
+npm run build
+cd ..
+pm2 restart mawgood-backend
+
+═══════════════════════════════════════════════════════════════
+📝 QUICK REFERENCE
+═══════════════════════════════════════════════════════════════
+
+View logs:        pm2 logs mawgood-backend --lines 50
+Restart backend:  pm2 restart mawgood-backend
+Stop all:         pm2 stop all
+Start all:        pm2 start all
+PM2 status:       pm2 status
+Backend health:   curl http://localhost:9000/health
+
+═══════════════════════════════════════════════════════════════
