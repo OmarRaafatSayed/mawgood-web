@@ -37,40 +37,55 @@ const countries = ['eg', 'sa', 'ae', 'kw', 'qa', 'bh', 'om', 'jo', 'be', 'de', '
 export async function createAdminUser(container: MedusaContainer) {
   const authService = container.resolve(Modules.AUTH)
   const userService = container.resolve(Modules.USER)
-  
-  // Check if admin user already exists
-  const [existingUser] = await userService.listUsers({
-    email: 'admin@mercurjs.com'
-  })
-  
+
+  // ── Read credentials from env — never use hardcoded defaults in production ──
+  const adminEmail    = process.env.SEED_ADMIN_EMAIL    || 'admin@mawgood.cloud'
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD
+
+  if (!adminPassword) {
+    throw new Error(
+      '[seed] SEED_ADMIN_PASSWORD is not set.\n' +
+      'Add it to your .env file before running the seed:\n' +
+      '  SEED_ADMIN_PASSWORD=your-strong-password'
+    )
+  }
+
+  if (adminPassword.length < 12) {
+    throw new Error(
+      '[seed] SEED_ADMIN_PASSWORD must be at least 12 characters.'
+    )
+  }
+
+  // Check if admin user already exists — idempotent seed
+  const [existingUser] = await userService.listUsers({ email: adminEmail })
   if (existingUser) {
     return existingUser
   }
-  
-  // Create auth identity with password
+
+  // Create auth identity — Medusa hashes the password internally via bcrypt
   const { authIdentity } = await authService.register('emailpass', {
     body: {
-      email: 'admin@mercurjs.com',
-      password: 'supersecret'
-    }
+      email:    adminEmail,
+      password: adminPassword,
+    },
   })
-  
+
   if (!authIdentity?.id) {
-    throw new Error('Failed to create admin auth identity')
+    throw new Error('[seed] Failed to create admin auth identity')
   }
-  
+
   // Create admin user account
   const { result: user } = await createUserAccountWorkflow(container).run({
     input: {
       userData: {
-        email: 'admin@mercurjs.com',
+        email:      adminEmail,
         first_name: 'Admin',
-        last_name: 'User'
+        last_name:  'User',
       },
-      authIdentityId: authIdentity.id
-    }
+      authIdentityId: authIdentity.id,
+    },
   })
-  
+
   return user
 }
 
@@ -275,11 +290,29 @@ export async function createProductCollections(container: MedusaContainer) {
 export async function createSeller(container: MedusaContainer) {
   const authService = container.resolve(Modules.AUTH)
 
+  // ── Read credentials from env — never use hardcoded defaults in production ──
+  const sellerEmail    = process.env.SEED_SELLER_EMAIL    || 'seller@mawgood.cloud'
+  const sellerPassword = process.env.SEED_SELLER_PASSWORD
+
+  if (!sellerPassword) {
+    throw new Error(
+      '[seed] SEED_SELLER_PASSWORD is not set.\n' +
+      'Add it to your .env file before running the seed:\n' +
+      '  SEED_SELLER_PASSWORD=your-strong-password'
+    )
+  }
+
+  if (sellerPassword.length < 12) {
+    throw new Error(
+      '[seed] SEED_SELLER_PASSWORD must be at least 12 characters.'
+    )
+  }
+
   const { authIdentity } = await authService.register('emailpass', {
     body: {
-      email: 'seller@mercurjs.com',
-      password: 'secret'
-    }
+      email:    sellerEmail,
+      password: sellerPassword,
+    },
   })
 
   const { result: seller } = await createSellerWorkflow.run({
@@ -287,13 +320,13 @@ export async function createSeller(container: MedusaContainer) {
     input: {
       auth_identity_id: authIdentity?.id,
       member: {
-        name: 'John Doe',
-        email: 'seller@mercurjs.com'
+        name:  'Store Owner',
+        email: sellerEmail,
       },
       seller: {
-        name: 'MercurJS Store'
-      }
-    }
+        name: process.env.SEED_SELLER_STORE_NAME || 'Mawgood Store',
+      },
+    },
   })
 
   return seller

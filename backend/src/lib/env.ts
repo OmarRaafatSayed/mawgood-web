@@ -116,6 +116,21 @@ const EnvSchema = z.object({
   // ── Email (optional) ──────────────────────────────────────────────────────
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().email().optional(),
+
+  // ── Seed credentials (only required when running `yarn seed`) ─────────────
+  // Validated inside seed.ts itself — listed here so the schema is the
+  // single source of truth for all env vars the backend touches.
+  SEED_ADMIN_EMAIL: z.string().email().optional(),
+  SEED_ADMIN_PASSWORD: z
+    .string()
+    .min(12, 'SEED_ADMIN_PASSWORD must be at least 12 characters')
+    .optional(),
+  SEED_SELLER_EMAIL: z.string().email().optional(),
+  SEED_SELLER_PASSWORD: z
+    .string()
+    .min(12, 'SEED_SELLER_PASSWORD must be at least 12 characters')
+    .optional(),
+  SEED_SELLER_STORE_NAME: z.string().optional(),
 })
 
 // ─── Validate ────────────────────────────────────────────────────────────────
