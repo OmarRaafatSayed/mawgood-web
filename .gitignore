@@ -10,13 +10,23 @@ build/
 .turbo/
 .medusa/
 
-# Environment files (keep templates)
+# Environment files
+# ─ Safe to commit (no real secrets):
+#     .env.template        ← schema/docs only
+#     .env.development     ← local dev defaults
+# ─ NEVER commit (real secrets):
+#     .env                 ← active local override
+#     .env.local           ← Next.js local override
+#     .env.production      ← production secrets
+#     .env.staging         ← staging secrets
 .env
 .env.local
-.env.development
+.env.production
+.env.staging
 .env.test
+# Allow safe files
 !.env.template
-!.env.production.template
+!.env.development
 
 # Logs
 *.log
@@ -82,3 +92,10 @@ storybook-static/
 
 # Production (don't commit production env)
 .env.production
+
+# Turborepo
+turbo-cache
+
+# pnpm
+.pnpm-store
+.pnpm-debug.log

@@ -1,3 +1,4 @@
+import path from 'path';
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
@@ -18,6 +19,8 @@ try {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Fix: tell Next.js the monorepo root so it doesn't warn about multiple lockfiles
+  outputFileTracingRoot: path.join(__dirname, '..'),
   trailingSlash: false,
   reactStrictMode: true,
   // Remove console.log in production

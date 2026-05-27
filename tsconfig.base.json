@@ -1,0 +1,17 @@
+{
+  "display": "Base",
+  "compilerOptions": {
+    "strict": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "inlineSourceMap": true
+  }
+}
