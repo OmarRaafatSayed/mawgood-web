@@ -108,6 +108,18 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true
   },
+  // ── Reverse-proxy: /api → Medusa backend ─────────────────────────────────
+  // All server-side and client-side fetch calls to /api/* are rewritten to
+  // the actual backend URL. This means the storefront code never contains a
+  // hard-coded domain — only the env var needs to change per environment.
+  async rewrites() {
+    return [
+      {
+        source:      '/api/:path*',
+        destination: `${BACKEND_URL}/:path*`,
+      },
+    ]
+  },
   // Production headers for caching
   async headers() {
     return [
