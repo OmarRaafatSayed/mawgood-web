@@ -1,0 +1,1 @@
+import{t as a}from"./index-7SiRo_S9.js";import{c as e}from"./format-CUSSvFH2.js";function o(r,t){const s=a(r);return isNaN(t)?e(r,NaN):(t&&s.setDate(s.getDate()+t),s)}function c(r,t){return o(r,-t)}export{o as a,c as s};

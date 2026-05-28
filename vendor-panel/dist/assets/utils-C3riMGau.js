@@ -1,0 +1,1 @@
+function r(n){if(!n)return[];const e=n.parent_category?r(n.parent_category):[];return e.push({id:n.id,name:n.name}),e}function t(n){return!n||!n.category_children?[]:n.category_children.map(e=>({id:e.id,name:e.name}))}export{t as a,r as g};

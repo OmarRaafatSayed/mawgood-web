@@ -1,0 +1,1 @@
+import"./index-7SiRo_S9.js";const s={links:{}};function l(n="",t=[]){const e=t.flatMap(i=>typeof i=="string"?[`+${i}.*`]:i.map(o=>`+${o}.*`));return[n,...e].join(",")}function r(n,t=""){const e=s.links[n];return l(t,e)}const a=r("product","");export{a as P};
