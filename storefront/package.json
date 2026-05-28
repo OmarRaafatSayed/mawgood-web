@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "mkdir -p .next/standalone/storefront/.next && cp -r .next/static .next/standalone/storefront/.next/static && cp -r public .next/standalone/storefront/public",
     "start": "next start",
     "lint": "next lint",
     "test": "jest --testPathPattern=src/__tests__",
