@@ -237,9 +237,8 @@ module.exports = {
       name:   'mawgood-admin',
       cwd:    path.join(ROOT, 'admin-panel'),
 
-      // Use globally-installed `serve`
-      script: 'serve',
-      args:   'dist --listen tcp://0.0.0.0:5173',
+      script: 'bash',
+      args:   '-c "serve dist --listen tcp://0.0.0.0:5173"',
 
       // Static file server is lightweight — keep memory limit low
       max_memory_restart: '256M',
@@ -279,9 +278,8 @@ module.exports = {
       name:   'mawgood-vendor',
       cwd:    path.join(ROOT, 'vendor-panel'),
 
-      // Use globally-installed `serve`
-      script: 'serve',
-      args:   'dist --listen tcp://0.0.0.0:5174',
+      script: 'bash',
+      args:   '-c "serve dist --listen tcp://0.0.0.0:5174"',
 
       max_memory_restart: '256M',
 
