@@ -239,7 +239,7 @@ module.exports = {
 
       // Use globally-installed `serve`
       script: 'serve',
-      args:   '-s dist --listen 5173',
+      args:   'dist --listen tcp://0.0.0.0:5173',
 
       // Static file server is lightweight — keep memory limit low
       max_memory_restart: '256M',
@@ -281,7 +281,7 @@ module.exports = {
 
       // Use globally-installed `serve`
       script: 'serve',
-      args:   '-s dist --listen 5174',
+      args:   'dist --listen tcp://0.0.0.0:5174',
 
       max_memory_restart: '256M',
 
