@@ -1,12 +1,24 @@
 import Medusa from "@medusajs/js-sdk";
 
-// ── Reverse-proxy strategy ────────────────────────────────────────────────────
-// __BACKEND_URL__ is always "/api" (baked in by vite.config.mts).
-// In development, Vite proxies /api → localhost:9000.
-// In production, Nginx proxies /api → localhost:9000.
-// The bundle never contains a hard-coded domain, so the same dist/ works
-// on any server without a rebuild.
-export const backendUrl = __BACKEND_URL__ ?? "/api";
+// ── Backend URL strategy ──────────────────────────────────────────────────────
+// In production: use the full backend URL baked at build time
+// In development: use localhost:9000 directly (Vite proxy handles /api)
+const getBackendUrl = (): string => {
+  // __BACKEND_URL__ is baked by vite.config.mts
+  const baked = __BACKEND_URL__;
+
+  // If it's a relative path like "/api", resolve it to a full URL
+  if (baked && baked.startsWith("/")) {
+    if (typeof window !== "undefined") {
+      return `${window.location.origin}${baked}`;
+    }
+    return "http://localhost:9000";
+  }
+
+  return baked ?? "http://localhost:9000";
+};
+
+export const backendUrl = getBackendUrl();
 
 // Publishable API key — required for storefront/public API calls
 const PUBLISHABLE_KEY =
