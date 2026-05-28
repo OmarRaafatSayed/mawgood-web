@@ -98,7 +98,7 @@ export const TopNavbar = ({
 
   return (
     <>
-      <header className="bg-[#0e111a] text-white overflow-hidden border-b border-white/5">
+      <header className="bg-[#0e111a] text-white border-b border-white/5 relative z-40">
         {/* Mobile header row */}
         <div className="flex items-center gap-4 px-4 py-3 sm:hidden mobile-header max-w-screen-lg mx-auto">
           {/* Hamburger */}
