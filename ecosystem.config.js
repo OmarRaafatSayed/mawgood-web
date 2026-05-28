@@ -65,8 +65,8 @@ module.exports = {
       ...SHARED,
       name:   'mawgood-backend',
       cwd:    path.join(ROOT, 'backend'),
-      script: 'node',
-      args:   '.medusa/server/main.js',
+      script: 'node_modules/.bin/medusa',
+      args:   'start',
 
       // Restart if the process exceeds 1.2 GB RSS
       max_memory_restart: '1200M',
