@@ -1,0 +1,1 @@
+import{b as s,g as a,r as n,j as o,O as i}from"./index-CYqUbIaM.js";const p=()=>{const t=s(),e=a();return n.useEffect(()=>{e.pathname==="/settings"&&t("/settings/store",{replace:!0}),e.pathname==="/settings/developer"&&t("/settings/publishable-api-keys",{replace:!0})},[e.pathname,t]),o.jsx(i,{})};export{p as Component};

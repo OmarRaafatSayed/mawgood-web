@@ -1,0 +1,1 @@
+import"./index-CYqUbIaM.js";const o={links:{}};function r(n="",i=[]){const t=i.flatMap(e=>typeof e=="string"?[`+${e}.*`]:e.map(s=>`+${s}.*`));return[n,...t].join(",")}function l(n,i=""){const t=o.links[n];return r(i,t)}const a=l("product","*categories,*shipping_profile,-variants");export{a as P};
