@@ -237,8 +237,8 @@ module.exports = {
       name:   'mawgood-admin',
       cwd:    path.join(ROOT, 'admin-panel'),
 
-      // Use the locally-installed `serve` binary to avoid npx network calls
-      script: 'node_modules/.bin/serve',
+      // Use globally-installed `serve`
+      script: 'serve',
       args:   '-s dist -l 5173 --no-clipboard',
 
       // Static file server is lightweight — keep memory limit low
@@ -279,7 +279,8 @@ module.exports = {
       name:   'mawgood-vendor',
       cwd:    path.join(ROOT, 'vendor-panel'),
 
-      script: 'node_modules/.bin/serve',
+      // Use globally-installed `serve`
+      script: 'serve',
       args:   '-s dist -l 5174 --no-clipboard',
 
       max_memory_restart: '256M',
