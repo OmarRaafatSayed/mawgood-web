@@ -1,5 +1,5 @@
 import { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 /**
  * Auto-link new products to the default sales channel.
@@ -8,8 +8,8 @@ export default async function autoSetupProductSubscriber({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const productModuleService = container.resolve(Modules.PRODUCT)
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL)
+  const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
 
   try {
     const salesChannels = await salesChannelModuleService.listSalesChannels({}, { take: 1 })
@@ -22,8 +22,9 @@ export default async function autoSetupProductSubscriber({
     const channelId = salesChannels[0].id
     const productId = data.id
 
-    await salesChannelModuleService.updateSalesChannels(channelId, {
-      products: [{ id: productId }],
+    await remoteLink.create({
+      [Modules.PRODUCT]: { product_id: productId },
+      [Modules.SALES_CHANNEL]: { sales_channel_id: channelId },
     })
 
     console.log(`[auto-setup-product] Linked product ${productId} to sales channel ${channelId}`)
