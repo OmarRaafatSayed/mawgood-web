@@ -15,7 +15,7 @@ export default async function autoLinkInventorySubscriber({
 
   try {
     // Get all stock locations
-    const { stock_locations } = await stockLocationService.listStockLocations({}, { take: 1 })
+    const stock_locations = await stockLocationService.listStockLocations({}, { take: 1 })
 
     if (!stock_locations || stock_locations.length === 0) {
       console.log("[auto-link-inventory] No stock locations found, skipping")
