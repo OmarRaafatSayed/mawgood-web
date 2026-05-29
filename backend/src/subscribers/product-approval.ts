@@ -1,7 +1,37 @@
 // @ts-nocheck
 import { SubscriberArgs, SubscriberConfig } from '@medusajs/framework'
 import { Modules } from '@medusajs/framework/utils'
-import { SELLER_MODULE } from '@mercurjs/b2c-core/modules/seller'
+
+/**
+ * Subscriber to handle product approval/rejection workflow
+ */
+export default async function productApprovalHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string; status?: string }>) {
+  try {
+    const productService = container.resolve(Modules.PRODUCT)
+
+    const product = await productService.retrieveProduct(data.id)
+
+    if (!product) return
+
+    const status = data.status || product.status
+
+    if (status === 'published') {
+      console.log(`✅ Product "${product.title}" published`)
+    } else if (status === 'draft') {
+      console.log(`📝 Product "${product.title}" is draft`)
+    }
+  } catch (error) {
+    console.error('Error in product approval handler:', error.message)
+  }
+}
+
+export const config: SubscriberConfig = {
+  event: ['product.updated', 'product.created'],
+  context: { subscriber: 'product-approval' }
+}
 
 /**
  * Subscriber to handle product approval/rejection workflow
