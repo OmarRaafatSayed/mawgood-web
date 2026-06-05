@@ -102,12 +102,19 @@ export function CartProvider({ cart, children }: CartProviderProps) {
     setCartState(optimisticCart);
 
     try {
-      await apiUpdateLineItem({ lineId, quantity });
+      const res = await apiUpdateLineItem({ lineId, quantity });
+      // If the cart was already completed, the server action returns an error object
+      // instead of throwing — handle it gracefully here
+      if ((res as any)?.error === 'cart_completed') {
+        console.log('[CartProvider] Cart completed, refreshing cart state...');
+        await refreshCart();
+        return;
+      }
       await refreshCart();
     } catch (error) {
       console.error('Error updating item quantity:', error);
       await refreshCart();
-      throw error; // Re-throw to let the UI handle the error
+      // Do NOT re-throw — swallow the error to avoid crashing the UI
     } finally {
       setIsUpdatingItem(false);
       setIsUpdating(false);

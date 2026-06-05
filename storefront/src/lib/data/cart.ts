@@ -152,6 +152,11 @@ export async function addToCart({
     ...(await getAuthHeaders())
   };
 
+  // Check if variant already exists in cart
+  const currentItem = cart?.items?.find(
+    (item: any) => item.variant_id === variantId
+  )
+
   try {
     if (currentItem) {
       await sdk.store.cart
@@ -224,11 +229,14 @@ export async function updateLineItem({ lineId, quantity }: { lineId: string; qua
 
     return res;
   } catch (error: any) {
-    // If cart is already completed, remove it and throw a user-friendly error
+    // If cart is already completed, clean up the stale cart ID
+    // and return a structured error instead of throwing (which causes 500)
     if (error?.message?.includes('already completed')) {
       console.log("[updateLineItem] Cart already completed, removing cart ID...");
       await removeCartId();
-      throw new Error('Your previous order was completed. Please refresh the page to start a new cart.');
+      const cartCacheTag = await getCacheTag('carts');
+      revalidateTag(cartCacheTag);
+      return { error: 'cart_completed', message: 'Your previous order was completed. Please refresh the page.' };
     }
     return medusaError(error);
   }
@@ -463,7 +471,16 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     //   }
 
     await updateCart(data);
-    await revalidatePath('/cart');
+
+    // Revalidate the fulfillment cache so listCartShippingMethods
+    // fetches fresh shipping options based on the new address
+    const fulfillmentCacheTag = await getCacheTag('fulfillment');
+    if (fulfillmentCacheTag) {
+      revalidateTag(fulfillmentCacheTag);
+    }
+
+    revalidatePath('/cart');
+    revalidatePath('/[locale]/(checkout)/checkout', 'page');
   } catch (e: any) {
     return e.message;
   }
@@ -606,11 +623,23 @@ export async function placeOrder(cartId?: string) {
     const cartCacheTag = await getCacheTag('carts');
     revalidateTag(cartCacheTag);
 
-    const orderSet = res?.data?.order_set;
-    const order = orderSet?.orders?.[0];
+    // Medusa v2 complete cart response: { type: 'order', order: {...} }
+    // If type === 'cart', it means completion failed (error in res.data.error)
+    const responseData = res?.data;
+    const responseType = responseData?.type;
 
-    console.log('[placeOrder] orderSet:', orderSet);
-    console.log('[placeOrder] order:', order);
+    console.log('[placeOrder] response type:', responseType);
+    console.log('[placeOrder] response data:', responseData);
+
+    if (responseType === 'cart') {
+      // Cart completion failed at Medusa level
+      const completionError = responseData?.error?.message || responseData?.error || 'Order could not be completed';
+      console.error('[placeOrder] Cart completion failed:', completionError);
+      return { ok: false, error: completionError };
+    }
+
+    // type === 'order' means success
+    const order = responseData?.order;
 
     if (order) {
       revalidatePath('/user/reviews');

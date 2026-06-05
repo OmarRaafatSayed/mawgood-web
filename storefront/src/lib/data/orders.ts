@@ -28,23 +28,33 @@ export const retrieveOrder = async (id: string) => {
     ...(await getAuthHeaders())
   };
 
-  const next = {
-    ...(await getCacheOptions('orders'))
-  };
+  const fullFields =
+    '*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller,*order_set';
+  const basicFields =
+    '*payment_collections.payments,*items,*items.variant,*items.product';
 
-  return sdk.client
-    .fetch<HttpTypes.StoreOrderResponse & { seller: SellerProps }>(`/store/orders/${id}`, {
-      method: 'GET',
-      query: {
-        fields:
-          '*payment_collections.payments,*items,*items.metadata,*items.variant,*items.product,*seller,*order_set'
-      },
-      headers,
-      next,
-      cache: 'force-cache'
-    })
-    .then(({ order }) => order)
-    .catch(err => medusaError(err));
+  try {
+    return await sdk.client
+      .fetch<HttpTypes.StoreOrderResponse & { seller: SellerProps }>(`/store/orders/${id}`, {
+        method: 'GET',
+        query: { fields: fullFields },
+        headers,
+        cache: 'no-cache'
+      })
+      .then(({ order }) => order);
+  } catch {
+    // Retry with basic fields — custom fields like *seller or *order_set
+    // may not be registered on this Medusa instance
+    return await sdk.client
+      .fetch<HttpTypes.StoreOrderResponse>(`/store/orders/${id}`, {
+        method: 'GET',
+        query: { fields: basicFields },
+        headers,
+        cache: 'no-cache'
+      })
+      .then(({ order }) => order)
+      .catch(err => medusaError(err));
+  }
 };
 
 export const createReturnRequest = async (data: any) => {
