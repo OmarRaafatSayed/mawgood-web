@@ -117,7 +117,7 @@ export const TopNavbar = ({
             aria-label={t("home")}
           >
             <Image
-              src="/logo.svg"
+              src="/Logo.svg"
               width={120}
               height={40}
               alt="Logo"
@@ -159,7 +159,7 @@ export const TopNavbar = ({
             aria-label={t("home")}
           >
             <Image
-              src="/logo.svg"
+              src="/Logo.svg"
               width={140}
               height={45}
               alt="Logo"
