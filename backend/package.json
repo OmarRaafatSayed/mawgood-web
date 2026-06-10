@@ -31,6 +31,8 @@
     "clean:categories": "medusa exec ./scripts/clean-default-categories.ts",
     "db:cleanup-import": "medusa exec ./scripts/full-database-cleanup-and-import.ts",
     "check:readiness": "medusa exec ./scripts/check-import-readiness.ts",
+    "setup:region": "medusa exec ./scripts/setup-egypt-region.ts",
+    "production:setup-region": "NODE_ENV=production medusa exec ./scripts/setup-egypt-region.ts",
     "fix:categories": "medusa exec ./scripts/fix-categories-from-products.ts",
     "production:build": "NODE_ENV=production medusa build",
     "production:start": "NODE_ENV=production medusa start",

@@ -58,7 +58,7 @@ module.exports = {
 
     // =========================================================================
     // 1. Backend — Medusa v2
-    //    Build output: backend/.medusa/server/main.js
+    //    Runs via: medusa start (no pre-build required)
     //    Port: 9000 (production) | 9001 (staging)
     // =========================================================================
     {
@@ -67,6 +67,7 @@ module.exports = {
       cwd:    path.join(ROOT, 'backend'),
       script: 'node_modules/.bin/medusa',
       args:   'start',
+      interpreter: 'none',
 
       // Restart if the process exceeds 1.2 GB RSS
       max_memory_restart: '1200M',
